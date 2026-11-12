@@ -6,6 +6,9 @@ struct SubjectView: View {
     let book: GradeBook
     @Environment(\.palette) private var palette
     @State private var selected: Grade?
+    @State private var showCalculator = false
+    @State private var showGoal = false
+    @Environment(AppModel.self) private var app
 
     var body: some View {
         let grades = book.grades(for: subject)
@@ -48,6 +51,23 @@ struct SubjectView: View {
                     }
                 }
 
+                PanelGroup {
+                    Button { showCalculator = true } label: {
+                        PanelRow("Jegykalkulátor", subtitle: "Mi lenne, ha kapnék egy…", systemImage: "plus.forwardslash.minus") { Chevron() }
+                    }
+                    .buttonStyle(.plain)
+                    Button { showGoal = true } label: {
+                        if let goal = app.notebook.notebook.goals[subject.id] {
+                            PanelRow(title: "Cél: \(goal.formatted(.number.precision(.fractionLength(2))))",
+                                     subtitle: (Averages.weighted(grades) ?? 0) >= goal ? "Elérted! 🎉" : "Koppints, és megnézheted, mi kell hozzá.",
+                                     systemImage: "flag.checkered") { Chevron() }
+                        } else {
+                            PanelRow("Céltervező", subtitle: "Milyen jegyek kellenek a kitűzött átlaghoz?", systemImage: "flag.checkered") { Chevron() }
+                        }
+                    }
+                    .buttonStyle(.plain)
+                }
+
                 PanelGroup(title: "Grafikon") {
                     AverageChart(points: Averages.timeline(grades, gapDays: 5), classAverage: book.classAverage(for: subject))
                     GradeDistribution(grades: grades)
@@ -66,6 +86,9 @@ struct SubjectView: View {
         .navigationTitle(subject.name)
         .navigationBarTitleDisplayMode(.inline)
         .sheet(item: $selected) { GradeDetailSheet(grade: $0) }
+        .sheet(isPresented: $showCalculator) { CalculatorView(subject: subject, grades: grades) }
+        .sheet(isPresented: $showGoal) { GoalPlannerView(subject: subject, grades: grades) }
+        .onAppear { app.notebook.open(app) }
     }
 
     private func statBlock(_ title: LocalizedStringKey, value: Double?, filled: Bool) -> some View {

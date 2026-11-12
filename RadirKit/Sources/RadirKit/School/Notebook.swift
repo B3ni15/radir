@@ -21,6 +21,19 @@ public struct Notebook: Codable, Equatable, Sendable {
     public var notes: [Note] = []
     public var todos: [Todo] = []
     public var doneHomework: Set<String> = []
+    /// Tantárgy id → célátlag (céltervező)
+    public var goals: [String: Double] = [:]
 
     public init() {}
+
+    private enum CodingKeys: String, CodingKey { case notes, todos, doneHomework, goals }
+
+    /// Régebbi mentésekből hiányozhatnak az új mezők.
+    public init(from decoder: Decoder) throws {
+        let c = try decoder.container(keyedBy: CodingKeys.self)
+        notes = try c.decodeIfPresent([Note].self, forKey: .notes) ?? []
+        todos = try c.decodeIfPresent([Todo].self, forKey: .todos) ?? []
+        doneHomework = try c.decodeIfPresent(Set<String>.self, forKey: .doneHomework) ?? []
+        goals = try c.decodeIfPresent([String: Double].self, forKey: .goals) ?? [:]
+    }
 }
