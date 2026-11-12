@@ -32,6 +32,8 @@ struct LessonLiveActivity: Widget {
                         Progress(state: s)
                         if let next = s.nextLine { Text(next).font(.caption).foregroundStyle(.secondary).lineLimit(1) }
                     }
+                    // a sziget lekerekített sarka ne vágja le a szöveg elejét
+                    .padding(.horizontal, 8)
                 }
             } compactLeading: {
                 Image(systemName: s.icon).foregroundStyle(s.tint)

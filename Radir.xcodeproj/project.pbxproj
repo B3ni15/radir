@@ -8,8 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		A10000000000000000000020 /* RadirKit in Frameworks */ = {isa = PBXBuildFile; productRef = A10000000000000000000021 /* RadirKit */; };
-		B10000000000000000000020 /* RadirKit in Frameworks */ = {isa = PBXBuildFile; productRef = B10000000000000000000021 /* RadirKit */; };
 		B10000000000000000000011 /* RadirLiveActivity.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = B10000000000000000000010 /* RadirLiveActivity.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		B10000000000000000000020 /* RadirKit in Frameworks */ = {isa = PBXBuildFile; productRef = B10000000000000000000021 /* RadirKit */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -288,6 +288,7 @@
 				CODE_SIGN_ENTITLEMENTS = Config/Radir.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = R9PZGUCNJ3;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_CFBundleDisplayName = "Radír";
@@ -319,6 +320,7 @@
 				CODE_SIGN_ENTITLEMENTS = Config/Radir.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = R9PZGUCNJ3;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_CFBundleDisplayName = "Radír";
@@ -347,6 +349,7 @@
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = R9PZGUCNJ3;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = RadirLiveActivity/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "Radír";
@@ -371,6 +374,7 @@
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = R9PZGUCNJ3;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = RadirLiveActivity/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "Radír";
