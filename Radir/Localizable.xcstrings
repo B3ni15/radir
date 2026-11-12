@@ -1,150 +1,6 @@
 {
   "sourceLanguage" : "hu",
   "strings" : {
-    "Minden, ami ma számít" : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Alles, was heute zählt"
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Everything that matters today"
-          }
-        }
-      }
-    },
-    "A mostani és a következő órád, a házik, a dolgozatok és az új jegyeid egy helyen." : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Deine aktuelle und nächste Stunde, Hausaufgaben, Tests und neue Noten an einem Ort."
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Your current and next lesson, homework, tests and new grades in one place."
-          }
-        }
-      }
-    },
-    "Látod, merre tart az átlagod" : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Sieh, wohin dein Durchschnitt geht"
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "See where your average is heading"
-          }
-        }
-      }
-    },
-    "Grafikon, osztályátlag és jegyeloszlás. Jegykalkulátorral és céltervezővel." : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Diagramm, Klassendurchschnitt und Notenverteilung. Mit Notenrechner und Zielplaner."
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Chart, class average and grade distribution. With a grade calculator and goal planner."
-          }
-        }
-      }
-    },
-    "Az órarended, élőben" : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Dein Stundenplan, live"
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Your timetable, live"
-          }
-        }
-      }
-    },
-    "Szünetek, helyettesítések, elmaradt órák. A következő órád a zárolt képernyőn is." : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Pausen, Vertretungen, ausgefallene Stunden. Deine nächste Stunde auch auf dem Sperrbildschirm."
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Breaks, substitutions, cancelled lessons. Your next lesson on the Lock Screen too."
-          }
-        }
-      }
-    },
-    "Év végén jön a bizonyítvány" : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Am Jahresende kommt das Zeugnis"
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "At year end, the report card"
-          }
-        }
-      }
-    },
-    "Egy kis összefoglaló az évedről: jegyek, kedvenc óra, és hogy milyen diák voltál." : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Ein kleiner Rückblick auf dein Jahr: Noten, Lieblingsfach und was für ein Schüler du warst."
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "A little recap of your year: grades, favourite lesson, and what kind of student you were."
-          }
-        }
-      }
-    },
-    "Ingyenes, reklám nélkül. A belépés a KRÉTA saját oldalán történik." : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Kostenlos, ohne Werbung. Die Anmeldung erfolgt auf der eigenen Seite von KRÉTA."
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Free, no ads. You sign in on KRÉTA's own page."
-          }
-        }
-      }
-    },
     "" : {
 
     },
@@ -606,6 +462,7 @@
       }
     },
     "A belépés a KRÉTA saját oldalán történik." : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -862,6 +719,7 @@
       }
     },
     "A következő órád a zárolt képernyőn" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -921,6 +779,22 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "This week's and next week's lessons go into a separate “Radír” calendar."
+          }
+        }
+      }
+    },
+    "A mostani és a következő órád, a házik, a dolgozatok és az új jegyeid egy helyen." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Deine aktuelle und nächste Stunde, Hausaufgaben, Tests und neue Noten an einem Ort."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your current and next lesson, homework, tests and new grades in one place."
           }
         }
       }
@@ -1551,6 +1425,22 @@
         }
       }
     },
+    "Az órarended, élőben" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dein Stundenplan, live"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your timetable, live"
+          }
+        }
+      }
+    },
     "Az új jegyeid és az órarendváltozások itt jelennek meg." : {
       "localizations" : {
         "de" : {
@@ -2047,6 +1937,22 @@
         }
       }
     },
+    "Egy kis összefoglaló az évedről: jegyek, kedvenc óra, és hogy milyen diák voltál." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ein kleiner Rückblick auf dein Jahr: Noten, Lieblingsfach und was für ein Schüler du warst."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A little recap of your year: grades, favourite lesson, and what kind of student you were."
+          }
+        }
+      }
+    },
     "Egy tantárgyra koppintva látod az összes jegyét." : {
       "localizations" : {
         "de" : {
@@ -2348,6 +2254,22 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Year end"
+          }
+        }
+      }
+    },
+    "Év végén jön a bizonyítvány" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Am Jahresende kommt das Zeugnis"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "At year end, the report card"
           }
         }
       }
@@ -2707,6 +2629,7 @@
       }
     },
     "Grafikon, jegykalkulátor, céltervező" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -2718,6 +2641,22 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Chart, grade calculator, goal planner"
+          }
+        }
+      }
+    },
+    "Grafikon, osztályátlag és jegyeloszlás. Jegykalkulátorral és céltervezővel." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Diagramm, Klassendurchschnitt und Notenverteilung. Mit Notenrechner und Zielplaner."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Chart, class average and grade distribution. With a grade calculator and goal planner."
           }
         }
       }
@@ -3395,6 +3334,22 @@
         }
       }
     },
+    "Ingyenes, reklám nélkül. A belépés a KRÉTA saját oldalán történik." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kostenlos, ohne Werbung. Die Anmeldung erfolgt auf der eigenen Seite von KRÉTA."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Free, no ads. You sign in on KRÉTA's own page."
+          }
+        }
+      }
+    },
     "Intézménykód" : {
       "localizations" : {
         "de" : {
@@ -3589,6 +3544,7 @@
       }
     },
     "Jegyek és átlagok" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -3653,6 +3609,7 @@
       }
     },
     "Jegyek, órarend, házik. Szépen, egy helyen." : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -4133,6 +4090,7 @@
       }
     },
     "Kipróbálom demóval" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -4327,6 +4285,22 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Address"
+          }
+        }
+      }
+    },
+    "Látod, merre tart az átlagod" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sieh, wohin dein Durchschnitt geht"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "See where your average is heading"
           }
         }
       }
@@ -4942,6 +4916,7 @@
       }
     },
     "Minden ingyenes" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -4953,6 +4928,22 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Everything is free"
+          }
+        }
+      }
+    },
+    "Minden, ami ma számít" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alles, was heute zählt"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Everything that matters today"
           }
         }
       }
@@ -5423,6 +5414,7 @@
       }
     },
     "Nincs Plus, nincs reklám" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -5648,6 +5640,7 @@
       }
     },
     "Órarend és Live Activity" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -6428,6 +6421,22 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Break, still"
+          }
+        }
+      }
+    },
+    "Szünetek, helyettesítések, elmaradt órák. A következő órád a zárolt képernyőn is." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pausen, Vertretungen, ausgefallene Stunden. Deine nächste Stunde auch auf dem Sperrbildschirm."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Breaks, substitutions, cancelled lessons. Your next lesson on the Lock Screen too."
           }
         }
       }
