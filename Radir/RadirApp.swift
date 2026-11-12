@@ -18,7 +18,7 @@ struct RadirApp: App {
                             .fullScreenCover(isPresented: Binding(get: { !onboardingDone }, set: { if !$0 { onboardingDone = true } })) {
                                 OnboardingView { onboardingDone = true }
                                     .environment(model)
-                                    .radirTheme()
+                                    .radirTheme(model.prefs)
                             }
                     }
                 } else {
@@ -26,7 +26,7 @@ struct RadirApp: App {
                 }
             }
             .environment(model)
-            .radirTheme()
+            .radirTheme(model.prefs)
         }
     }
 }

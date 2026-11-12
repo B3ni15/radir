@@ -16,14 +16,16 @@ final class SchoolModel {
     func load(_ app: AppModel) async {
         guard let account = app.current else { return }
         if account.isDemo {
-            absences = Demo.absences(); homework = Demo.homework(); exams = Demo.exams(); notes = Demo.schoolNotes(); wall = Demo.wall()
+            let r = app.renaming
+            absences = Demo.absences().map(r.apply); homework = Demo.homework().map(r.apply); exams = Demo.exams().map(r.apply); notes = Demo.schoolNotes(); wall = Demo.wall()
             return
         }
         if !loadedCache {
             loadedCache = true
-            absences = app.cache.load([Absence].self, as: "absences", for: account.id)
-            homework = app.cache.load([Homework].self, as: "homework", for: account.id)
-            exams = app.cache.load([Exam].self, as: "exams", for: account.id)
+            let r = app.renaming
+            absences = app.cache.load([Absence].self, as: "absences", for: account.id)?.map(r.apply)
+            homework = app.cache.load([Homework].self, as: "homework", for: account.id)?.map(r.apply)
+            exams = app.cache.load([Exam].self, as: "exams", for: account.id)?.map(r.apply)
             notes = app.cache.load([SchoolNote].self, as: "notes", for: account.id)
             wall = app.cache.load([WallItem].self, as: "wall", for: account.id)
         }
@@ -41,9 +43,10 @@ final class SchoolModel {
         async let w = Task { try await service.wall(session: session, instituteCode: institute) }.result
         let results = await (a, h, e, n)
         if case .success(let v) = await w { wall = v; try? cache.save(v, as: "wall", for: id) }
-        if case .success(let v) = results.0 { absences = v; try? cache.save(v, as: "absences", for: id) }
-        if case .success(let v) = results.1 { homework = v; try? cache.save(v, as: "homework", for: id) }
-        if case .success(let v) = results.2 { exams = v; try? cache.save(v, as: "exams", for: id) }
+        let r = app.renaming
+        if case .success(let v) = results.0 { absences = v.map(r.apply); try? cache.save(v, as: "absences", for: id) }
+        if case .success(let v) = results.1 { homework = v.map(r.apply); try? cache.save(v, as: "homework", for: id) }
+        if case .success(let v) = results.2 { exams = v.map(r.apply); try? cache.save(v, as: "exams", for: id) }
         if case .success(let v) = results.3 { notes = v; try? cache.save(v, as: "notes", for: id) }
         for r in [results.0.error, results.1.error, results.2.error, results.3.error] {
             if case KretaError.reloginRequired? = r { app.markNeedsRelogin(id); break }

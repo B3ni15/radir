@@ -11,10 +11,10 @@ final class GradesModel {
     func load(_ app: AppModel) async {
         guard let account = app.current else { return }
         if account.isDemo {
-            book = Demo.gradeBook()
+            book = app.renaming.apply(Demo.gradeBook())
             return
         }
-        if book == nil { book = app.cache.load(GradeBook.self, as: "grades", for: account.id) }
+        if book == nil { book = app.cache.load(GradeBook.self, as: "grades", for: account.id).map(app.renaming.apply) }
         guard let session = app.session(for: account), !isLoading else { return }
         isLoading = true
         defer { isLoading = false }
@@ -22,7 +22,7 @@ final class GradesModel {
             // külön Task: ha a nézet eltűnik (fülváltás), a letöltés akkor is befejeződik
             let institute = account.instituteCode
             let fresh = try await Task { try await GradesService().fetch(session: session, instituteCode: institute) }.value
-            book = fresh
+            book = app.renaming.apply(fresh)
             try? app.cache.save(fresh, as: "grades", for: account.id)
         } catch KretaError.reloginRequired {
             // teljes képernyős újra belépés jön, a tárolt adat addig is látszik

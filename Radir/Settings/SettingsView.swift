@@ -46,8 +46,23 @@ struct SettingsView: View {
                         LiveActivityConsent {
                             if let id = model.current?.id { model.liveActivity.setEnabled(true, for: id) }
                             showConsent = false
-                            Task { await model.liveActivity.sync(app: model) }
+                            Task { await model.liveActivity.sync(app: model, now: model.prefs.schoolNow) }
                         } cancel: { showConsent = false }
+                    }
+
+                    PanelGroup(title: "Beállítások") {
+                        NavigationLink { AppearanceSettingsView() } label: {
+                            PanelRow(title: "Megjelenés", subtitle: "Téma, akcentus, jegyszínek", systemImage: "paintpalette") { Chevron() }
+                        }.buttonStyle(.plain)
+                        NavigationLink { GeneralSettingsView() } label: {
+                            PanelRow(title: "Általános", subtitle: "Kezdőoldal, kerekítés, csengetés", systemImage: "gearshape") { Chevron() }
+                        }.buttonStyle(.plain)
+                        NavigationLink { RenameSettingsView() } label: {
+                            PanelRow(title: "Átnevezés", subtitle: "Tantárgyak és tanárok saját neve", systemImage: "character.cursor.ibeam") { Chevron() }
+                        }.buttonStyle(.plain)
+                        NavigationLink { ToolsSettingsView() } label: {
+                            PanelRow(title: "Naptár és export", systemImage: "calendar.badge.plus") { Chevron() }
+                        }.buttonStyle(.plain)
                     }
 
                     PanelGroup(title: "Egyéb") {

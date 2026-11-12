@@ -15,6 +15,18 @@ final class AppModel {
     var tab: AppTab = .home
     var openLesson: Lesson?
 
+    let prefs = Preferences()
+
+    /// A kiválasztott fiók átnevezései (tantárgyak, tanárok).
+    var renaming: Renaming { notebook.notebook.renaming }
+
+    /// Átnevezés után: a tárolt adatok újra betöltődnek az új nevekkel.
+    func reloadData() {
+        grades = GradesModel()
+        timetable = TimetableModel()
+        school = SchoolModel()
+    }
+
     func show(_ lesson: Lesson) {
         openLesson = lesson
         tab = .timetable
@@ -44,6 +56,7 @@ final class AppModel {
         self.transport = transport
         auth = AuthClient(transport: transport)
         sync()
+        tab = prefs.startTab
     }
 
     static func defaultStore() -> AccountStore {
@@ -115,6 +128,7 @@ final class AppModel {
     private func sync() {
         accounts = store.accounts
         current = store.selected ?? store.accounts.last
+        notebook.open(self)
     }
 }
 

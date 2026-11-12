@@ -23,10 +23,11 @@ public struct Notebook: Codable, Equatable, Sendable {
     public var doneHomework: Set<String> = []
     /// Tantárgy id → célátlag (céltervező)
     public var goals: [String: Double] = [:]
+    public var renaming = Renaming()
 
     public init() {}
 
-    private enum CodingKeys: String, CodingKey { case notes, todos, doneHomework, goals }
+    private enum CodingKeys: String, CodingKey { case notes, todos, doneHomework, goals, renaming }
 
     /// Régebbi mentésekből hiányozhatnak az új mezők.
     public init(from decoder: Decoder) throws {
@@ -35,5 +36,6 @@ public struct Notebook: Codable, Equatable, Sendable {
         todos = try c.decodeIfPresent([Todo].self, forKey: .todos) ?? []
         doneHomework = try c.decodeIfPresent(Set<String>.self, forKey: .doneHomework) ?? []
         goals = try c.decodeIfPresent([String: Double].self, forKey: .goals) ?? [:]
+        renaming = try c.decodeIfPresent(Renaming.self, forKey: .renaming) ?? Renaming()
     }
 }

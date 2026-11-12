@@ -170,9 +170,10 @@ struct AverageBadge: View {
     var filled = false
     @Environment(\.palette) private var palette
     @Environment(\.colorScheme) private var scheme
+    @Environment(\.roundingThreshold) private var threshold
 
     var body: some View {
-        let color = Color(palette.gradeColor(Averages.roundedGrade(value)) ?? palette.accent)
+        let color = Color(palette.gradeColor(Averages.roundedGrade(value, threshold: threshold)) ?? palette.accent)
         Text(value, format: .number.precision(.fractionLength(2)))
             .font(.subheadline.weight(.bold).monospacedDigit())
             .padding(.horizontal, 9)

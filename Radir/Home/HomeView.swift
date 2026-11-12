@@ -212,6 +212,8 @@ struct HomeView: View {
 
     private var greeting: String {
         let first = app.current?.student.name.split(separator: " ").last.map(String.init) ?? ""
+        let custom = app.prefs.welcomeMessage.trimmingCharacters(in: .whitespaces)
+        if !custom.isEmpty { return custom.replacingOccurrences(of: "%s", with: first) }
         let hour = Calendar.school.component(.hour, from: .now)
         let format: String.LocalizationValue = switch hour {
         case 4..<10: "Jó reggelt, \(first)!"

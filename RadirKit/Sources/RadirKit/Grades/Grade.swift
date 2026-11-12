@@ -2,7 +2,7 @@ import Foundation
 
 public struct Subject: Codable, Hashable, Identifiable, Sendable {
     public let id: String
-    public let name: String
+    public var name: String
     public let categoryName: String
 
     public init(id: String, name: String, categoryName: String) {
@@ -42,10 +42,10 @@ public struct Grade: Codable, Identifiable, Hashable, Sendable {
     public let shortName: String
     public let weight: Int
     public let kind: GradeKind
-    public let subject: Subject
+    public var subject: Subject
     public let topic: String
     public let mode: String
-    public let teacher: String
+    public var teacher: String
     public let valueTypeID: String
 
     public init(id: String, date: Date, writeDate: Date, value: Int, valueName: String, shortName: String, weight: Int,

@@ -6,14 +6,14 @@ public struct Lesson: Codable, Identifiable, Hashable, Sendable {
     public let date: Date
     public let start: Date
     public let end: Date
-    public let subject: Subject
+    public var subject: Subject
     /// Óraszám; nil, ha a KRÉTA nem ad (szakkör, esemény)
     public let index: Int?
     /// Hányadik óra az évben ebből a tantárgyból
     public let yearIndex: Int?
     public let name: String
-    public let teacher: String
-    public let substituteTeacher: String?
+    public var teacher: String
+    public var substituteTeacher: String?
     public let room: String
     public let topic: String
     public let groupName: String

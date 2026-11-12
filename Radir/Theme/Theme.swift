@@ -9,20 +9,30 @@ extension Color {
 
 extension EnvironmentValues {
     @Entry var palette: Palette = .light
+    /// A jegyszín kerekítési küszöbe (beállítható)
+    @Entry var roundingThreshold: Double = 0.5
 }
 
 private struct ThemeModifier: ViewModifier {
+    let prefs: Preferences
     @Environment(\.colorScheme) private var scheme
 
     func body(content: Content) -> some View {
-        let palette: Palette = scheme == .dark ? .dark : .light
+        let palette = prefs.palette(for: scheme)
+        // saját színeknél a háttér fényessége dönti el, világos vagy sötét a felület
+        let effective: ColorScheme = prefs.customEnabled ? (palette.background.luminance < 0.5 ? .dark : .light) : scheme
         content
             .environment(\.palette, palette)
+            .environment(\.colorScheme, effective)
+            .foregroundStyle(Color(palette.text))
+            .environment(\.roundingThreshold, prefs.roundingThreshold)
             .tint(Color(palette.accent))
     }
 }
 
 extension View {
-    /// A gyökérnézeten: a világos/sötét módhoz tartozó Radír palettát adja a nézeteknek.
-    func radirTheme() -> some View { modifier(ThemeModifier()) }
+    /// A gyökérnézeten: a világos/sötét módhoz és a beállításokhoz tartozó Radír palettát adja a nézeteknek.
+    func radirTheme(_ prefs: Preferences) -> some View {
+        modifier(ThemeModifier(prefs: prefs)).onAppear { prefs.applyAppearance() }
+    }
 }

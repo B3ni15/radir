@@ -27,4 +27,7 @@ public struct ARGB: Codable, Hashable, Sendable {
         }
         return ARGB(ch(24) | ch(16) | ch(8) | ch(0))
     }
+
+    /// Relatív fényesség (0 = fekete, 1 = fehér)
+    public var luminance: Double { 0.2126 * red + 0.7152 * green + 0.0722 * blue }
 }

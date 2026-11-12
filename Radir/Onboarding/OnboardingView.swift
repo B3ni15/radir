@@ -124,7 +124,7 @@ struct OnboardingView: View {
                 VStack(spacing: 10) {
                     Button {
                         if let id = app.current?.id { app.liveActivity.setEnabled(true, for: id) }
-                        Task { await app.liveActivity.sync(app: app) }
+                        Task { await app.liveActivity.sync(app: app, now: app.prefs.schoolNow) }
                         finish()
                     } label: {
                         Text("Bekapcsolom").font(.body.weight(.semibold)).frame(maxWidth: .infinity, minHeight: 34)

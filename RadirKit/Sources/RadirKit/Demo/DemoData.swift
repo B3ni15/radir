@@ -36,7 +36,8 @@ extension Demo {
         .init(id: "foci", name: "Földrajz", teacher: "Kiss Andrea", topics: ["Kőzetek", "Éghajlat", "Európa"], rooms: ["207"]),
     ]
 
-    static func subject(_ s: DemoSubject) -> Subject { Subject(id: s.id, name: s.name, categoryName: "") }
+    // a kategória az eredeti név, mint a KRÉTA-ban: átnevezés után is erből jön az ikon
+    static func subject(_ s: DemoSubject) -> Subject { Subject(id: s.id, name: s.name, categoryName: s.name) }
 
     static func seed(for date: Date, salt: UInt64 = 0) -> SeededRandom {
         SeededRandom(seed: UInt64(max(0, Int(date.timeIntervalSince1970 / 86_400))) &* 31 &+ salt)

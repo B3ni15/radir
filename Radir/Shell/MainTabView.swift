@@ -1,7 +1,7 @@
 import RadirKit
 import SwiftUI
 
-enum AppTab: Hashable {
+enum AppTab: String, Hashable {
     case home, grades, timetable, notes, absences
 }
 
@@ -35,7 +35,11 @@ struct MainTabView: View {
                 async let t: Void = app.timetable.loadAround(app, week: SchoolWeek(containing: .now))
                 async let g: Void = app.grades.load(app)
                 _ = await (t, g)
-                await app.liveActivity.sync(app: app)
+                await app.liveActivity.sync(app: app, now: app.prefs.schoolNow)
+                if app.prefs.calendarSync {
+                    let w = SchoolWeek(containing: .now)
+                    try? CalendarSync.sync(app.timetable.lessons.filter { $0.key == w || $0.key == w.next })
+                }
             }
         }
         // előtérben félpercenként frissíti a Live Activityt; háttérben a szerver teszi ezt
@@ -43,7 +47,7 @@ struct MainTabView: View {
             while !Task.isCancelled {
                 let week = SchoolWeek(containing: .now)
                 if !app.timetable.hasLoaded(week) { await app.timetable.load(app, week: week) }
-                await app.liveActivity.sync(app: app)
+                await app.liveActivity.sync(app: app, now: app.prefs.schoolNow)
                 try? await Task.sleep(for: .seconds(30))
             }
         }

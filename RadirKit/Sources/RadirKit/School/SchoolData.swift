@@ -22,8 +22,8 @@ public struct Absence: Codable, Identifiable, Hashable, Sendable {
     public let state: State
     public let delayMinutes: Int
     public let justification: String
-    public let subject: Subject
-    public let teacher: String
+    public var subject: Subject
+    public var teacher: String
     public let lessonIndex: Int?
     public let lessonStart: Date?
     public let lessonEnd: Date?
@@ -59,7 +59,7 @@ public struct Absence: Codable, Identifiable, Hashable, Sendable {
 
 public struct AbsenceSummary: Sendable {
     public struct BySubject: Identifiable, Sendable {
-        public let subject: Subject
+        public var subject: Subject
         public let absences: Int
         public let late: Int
         public let items: [Absence]
@@ -103,8 +103,8 @@ public struct HomeworkAttachment: Codable, Hashable, Sendable {
 
 public struct Homework: Codable, Identifiable, Hashable, Sendable {
     public let id: String
-    public let subject: Subject
-    public let teacher: String
+    public var subject: Subject
+    public var teacher: String
     /// HTML, ahogy a KRÉTA adja
     public let text: String
     public let assigned: Date?
@@ -163,10 +163,10 @@ public struct Exam: Codable, Identifiable, Hashable, Sendable {
     /// A számonkérés napja
     public let date: Date
     public let announced: Date?
-    public let subject: Subject
+    public var subject: Subject
     public let topic: String
     public let mode: String
-    public let teacher: String
+    public var teacher: String
     public let lessonIndex: Int?
 
     public init(id: String, date: Date, announced: Date?, subject: Subject, topic: String, mode: String, teacher: String, lessonIndex: Int?) {
@@ -195,7 +195,7 @@ public struct SchoolNote: Codable, Identifiable, Hashable, Sendable {
     public let title: String
     public let content: String
     public let kind: String
-    public let teacher: String
+    public var teacher: String
     public let date: Date
     public let recorded: Date?
 
