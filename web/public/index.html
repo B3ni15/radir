@@ -16,44 +16,61 @@
 <link rel="stylesheet" href="/styles.css">
 </head>
 <body>
-<header class="wrap top">
-  <a class="brand" href="/"><img src="/img/logo.png" alt="">Radír</a>
+<header class="bar">
+  <a class="brand" href="/"><img src="/img/logo.png" alt="" width="32" height="32">Radír</a>
   <nav>
+    <a href="#bemutato">Bemutató</a>
     <a href="#funkciok">Funkciók</a>
     <a href="/adatvedelem/">Adatvédelem</a>
   </nav>
+  <!-- Ha kint lesz az app: <a class="pill" href="https://apps.apple.com/…">Letöltés</a> -->
+  <span class="pill">Hamarosan</span>
 </header>
 
 <main>
-  <section class="wrap hero">
-    <svg class="pencil" viewBox="0 0 1600 760" preserveAspectRatio="none" aria-hidden="true">
-      <path d="M -20 620 C 220 700, 420 560, 560 600 C 700 640, 640 470, 560 500 C 480 530, 560 660, 760 560 C 960 460, 1080 200, 1280 260 C 1400 296, 1460 420, 1620 380"/>
+  <section class="hero">
+    <svg class="swoosh" viewBox="0 0 1200 120" preserveAspectRatio="none" aria-hidden="true">
+      <path d="M 10 80 C 200 20, 380 120, 560 70 C 700 30, 640 0, 600 30 C 560 60, 700 110, 880 60 C 1000 30, 1100 50, 1190 40"/>
     </svg>
-    <div>
-      <h1>A KRÉTA, ahogy szeretnéd</h1>
-      <p class="lede">Jegyek, átlagok, órarend, házik és üzenetek egy gyors, szép iPhone-appban. Ingyen, reklám nélkül.</p>
-      <!-- Ha kint lesz az appban: <a class="store" href="https://apps.apple.com/…"> -->
-      <span class="store"><span><small>Hamarosan</small>az App Store-ban</span></span>
-      <p class="note">iOS 18-tól. Nem hivatalos alkalmazás.</p>
+    <h1>A KRÉTA, ahogy szeretnéd</h1>
+    <p class="lede">Jegyek, átlagok, órarend, házik és üzenetek egy gyors, szép iPhone-appban. Ingyen, reklám nélkül.</p>
+    <div class="actions">
+      <span class="store"><small>Hamarosan</small>az App Store-ban</span>
+      <a class="more" href="#bemutato">Nézd meg, mit tud</a>
     </div>
-    <div class="phones" aria-hidden="true">
-      <div class="phone a"><img src="/img/home-light.jpg" alt="" width="900" height="1955"></div>
-      <div class="phone b"><img src="/img/grades-light.jpg" alt="" width="900" height="1955"></div>
-    </div>
+    <p class="note">iOS 18-tól. Nem hivatalos alkalmazás.</p>
   </section>
 
-  <section aria-labelledby="bele">
-    <div class="wrap strip-head">
-      <h2 id="bele">Nézz bele</h2>
-      <p>Görgesd oldalra. Ugyanazok a képernyők, amiket a telefonodon látsz majd.</p>
-    </div>
-    <div class="strip" tabindex="0" aria-label="Képernyőképek">
-      <img src="/img/appstore-1.jpg" alt="Kezdőlap: a mostani óra visszaszámlálással és a nap eseményei" width="900" height="1955" loading="lazy">
-      <img src="/img/appstore-2.jpg" alt="Jegyek: átlaggrafikon és tantárgyak az osztályátlaggal" width="900" height="1955" loading="lazy">
-      <img src="/img/appstore-3.jpg" alt="Egy tantárgy részletei jegykalkulátorral és céltervezővel" width="900" height="1955" loading="lazy">
-      <img src="/img/appstore-4.jpg" alt="Órarend szünetekkel és a folyamatban lévő órával" width="900" height="1955" loading="lazy">
-      <img src="/img/appstore-5.jpg" alt="Év végi összefoglaló a bizonyítvány jegyeivel" width="900" height="1955" loading="lazy">
-      <img src="/img/appstore-6.jpg" alt="Ingyenes, reklám nélkül, nyílt forráskódú" width="900" height="1955" loading="lazy">
+  <!-- görgetésre forgó telefon: a .tour magassága adja a „hosszt”, a .stage ragad -->
+  <section class="tour" id="bemutato" aria-label="Bemutató">
+    <div class="stage">
+      <div class="night" aria-hidden="true"></div>
+      <div class="steps">
+        <ol class="titles" aria-hidden="true">
+          <li>Kezdőlap</li><li>Jegyek</li><li>Tantárgyak</li><li>Órarend</li><li>Év vége</li>
+        </ol>
+        <article class="step"><h2>Minden, ami ma számít</h2><p>A mostani órád visszaszámlálással, utána a következő. Alatta a házik, a dolgozatok és az új jegyeid, napokra bontva.</p></article>
+        <article class="step"><h2>Látod, merre tart az átlagod</h2><p>Grafikon az egész évről, osztályátlag és jegyeloszlás. Minden tantárgy mellett ott a saját és az osztály átlaga.</p></article>
+        <article class="step"><h2>Mennyi kell az ötöshöz?</h2><p>A jegykalkulátor megmutatja, mit tenne egy új jegy az átlagoddal. A céltervező kiszámolja, mi kell a kitűzött átlaghoz.</p></article>
+        <article class="step"><h2>Tudod, hol a következő órád</h2><p>Helyettesítés sárgával, elmaradt óra pirossal, szünetek percre pontosan. A következő órád a zárolt képernyőn is ott van.</p></article>
+        <article class="step"><h2>Év végén jön a meglepetés</h2><p>Bizonyítványosztás után egy kis összefoglaló az évedről: jegyek, kedvenc óra, és hogy milyen diák voltál.</p></article>
+      </div>
+
+      <div class="scene" aria-hidden="true">
+        <div class="phone3d">
+          <div class="layers"></div>
+          <div class="face front">
+            <img src="/img/screens/home-light.jpg" alt="" class="on">
+            <img src="/img/screens/grades-light.jpg" alt="" loading="lazy">
+            <img src="/img/screens/subject-light.jpg" alt="" loading="lazy">
+            <img src="/img/screens/timetable-dark.jpg" alt="" loading="lazy">
+            <img src="/img/screens/summary-light.jpg" alt="" loading="lazy">
+            <span class="island"></span>
+          </div>
+          <div class="face back"><img src="/img/logo.png" alt=""></div>
+        </div>
+        <div class="shadow"></div>
+      </div>
     </div>
   </section>
 
@@ -63,13 +80,13 @@
       <p>Minden, amit a Firkában szerettél, natív iPhone-appként. A Plus funkciók is, fizetés nélkül.</p>
     </div>
     <ol>
-      <li><span class="grade" style="background:var(--g5)">5</span><div><b>Jegyek és átlagok</b><span>Grafikon, osztályátlag, jegyeloszlás, jegykalkulátor és céltervező.</span></div></li>
-      <li><span class="grade" style="background:var(--g5)">5</span><div><b>Órarend és Live Activity</b><span>Helyettesítések, elmaradt órák, és a következő órád a zárolt képernyőn.</span></div></li>
-      <li><span class="grade" style="background:var(--g5)">5</span><div><b>Házik, dolgozatok, hiányzások</b><span>Egy helyen, napokra bontva a kezdőlapon.</span></div></li>
-      <li><span class="grade" style="background:var(--g5)">5</span><div><b>Üzenetek és faliújság</b><span>Olvasd és válaszolj a KRÉTA üzeneteire.</span></div></li>
-      <li><span class="grade" style="background:var(--g5)">5</span><div><b>Füzet</b><span>Saját jegyzetek és feladatok óránként rendezve.</span></div></li>
-      <li><span class="grade" style="background:var(--g5)">5</span><div><b>Év végi összefoglaló</b><span>Bizonyítványosztás után egy kis visszatekintés az évedre.</span></div></li>
-      <li><span class="grade" style="background:var(--g5)">5</span><div><b>A te színeid</b><span>Akcentus, jegyszínek, sötét mód, megosztható témák. Több fiók egyszerre.</span></div></li>
+      <li><span class="grade">5</span><div><b>Jegyek és átlagok</b><span>Grafikon, osztályátlag, jegyeloszlás, jegykalkulátor és céltervező.</span></div></li>
+      <li><span class="grade">5</span><div><b>Órarend és Live Activity</b><span>Helyettesítések, elmaradt órák, és a következő órád a zárolt képernyőn.</span></div></li>
+      <li><span class="grade">5</span><div><b>Házik, dolgozatok, hiányzások</b><span>Egy helyen, napokra bontva a kezdőlapon.</span></div></li>
+      <li><span class="grade">5</span><div><b>Üzenetek és faliújság</b><span>Olvasd és válaszolj a KRÉTA üzeneteire.</span></div></li>
+      <li><span class="grade">5</span><div><b>Füzet</b><span>Saját jegyzetek és feladatok óránként rendezve.</span></div></li>
+      <li><span class="grade">5</span><div><b>Év végi összefoglaló</b><span>Bizonyítványosztás után egy kis visszatekintés az évedre.</span></div></li>
+      <li><span class="grade">5</span><div><b>A te színeid</b><span>Akcentus, jegyszínek, sötét mód, megosztható témák. Több fiók egyszerre.</span></div></li>
     </ol>
   </section>
 
@@ -85,7 +102,7 @@
     <div>
       <h2>Ingyenes. Tényleg.</h2>
       <p>A Radír a Filc, a reFilc és a Firka nyílt forráskódú munkájára épül. Köszönjük minden fejlesztőjüknek.</p>
-      <span class="store"><span><small>Hamarosan</small>az App Store-ban</span></span>
+      <span class="store light"><small>Hamarosan</small>az App Store-ban</span>
     </div>
     <img class="eraser" src="/img/logo.png" alt="" width="512" height="512">
     <div class="legal">
@@ -95,5 +112,8 @@
     </div>
   </div>
 </footer>
+
+<script src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js" defer></script>
+<script src="/app.js" defer></script>
 </body>
 </html>
