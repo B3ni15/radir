@@ -81,7 +81,7 @@ struct AbsenceRow: View {
     @Environment(\.palette) private var palette
 
     var body: some View {
-        let lesson = [absence.lessonIndex.map { "\($0). óra" }, absence.lessonStart?.schoolTime].compactMap { $0 }.joined(separator: ", ")
+        let lesson = [absence.lessonIndex.map { String(localized: "\($0). óra") }, absence.lessonStart?.schoolTime].compactMap { $0 }.joined(separator: ", ")
         InfoRow(icon: CategoryIcon(systemImage: absence.kind == .late ? "clock.badge.exclamationmark" : "person.crop.circle.badge.xmark",
                                    color: absence.stateColor(palette)),
                 title: absence.kind == .late ? String(localized: "\(absence.subject.name): késés \(absence.delayMinutes) perc")
@@ -119,7 +119,7 @@ struct ExamRow: View {
     var body: some View {
         InfoRow(icon: CategoryIcon(systemImage: "pencil.and.list.clipboard", color: Color(palette.gradeColor(2)!)),
                 title: exam.topic.isEmpty ? exam.subject.name : "\(exam.subject.name): \(exam.topic)",
-                subtitle: [relativeDay(exam.date, capitalized: true), exam.lessonIndex.map { "\($0). óra" }, exam.mode.isEmpty ? nil : exam.mode]
+                subtitle: [relativeDay(exam.date, capitalized: true), exam.lessonIndex.map { String(localized: "\($0). óra") }, exam.mode.isEmpty ? nil : exam.mode]
                     .compactMap { $0 }.joined(separator: " · "))
     }
 }

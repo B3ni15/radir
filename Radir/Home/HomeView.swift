@@ -266,7 +266,7 @@ private struct ChangeRow: View {
     }
 
     private var detail: String {
-        let base = "\(lesson.index.map { "\($0). óra, " } ?? "")\(lesson.start.schoolTime)"
+        let base = "\(lesson.index.map { String(localized: "\($0). óra") + ", " } ?? "")\(lesson.start.schoolTime)"
         if let sub = lesson.substituteTeacher, !lesson.isCancelled { return "\(base) · \(sub)" }
         return base
     }

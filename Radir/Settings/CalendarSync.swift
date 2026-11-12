@@ -37,7 +37,7 @@ enum CalendarSync {
                 e.startDate = l.start
                 e.endDate = l.end
                 e.location = l.room.isEmpty ? nil : l.room
-                e.notes = [l.substituteTeacher.map { "Helyettes: \($0)" } ?? l.teacher, l.topic].filter { !$0.isEmpty }.joined(separator: "\n")
+                e.notes = [l.substituteTeacher.map { String(localized: "Helyettes: \($0)") } ?? l.teacher, l.topic].filter { !$0.isEmpty }.joined(separator: "\n")
                 try store.save(e, span: .thisEvent, commit: false)
             }
         }

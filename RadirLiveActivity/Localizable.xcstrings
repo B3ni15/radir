@@ -1,0 +1,54 @@
+{
+  "sourceLanguage" : "hu",
+  "strings" : {
+    "Ez az utolsó óra! Kitartást!" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Das ist die letzte Stunde! Durchhalten!"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "This is the last lesson! Hang in there!"
+          }
+        }
+      }
+    },
+    "Következő óra és terem:" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nächste Stunde und Raum:"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Next lesson and room:"
+          }
+        }
+      }
+    },
+    "Vége" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vorbei"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Over"
+          }
+        }
+      }
+    }
+  },
+  "version" : "1.3"
+}
