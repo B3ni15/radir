@@ -18,15 +18,18 @@ import Testing
             (200, try gradesJSON()),
             (200, #"[{"OktatasNevelesiFeladat":{"Uid":"1,Gimnazium"}}]"#),
             (200, #"[{"Uid":"x","OsztalyCsoportAtlag":3.75,"Tantargy":{"Uid":"matek","Nev":"Matematika"}}]"#),
+            (200, #"[{"Tantargy":{"Uid":"matek","Nev":"Matematika"}},{"Tantargy":{"Uid":"rajz","Nev":"Vizuális kultúra","Kategoria":{"Nev":"rajz"}}}]"#),
         ])
         let book = try await GradesService().fetch(session: session(t), instituteCode: "klik1", now: Date(timeIntervalSince1970: 5))
         #expect(book.grades.count == 5)
         #expect(book.classAverages == [ClassAverage(subjectID: "matek", average: 3.75)])
         #expect(book.fetchedAt == Date(timeIntervalSince1970: 5))
+        #expect(book.subjects.contains { $0.id == "rajz" && $0.name == "Vizuális kultúra" }, "jegy nélküli tantárgy is")
         #expect(t.requests.map { $0.url!.absoluteString } == [
             "https://klik1.e-kreta.hu/ellenorzo/V3/Sajat/Ertekelesek",
             "https://klik1.e-kreta.hu/ellenorzo/V3/Sajat/OsztalyCsoportok",
             "https://klik1.e-kreta.hu/ellenorzo/V3/Sajat/Ertekelesek/Atlagok/OsztalyAtlagok?oktatasiNevelesiFeladatUid=1,Gimnazium",
+            "https://klik1.e-kreta.hu/ellenorzo/V3/Sajat/Ertekelesek/Atlagok/TantargyiAtlagok?oktatasiNevelesiFeladatUid=1,Gimnazium",
         ])
     }
 

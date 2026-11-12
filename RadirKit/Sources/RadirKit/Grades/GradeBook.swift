@@ -15,6 +15,8 @@ public struct GradeBook: Codable, Sendable, Equatable {
     public var grades: [Grade]
     public var classAverages: [ClassAverage]
     public var fetchedAt: Date
+    /// A csoport összes tantárgya, akkor is, ha még nincs jegy belőle
+    public var allSubjects: [Subject]?
 
     public init(grades: [Grade], classAverages: [ClassAverage], fetchedAt: Date) {
         self.grades = grades
@@ -33,6 +35,7 @@ public struct GradeBook: Codable, Sendable, Equatable {
         for g in grades where !g.subject.id.isEmpty && !Self.behaviorTypes.contains(g.valueTypeID) {
             seen[g.subject.id] = seen[g.subject.id] ?? g.subject
         }
+        for s in allSubjects ?? [] where !s.id.isEmpty { seen[s.id] = seen[s.id] ?? s }
         let hu = Locale(identifier: "hu_HU")
         return seen.values.sorted { $0.name.compare($1.name, locale: hu) == .orderedAscending }
     }

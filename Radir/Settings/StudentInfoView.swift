@@ -18,6 +18,9 @@ struct StudentInfoView: View {
                     if let birth = s.birthDate { row("Születési dátum", birth.formatted(date: .long, time: .omitted), "gift") }
                     if let address = s.address { row("Lakcím", address, "house") }
                     row("Szerep", account.role == .parent ? String(localized: "Gondviselő") : String(localized: "Tanuló"), "graduationcap")
+                    if s.gradeDelayHours > 0 {
+                        row("Jegyek késleltetése", String(localized: "\(s.gradeDelayHours) óra"), "clock.arrow.circlepath")
+                    }
                 }
                 if !s.parents.isEmpty {
                     PanelGroup(title: "Gondviselők") {

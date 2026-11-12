@@ -7,6 +7,7 @@ struct TimetableView: View {
     @State private var selectedDay = Calendar.school.startOfDay(for: .now)
     @State private var detail: Lesson?
     @State private var direction: Edge = .trailing
+    @State private var showGrid = false
 
     var body: some View {
         let model = app.timetable
@@ -31,6 +32,12 @@ struct TimetableView: View {
             await model.loadAround(app, week: model.week)
         }
         .sheet(item: $detail) { LessonDetailSheet(lesson: $0) }
+        .fullScreenCover(isPresented: $showGrid) { WeekGridView(week: model.week, days: model.days(for: model.week)) }
+        .toolbar {
+            ToolbarItem(placement: .topBarLeading) {
+                Button("Teljes hét", systemImage: "square.grid.3x3") { showGrid = true }
+            }
+        }
         // a kezdőlapról érkező óra: a hetére és napjára ugrik, és megnyitja
         .onChange(of: app.openLesson, initial: true) { _, lesson in
             guard let lesson else { return }

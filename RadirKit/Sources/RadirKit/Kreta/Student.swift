@@ -9,6 +9,8 @@ public struct Student: Codable, Sendable, Equatable {
     public let birthDate: Date?
     public let parents: [String]
     public let address: String?
+    /// Hány órával később jelennek meg a jegyek (iskolai beállítás)
+    public var gradeDelayHours: Int = 0
 
     public init(uid: String, name: String, instituteCode: String, schoolName: String, birthDate: Date?, parents: [String], address: String?) {
         self.uid = uid
@@ -21,7 +23,12 @@ public struct Student: Codable, Sendable, Equatable {
     }
 
     private enum KretaKeys: String, CodingKey {
-        case Uid, Nev, SzuletesiNev, IntezmenyAzonosito, IntezmenyNev, SzuletesiDatum, AnyjaNeve, Gondviselok, Cimek
+        case Uid, Nev, SzuletesiNev, IntezmenyAzonosito, IntezmenyNev, SzuletesiDatum, AnyjaNeve, Gondviselok, Cimek, Intezmeny
+    }
+
+    private struct Institute: Decodable {
+        struct Settings: Decodable { let ErtekelesekMegjelenitesenekKesleltetesenekMerteke: Int? }
+        let TestreszabasBeallitasok: Settings?
     }
 
     private struct Parent: Decodable { let Nev: String? }
@@ -31,6 +38,7 @@ public struct Student: Codable, Sendable, Equatable {
         if let own = try? OwnFormat(from: decoder) {
             self.init(uid: own.uid, name: own.name, instituteCode: own.instituteCode, schoolName: own.schoolName,
                       birthDate: own.birthDate, parents: own.parents, address: own.address)
+            gradeDelayHours = own.gradeDelayHours ?? 0
             return
         }
         let c = try decoder.container(keyedBy: KretaKeys.self)
@@ -48,14 +56,16 @@ public struct Student: Codable, Sendable, Equatable {
             birthDate: birth,
             parents: parents,
             address: try c.decodeIfPresent([String].self, forKey: .Cimek)?.first)
+        gradeDelayHours = (try? c.decodeIfPresent(Institute.self, forKey: .Intezmeny))??.TestreszabasBeallitasok?.ErtekelesekMegjelenitesenekKesleltetesenekMerteke ?? 0
     }
 
-    private enum CodingKeys: String, CodingKey { case uid, name, instituteCode, schoolName, birthDate, parents, address }
+    private enum CodingKeys: String, CodingKey { case uid, name, instituteCode, schoolName, birthDate, parents, address, gradeDelayHours }
 
     private struct OwnFormat: Decodable {
         let uid, name, instituteCode, schoolName: String
         let birthDate: Date?
         let parents: [String]
         let address: String?
+        let gradeDelayHours: Int?
     }
 }
