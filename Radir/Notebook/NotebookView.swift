@@ -8,6 +8,7 @@ struct NotebookView: View {
     @State private var homeworkDetail: Homework?
     @State private var examDetail: Exam?
     @State private var noteDetail: SchoolNote?
+    @State private var wallDetail: WallItem?
     @State private var editing: Notebook.Note?
     @State private var newTodo = ""
     @State private var showDoneHomework = false
@@ -111,6 +112,14 @@ struct NotebookView: View {
                     .padding(.vertical, 12)
                 }
 
+                if let wall = app.school.wall?.filter({ $0.isValid(at: .now) }), !wall.isEmpty {
+                    PanelGroup(title: "Faliújság") {
+                        ForEach(wall) { w in
+                            Button { wallDetail = w } label: { WallRow(item: w) }.buttonStyle(.plain)
+                        }
+                    }
+                }
+
                 if let notes = app.school.notes, !notes.isEmpty {
                     PanelGroup(title: "Beírások") {
                         ForEach(notes.sorted { $0.date > $1.date }) { n in
@@ -130,6 +139,7 @@ struct NotebookView: View {
         .sheet(item: $homeworkDetail) { HomeworkDetailSheet(homework: $0) }
         .sheet(item: $examDetail) { ExamDetailSheet(exam: $0) }
         .sheet(item: $noteDetail) { SchoolNoteDetailSheet(note: $0) }
+        .sheet(item: $wallDetail) { WallDetailSheet(item: $0) }
         .sheet(item: $editing) { NoteEditor(note: $0) }
     }
 

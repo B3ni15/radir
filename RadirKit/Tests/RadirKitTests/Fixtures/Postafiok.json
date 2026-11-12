@@ -1,0 +1,6 @@
+[
+  { "azonosito": 111, "isElolvasva": false, "hasCsatolmany": true, "uzenetAzonosito": 9001, "uzenetFeladoNev": " Nagy Katalin ",
+    "uzenetFeladoTitulus": "tanár", "uzenetKuldesDatum": "2026-11-11T09:30:00", "uzenetTargy": "Holnapi dolgozat" },
+  { "azonosito": 112, "isElolvasva": true, "hasCsatolmany": false, "uzenetAzonosito": 9002, "uzenetFeladoNev": "Igazgatóság",
+    "uzenetKuldesDatum": "2026-11-05T14:00:00", "uzenetTargy": "Szülői értekezlet" }
+]

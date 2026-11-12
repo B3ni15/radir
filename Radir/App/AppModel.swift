@@ -26,6 +26,7 @@ final class AppModel {
                 timetable = TimetableModel()
                 school = SchoolModel()
                 notebook = NotebookModel()
+                messages = MessagesModel()
             }
         }
     }
@@ -34,6 +35,7 @@ final class AppModel {
     private(set) var timetable = TimetableModel()
     private(set) var school = SchoolModel()
     private(set) var notebook = NotebookModel()
+    private(set) var messages = MessagesModel()
     let liveActivity = LiveActivityController()
     let cache = AccountCache(root: URL.applicationSupportDirectory.appending(path: "cache"))
 

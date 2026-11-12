@@ -7,6 +7,8 @@ public enum FeedEntry: Hashable, Identifiable, Sendable {
     case exam(Exam)
     case absence(Absence)
     case note(SchoolNote)
+    case message(KretaMessage)
+    case wall(WallItem)
 
     public var id: String {
         switch self {
@@ -16,6 +18,8 @@ public enum FeedEntry: Hashable, Identifiable, Sendable {
         case .exam(let e): "e-\(e.id)"
         case .absence(let a): "a-\(a.id)"
         case .note(let n): "n-\(n.id)"
+        case .message(let m): "m-\(m.id)"
+        case .wall(let w): "w-\(w.id)"
         }
     }
 
@@ -28,6 +32,8 @@ public enum FeedEntry: Hashable, Identifiable, Sendable {
         case .exam(let e): e.announced ?? e.date
         case .absence(let a): a.lessonStart ?? a.date
         case .note(let n): n.recorded ?? n.date
+        case .message(let m): m.date
+        case .wall(let w): w.start
         }
     }
 
@@ -43,6 +49,8 @@ public struct FeedSources: Sendable {
     public var exams: [Exam] = []
     public var absences: [Absence] = []
     public var notes: [SchoolNote] = []
+    public var messages: [KretaMessage] = []
+    public var wall: [WallItem] = []
     public init() {}
 }
 
@@ -67,6 +75,7 @@ public enum HomeFeed {
     public static func days(_ s: FeedSources) -> [FeedDay] {
         let entries = s.grades.map(FeedEntry.grade) + s.changes.map(FeedEntry.change) + s.homework.map(FeedEntry.homework)
             + s.exams.map(FeedEntry.exam) + s.absences.map(FeedEntry.absence) + s.notes.map(FeedEntry.note)
+            + s.messages.map(FeedEntry.message) + s.wall.map(FeedEntry.wall)
         let byDay = Dictionary(grouping: entries) { Calendar.school.startOfDay(for: $0.moment) }
         return byDay.keys.sorted(by: >).map { day in
             FeedDay(date: day, entries: byDay[day]!.sorted { a, b in

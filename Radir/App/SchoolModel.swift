@@ -9,13 +9,14 @@ final class SchoolModel {
     private(set) var homework: [Homework]?
     private(set) var exams: [Exam]?
     private(set) var notes: [SchoolNote]?
+    private(set) var wall: [WallItem]?
     private(set) var isLoading = false
     private var loadedCache = false
 
     func load(_ app: AppModel) async {
         guard let account = app.current else { return }
         if account.isDemo {
-            absences = Demo.absences(); homework = Demo.homework(); exams = Demo.exams(); notes = Demo.schoolNotes()
+            absences = Demo.absences(); homework = Demo.homework(); exams = Demo.exams(); notes = Demo.schoolNotes(); wall = Demo.wall()
             return
         }
         if !loadedCache {
@@ -24,6 +25,7 @@ final class SchoolModel {
             homework = app.cache.load([Homework].self, as: "homework", for: account.id)
             exams = app.cache.load([Exam].self, as: "exams", for: account.id)
             notes = app.cache.load([SchoolNote].self, as: "notes", for: account.id)
+            wall = app.cache.load([WallItem].self, as: "wall", for: account.id)
         }
         guard let session = app.session(for: account), !isLoading else { return }
         isLoading = true
@@ -36,7 +38,9 @@ final class SchoolModel {
         async let h = Task { try await service.homework(session: session, instituteCode: institute, from: from) }.result
         async let e = Task { try await service.exams(session: session, instituteCode: institute) }.result
         async let n = Task { try await service.notes(session: session, instituteCode: institute) }.result
+        async let w = Task { try await service.wall(session: session, instituteCode: institute) }.result
         let results = await (a, h, e, n)
+        if case .success(let v) = await w { wall = v; try? cache.save(v, as: "wall", for: id) }
         if case .success(let v) = results.0 { absences = v; try? cache.save(v, as: "absences", for: id) }
         if case .success(let v) = results.1 { homework = v; try? cache.save(v, as: "homework", for: id) }
         if case .success(let v) = results.2 { exams = v; try? cache.save(v, as: "exams", for: id) }

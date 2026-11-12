@@ -1,0 +1,5 @@
+{ "azonosito": 111, "isElolvasva": true, "isToroltElem": false, "tipus": { "kod": "BEERKEZETT" },
+  "uzenet": { "azonosito": 9001, "kuldesDatum": "2026-11-11T09:30:00", "feladoNev": " Nagy Katalin ", "targy": "Holnapi dolgozat",
+              "szoveg": "<p>Kedves Diákok!</p><p>Holnap&nbsp;dolgozat.</p>\r\n",
+              "cimzettLista": [ { "azonosito": 1, "kretaAzonosito": 55, "nev": "10.A", "tipus": { "kod": "OSZTALY", "nev": "Osztály" } } ],
+              "csatolmanyok": [ { "azonosito": 777, "fajlNev": "feladatok.pdf", "utvonal": "x" } ] } }

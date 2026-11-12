@@ -7,7 +7,9 @@ func relativeDay(_ date: Date, capitalized: Bool = false) -> String {
     let s = cal.isDateInToday(date) ? String(localized: "ma")
         : cal.isDateInTomorrow(date) ? String(localized: "holnap")
         : cal.isDateInYesterday(date) ? String(localized: "tegnap")
-        : date.formatted(Date.FormatStyle(timeZone: cal.timeZone).weekday(.wide).month(.abbreviated).day())
+        : cal.component(.year, from: date) == cal.component(.year, from: .now)
+            ? date.formatted(Date.FormatStyle(timeZone: cal.timeZone).weekday(.wide).month(.abbreviated).day())
+            : date.formatted(Date.FormatStyle(timeZone: cal.timeZone).year().month(.abbreviated).day())
     return capitalized ? s.prefix(1).uppercased() + s.dropFirst() : s
 }
 
@@ -248,5 +250,37 @@ struct SchoolNoteDetailSheet: View {
                     title: note.title, subtitle: note.kind,
                     rows: [("Tanár", note.teacher, "person"), ("Dátum", relativeDay(note.date, capitalized: true), "calendar")],
                     text: note.content)
+    }
+}
+
+struct WallRow: View {
+    let item: WallItem
+    @Environment(\.palette) private var palette
+
+    var body: some View {
+        InfoRow(icon: CategoryIcon(systemImage: "pin.fill", color: Color(palette.warning)),
+                title: item.title, subtitle: item.plainText.replacingOccurrences(of: "\n", with: " "))
+    }
+}
+
+struct WallDetailSheet: View {
+    let item: WallItem
+    @Environment(\.palette) private var palette
+
+    var body: some View {
+        DetailSheet(icon: CategoryIcon(systemImage: "pin.fill", color: Color(palette.warning)),
+                    title: item.title, subtitle: String(localized: "Faliújság"),
+                    rows: [("Érvényes", "\(item.start.formatted(date: .abbreviated, time: .omitted)) – \(item.end.formatted(date: .abbreviated, time: .omitted))", "calendar")],
+                    text: item.plainText)
+    }
+}
+
+struct MessageFeedRow: View {
+    let message: KretaMessage
+    @Environment(\.palette) private var palette
+
+    var body: some View {
+        InfoRow(icon: CategoryIcon(systemImage: message.isRead ? "envelope.open.fill" : "envelope.badge.fill", color: Color(palette.accent)),
+                title: message.subject, subtitle: message.sender)
     }
 }

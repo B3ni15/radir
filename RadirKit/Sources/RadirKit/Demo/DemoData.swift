@@ -159,3 +159,42 @@ extension Demo {
         }
     }
 }
+
+extension Demo {
+    public static func messages(_ box: MailBox, now: Date = .now) -> [KretaMessage] {
+        var rng = seed(for: now, salt: 7)
+        let inbox = [("Holnapi dolgozat", "Kedves Diákok!\nHolnap az első órán dolgozatot írunk a függvényekből."),
+                     ("Szülői értekezlet", "Tisztelt Szülők!\nA szülői értekezlet csütörtökön 17:00-kor lesz a 105-ös teremben."),
+                     ("Kirándulás", "A kiránduláshoz szükséges nyilatkozatot péntekig kérem leadni."),
+                     ("Versenyfelhívás", "Jelentkezni lehet a tanulmányi versenyre az osztályfőnöknél.")]
+        switch box {
+        case .inbox:
+            return inbox.enumerated().map { i, m in
+                let s = subjects.randomElement(using: &rng)!
+                return KretaMessage(id: 1000 + i, box: .inbox, isRead: i > 0, date: now.addingTimeInterval(-Double(i * 2 + 1) * 86_400 + 3600),
+                                    sender: i == 1 ? "Igazgatóság" : s.teacher, subject: m.0, text: m.1,
+                                    recipients: ["10.A"], attachments: i == 2 ? [MessageAttachment(id: 1, name: "nyilatkozat.pdf")] : [])
+            }
+        case .sent:
+            return [KretaMessage(id: 2000, box: .sent, isRead: true, date: now.addingTimeInterval(-3 * 86_400), sender: "Demó Diák",
+                                 subject: "Hiányzás", text: "Tisztelt Tanárnő!\nTegnap betegség miatt hiányoztam.",
+                                 recipients: [subjects[0].teacher], attachments: [])]
+        case .trash:
+            return []
+        }
+    }
+
+    public static let recipients: [MessageRecipient] = {
+        let teacher = MessageRecipient.Kind(id: 1, code: "TANAR", description: "Tanár", name: "Tanár", shortName: "T")
+        let names = Set(subjects.map(\.teacher)).sorted()
+        return names.enumerated().map { MessageRecipient(kretaID: 100 + $0.offset, name: $0.element, type: teacher) }
+            + [MessageRecipient(kretaID: 1, name: "Igazgatóság", type: .init(id: 2, code: "IGAZGATOSAG", description: "Igazgatóság", name: "Igazgatóság", shortName: "I"))]
+    }()
+
+    public static func wall(now: Date = .now) -> [WallItem] {
+        [WallItem(id: "demo-wall-1", title: "Őszi szünet", content: "Az őszi szünet előtti utolsó tanítási nap péntek.",
+                  start: now.addingTimeInterval(-5 * 86_400), end: now.addingTimeInterval(10 * 86_400)),
+         WallItem(id: "demo-wall-2", title: "Fotózás", content: "Jövő kedden osztályfotózás lesz a díszteremben.",
+                  start: now.addingTimeInterval(-1 * 86_400), end: now.addingTimeInterval(7 * 86_400))]
+    }
+}

@@ -51,6 +51,12 @@ struct SettingsView: View {
                     }
 
                     PanelGroup(title: "Egyéb") {
+                        if let current = model.current {
+                            NavigationLink { StudentInfoView(account: current) } label: {
+                                PanelRow(title: "Személyes adatok", systemImage: "person.text.rectangle") { Chevron() }
+                            }
+                            .buttonStyle(.plain)
+                        }
                         NavigationLink { AboutView() } label: {
                             PanelRow(title: "Névjegy", systemImage: "info") { Chevron() }
                         }

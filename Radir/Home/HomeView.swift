@@ -10,7 +10,7 @@ struct HomeView: View {
     @State private var gradeDetail: Grade?
 
     enum Filter: Hashable, CaseIterable {
-        case all, grades, homework, exams, absences, notes, changes
+        case all, grades, homework, exams, absences, notes, messages, wall, changes
         var title: LocalizedStringKey {
             switch self {
             case .all: "Összes"
@@ -19,6 +19,8 @@ struct HomeView: View {
             case .exams: "Számonkérések"
             case .absences: "Hiányzások"
             case .notes: "Beírások"
+            case .messages: "Üzenetek"
+            case .wall: "Faliújság"
             case .changes: "Változások"
             }
         }
@@ -28,6 +30,9 @@ struct HomeView: View {
     @State private var examDetail: Exam?
     @State private var absenceDetail: Absence?
     @State private var noteDetail: SchoolNote?
+    @State private var wallDetail: WallItem?
+    @State private var messageDetail: KretaMessage?
+    @State private var showMessages = false
 
     var body: some View {
         let now = Date.now
@@ -61,6 +66,10 @@ struct HomeView: View {
                                 Button { absenceDetail = a } label: { AbsenceRow(absence: a) }.buttonStyle(.plain)
                             case .note(let n):
                                 Button { noteDetail = n } label: { SchoolNoteRow(note: n) }.buttonStyle(.plain)
+                            case .message(let m):
+                                Button { messageDetail = m } label: { MessageFeedRow(message: m) }.buttonStyle(.plain)
+                            case .wall(let w):
+                                Button { wallDetail = w } label: { WallRow(item: w) }.buttonStyle(.plain)
                             }
                         }
                     }
@@ -83,6 +92,9 @@ struct HomeView: View {
         .sheet(item: $examDetail) { ExamDetailSheet(exam: $0) }
         .sheet(item: $absenceDetail) { AbsenceDetailSheet(absence: $0) }
         .sheet(item: $noteDetail) { SchoolNoteDetailSheet(note: $0) }
+        .sheet(item: $wallDetail) { WallDetailSheet(item: $0) }
+        .sheet(item: $messageDetail) { m in NavigationStack { MessageDetailView(message: m) } }
+        .sheet(isPresented: $showMessages) { NavigationStack { MessagesView(showsClose: true) } }
     }
 
     private func load() async {
@@ -90,7 +102,8 @@ struct HomeView: View {
         async let t: Void = app.timetable.loadAround(app, week: SchoolWeek(containing: .now))
         async let g: Void = app.grades.load(app)
         async let s: Void = app.school.load(app)
-        _ = await (t, g, s)
+        async let m: Void = app.messages.load(app, .inbox)
+        _ = await (t, g, s, m)
     }
 
     /// Ami a hírfolyamba kerül: az utóbbi 30 nap, a házik és a számonkérések 14 napja, és a hátralévő változások.
@@ -102,6 +115,8 @@ struct HomeView: View {
         f.exams = HomeFeed.recent(app.school.exams ?? [], now: now, days: 14) { $0.announced ?? .distantPast }
         f.absences = HomeFeed.recent(app.school.absences ?? [], now: now) { $0.lessonStart ?? $0.date }
         f.notes = HomeFeed.recent(app.school.notes ?? [], now: now) { $0.recorded ?? $0.date }
+        f.messages = HomeFeed.recent(app.messages.boxes[.inbox] ?? [], now: now, days: 14) { $0.date }
+        f.wall = (app.school.wall ?? []).filter { $0.isValid(at: now) }
         return f
     }
 
@@ -113,6 +128,8 @@ struct HomeView: View {
         case .exams: f.exams
         case .absences: f.absences
         case .notes: f.notes
+        case .messages: f.messages
+        case .wall: f.wall
         case .changes: f.changes
         }
     }
@@ -126,6 +143,8 @@ struct HomeView: View {
         case .exams: o.exams = f.exams
         case .absences: o.absences = f.absences
         case .notes: o.notes = f.notes
+        case .messages: o.messages = f.messages
+        case .wall: o.wall = f.wall
         case .changes: o.changes = f.changes
         }
         return o
@@ -163,6 +182,25 @@ struct HomeView: View {
                 .lineLimit(2)
                 .minimumScaleFactor(0.8)
             Spacer()
+            Button { showMessages = true } label: {
+                Image(systemName: "envelope.fill")
+                    .font(.system(size: 18, weight: .semibold))
+                    .foregroundStyle(Color(palette.accent))
+                    .frame(width: 46, height: 46)
+                    .background(Circle().fill(Color(palette.surface)))
+                    .overlay(alignment: .topTrailing) {
+                        let unread = app.messages.unreadCount
+                        if unread > 0 {
+                            Text("\(unread)").font(.caption2.weight(.bold)).foregroundStyle(.white)
+                                .padding(.horizontal, 5).frame(minWidth: 18, minHeight: 18)
+                                .background(Capsule().fill(Color(palette.warning)))
+                                .offset(x: 4, y: -4)
+                        }
+                    }
+            }
+            .buttonStyle(.plain)
+            .accessibilityLabel("Üzenetek")
+            .accessibilityValue(app.messages.unreadCount > 0 ? Text("\(app.messages.unreadCount) olvasatlan") : Text(""))
             Button { showSettings = true } label: {
                 AvatarView(name: app.current?.student.name ?? "", size: 46)
             }

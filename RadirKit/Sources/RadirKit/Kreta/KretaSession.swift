@@ -24,9 +24,24 @@ public actor KretaSession {
     }
 
     public func data(for url: URL) async throws -> Data {
+        try await send(URLRequest(url: url))
+    }
+
+    /// JSON POST (pl. üzenetküldés).
+    public func post(json body: Data, to url: URL) async throws -> Data {
+        var req = URLRequest(url: url)
+        req.httpMethod = "POST"
+        req.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        req.setValue("hu-HU", forHTTPHeaderField: "X-Uzenet-Lokalizacio")
+        req.httpBody = body
+        return try await send(req)
+    }
+
+    /// Hitelesítve elküldi a kérést; lejárt tokennél és 401-nél frissít.
+    public func send(_ request: URLRequest) async throws -> Data {
         var token = try await validAccessToken()
         for attempt in 0..<2 {
-            var req = URLRequest(url: url)
+            var req = request
             req.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
             req.setValue(userAgent, forHTTPHeaderField: "User-Agent")
             let (data, res) = try await transport.send(req)
