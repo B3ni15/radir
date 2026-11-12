@@ -24,7 +24,8 @@ private struct ThemeModifier: ViewModifier {
         content
             .environment(\.palette, palette)
             .environment(\.colorScheme, effective)
-            .foregroundStyle(Color(palette.text))
+            // csak saját színeknél: különben a rendszer alapszíne (és a gombok akcentusa) marad
+            .foregroundStyle(prefs.customEnabled ? AnyShapeStyle(Color(palette.text)) : AnyShapeStyle(.primary))
             .environment(\.roundingThreshold, prefs.roundingThreshold)
             .tint(Color(palette.accent))
     }

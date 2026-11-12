@@ -60,12 +60,21 @@ struct SettingsView: View {
                         NavigationLink { RenameSettingsView() } label: {
                             PanelRow(title: "Átnevezés", subtitle: "Tantárgyak és tanárok saját neve", systemImage: "character.cursor.ibeam") { Chevron() }
                         }.buttonStyle(.plain)
+                        NavigationLink { ThemesView() } label: {
+                            PanelRow(title: "Témák", subtitle: "Galéria, megosztás kóddal", systemImage: "swatchpalette") { Chevron() }
+                        }.buttonStyle(.plain)
                         NavigationLink { ToolsSettingsView() } label: {
                             PanelRow(title: "Naptár és export", systemImage: "calendar.badge.plus") { Chevron() }
                         }.buttonStyle(.plain)
                     }
 
                     PanelGroup(title: "Egyéb") {
+                        NavigationLink { NewsView() } label: {
+                            PanelRow(title: "Hírek", systemImage: "newspaper") { Chevron() }
+                        }.buttonStyle(.plain)
+                        NavigationLink { SummaryView() } label: {
+                            PanelRow(title: "Év végi összefoglaló", systemImage: "sparkles.rectangle.stack") { Chevron() }
+                        }.buttonStyle(.plain)
                         if let current = model.current {
                             NavigationLink { StudentInfoView(account: current) } label: {
                                 PanelRow(title: "Személyes adatok", systemImage: "person.text.rectangle") { Chevron() }

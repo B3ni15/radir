@@ -16,6 +16,7 @@ final class AppModel {
     var openLesson: Lesson?
 
     let prefs = Preferences()
+    let server = ServerModel()
 
     /// A kiválasztott fiók átnevezései (tantárgyak, tanárok).
     var renaming: Renaming { notebook.notebook.renaming }
@@ -121,7 +122,7 @@ final class AppModel {
     private func makeSession(id: String, instituteCode: String, tokens: TokenSet) -> KretaSession {
         let tokenStore = store.tokens
         return KretaSession(instituteCode: instituteCode, tokens: tokens, auth: auth, transport: transport,
-                            userAgent: UserAgent.api(appVersion: Self.appVersion),
+                            userAgent: UserAgent.api(template: ServerModel.userAgentTemplate, appVersion: Self.appVersion),
                             onTokensChanged: { try? tokenStore.save($0, for: id) })
     }
 

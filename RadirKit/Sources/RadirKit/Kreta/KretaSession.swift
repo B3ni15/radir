@@ -60,6 +60,8 @@ public actor KretaSession {
         catch is DecodingError { throw KretaError.invalidResponse }
     }
 
+    func validAccessTokenForServer() async throws -> String { try await validAccessToken() }
+
     private func validAccessToken() async throws -> String {
         if let refreshing { return try await refreshing.value.accessToken }
         if tokens.isExpired(now: now()) { return try await refresh(ifStillUsing: tokens.accessToken).accessToken }

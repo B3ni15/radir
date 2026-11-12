@@ -33,6 +33,7 @@ struct HomeView: View {
     @State private var wallDetail: WallItem?
     @State private var messageDetail: KretaMessage?
     @State private var showMessages = false
+    @State private var showSummary = false
 
     var body: some View {
         let now = Date.now
@@ -42,6 +43,16 @@ struct HomeView: View {
         ScrollView {
             VStack(alignment: .leading, spacing: 22) {
                 header
+                if let news = app.server.unseenEmergency {
+                    NewsCard(item: news) { withAnimation { app.server.markSeen(news) } }
+                }
+                if (6...8).contains(Calendar.school.component(.month, from: now)) {
+                    Button { showSummary = true } label: {
+                        PanelRow("Itt az év végi összefoglalód!", subtitle: "Nézd meg, milyen éved volt.", systemImage: "sparkles.rectangle.stack") { Chevron() }
+                            .radirPanel()
+                    }
+                    .buttonStyle(.plain)
+                }
                 VStack(alignment: .leading, spacing: 8) {
                     SectionLabel("Ma", trailing: Text(now, format: .dateTime.weekday(.wide).month(.abbreviated).day()))
                     TodayCard()
@@ -95,6 +106,7 @@ struct HomeView: View {
         .sheet(item: $wallDetail) { WallDetailSheet(item: $0) }
         .sheet(item: $messageDetail) { m in NavigationStack { MessageDetailView(message: m) } }
         .sheet(isPresented: $showMessages) { NavigationStack { MessagesView(showsClose: true) } }
+        .sheet(isPresented: $showSummary) { NavigationStack { SummaryView() } }
     }
 
     private func load() async {
@@ -103,7 +115,8 @@ struct HomeView: View {
         async let g: Void = app.grades.load(app)
         async let s: Void = app.school.load(app)
         async let m: Void = app.messages.load(app, .inbox)
-        _ = await (t, g, s, m)
+        async let n: Void = app.server.refresh()
+        _ = await (t, g, s, m, n)
     }
 
     /// Ami a hírfolyamba kerül: az utóbbi 30 nap, a házik és a számonkérések 14 napja, és a hátralévő változások.
