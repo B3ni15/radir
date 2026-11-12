@@ -1,6 +1,38 @@
 {
   "sourceLanguage" : "hu",
   "strings" : {
+    "Betűtípus: Montserrat" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Schriftart: Montserrat"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Font: Montserrat"
+          }
+        }
+      }
+    },
+    "© The Montserrat Project Authors, SIL Open Font License 1.1" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "© The Montserrat Project Authors, SIL Open Font License 1.1"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "© The Montserrat Project Authors, SIL Open Font License 1.1"
+          }
+        }
+      }
+    },
     "" : {
 
     },

@@ -25,6 +25,9 @@ struct AboutView: View {
                              subtitle: "A Radír a Filc, a reFilc és a Firka nyílt forrású munkájára épül. Köszönjük minden fejlesztőjüknek.",
                              systemImage: "heart.fill", tint: Color(palette.warning))
                     PanelRow(title: "Licenc", systemImage: "doc.text") { Text("AGPL-3.0").foregroundStyle(Color(palette.secondaryText)) }
+                    PanelRow("Betűtípus: Montserrat",
+                             subtitle: "© The Montserrat Project Authors, SIL Open Font License 1.1",
+                             systemImage: "textformat")
                 }
 
                 PanelGroup(title: "Adatvédelem") {
