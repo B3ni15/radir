@@ -1,0 +1,34 @@
+[
+  {
+    "Uid": "g1", "KeszitesDatuma": "2026-09-15T00:00:00Z", "RogzitesDatuma": "2026-09-15T10:12:00Z",
+    "SzamErtek": 5, "SzovegesErtek": "Jeles(5)", "SzovegesErtekelesRovidNev": "5", "SulySzazalekErteke": 100,
+    "ErtekeloTanarNeve": " Nagy Katalin ", "Tema": "Függvények",
+    "Tipus": { "Uid": "1,evkozi_jegy_ertekeles", "Nev": "evkozi_jegy_ertekeles" },
+    "Tantargy": { "Uid": "matek", "Nev": "Matematika ", "Kategoria": { "Uid": "1,matematika", "Nev": "matematika" } },
+    "ErtekFajta": { "Uid": "1,Osztalyzat", "Nev": "Osztalyzat" },
+    "Mod": { "Uid": "1,Irasbeli", "Nev": "Irasbeli", "Leiras": "Írásbeli témazáró dolgozat" }
+  },
+  {
+    "Uid": "g2", "KeszitesDatuma": "2026-10-01T00:00:00Z", "RogzitesDatuma": "2026-10-01T09:00:00.123Z",
+    "SzamErtek": 3, "SzovegesErtek": "Közepes(3)", "SzovegesErtekelesRovidNev": "3", "SulySzazalekErteke": 200,
+    "ErtekeloTanarNeve": "Nagy Katalin", "Tema": "Egyenletek",
+    "Tipus": { "Uid": "1,evkozi_jegy_ertekeles", "Nev": "evkozi_jegy_ertekeles" },
+    "Tantargy": { "Uid": "matek", "Nev": "Matematika" },
+    "ErtekFajta": { "Uid": "1,Osztalyzat", "Nev": "Osztalyzat" },
+    "Mod": { "Uid": "2,Szobeli", "Nev": "Szobeli", "Leiras": "Szóbeli felelet" }
+  },
+  {
+    "Uid": "g3", "KeszitesDatuma": "2026-10-02T00:00:00Z", "SzamErtek": 0, "SzovegesErtek": "Példás",
+    "SzovegesErtekelesRovidNev": "P", "SulySzazalekErteke": 100, "ErtekeloTanarNeve": "Kovács Mária",
+    "Tipus": { "Nev": "evkozi_jegy_ertekeles" },
+    "Tantargy": { "Uid": "magatartas", "Nev": "Magatartás" },
+    "ErtekFajta": { "Uid": "4,MagatartasErtek", "Nev": "MagatartasErtek" }
+  },
+  {
+    "Uid": "g4", "KeszitesDatuma": "2027-01-20T00:00:00Z", "SzamErtek": 4, "SzovegesErtek": "Jó(4)",
+    "SzovegesErtekelesRovidNev": "4", "SulySzazalekErteke": 100,
+    "Tipus": { "Nev": "felevi_jegy_ertekeles" },
+    "Tantargy": { "Uid": "matek", "Nev": "Matematika" }
+  },
+  { "Uid": "g5", "SzamErtek": 2 }
+]

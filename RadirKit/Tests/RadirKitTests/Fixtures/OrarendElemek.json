@@ -1,0 +1,34 @@
+[
+  {
+    "Uid": "l1", "Datum": "2026-11-09T23:00:00Z", "KezdetIdopont": "2026-11-10T07:00:00Z", "VegIdopont": "2026-11-10T07:45:00Z",
+    "Oraszam": 1, "OraEvesSorszama": 42, "Nev": "Matematika", "Tema": "Másodfokú egyenletek",
+    "Tantargy": { "Uid": "matek", "Nev": "Matematika", "Kategoria": { "Nev": "matematika" } },
+    "TanarNeve": "Nagy Katalin", "TeremNeve": "201_terem", "OsztalyCsoport": { "Nev": "10.A" },
+    "Allapot": { "Nev": "Naplozott" }, "TanuloJelenlet": { "Nev": "Jelenlet" },
+    "BejelentettSzamonkeresUid": "exam1", "IsDigitalisOra": false
+  },
+  {
+    "Uid": "l3", "Datum": "2026-11-09T23:00:00Z", "KezdetIdopont": "2026-11-10T08:50:00Z", "VegIdopont": "2026-11-10T09:35:00Z",
+    "Oraszam": 3, "Nev": "Fizika", "Tantargy": { "Uid": "fizika", "Nev": "Fizika" },
+    "TanarNeve": "Tóth László", "HelyettesTanarNeve": " Szabó Péter ", "TeremNeve": "Fizika előadó",
+    "Allapot": { "Nev": "Tervezett" }
+  },
+  {
+    "Uid": "l4", "Datum": "2026-11-09T23:00:00Z", "KezdetIdopont": "2026-11-10T09:50:00Z", "VegIdopont": "2026-11-10T10:35:00Z",
+    "Oraszam": 4, "Nev": "Kémia", "Tantargy": { "Uid": "kemia", "Nev": "Kémia" },
+    "TanarNeve": "Tóth László", "Allapot": { "Nev": "Elmaradt" }, "TanuloJelenlet": { "Nev": "Hianyzas" }
+  },
+  {
+    "Uid": "plus", "Datum": "2026-11-09T23:00:00Z", "KezdetIdopont": "2026-11-10T13:00:00Z", "VegIdopont": "2026-11-10T14:00:00Z",
+    "Oraszam": null, "Nev": "Szakkör", "Tantargy": { "Uid": "szakkor", "Nev": "Robotika szakkör" }
+  },
+  {
+    "Uid": "event", "Datum": "2026-11-09T23:00:00Z", "KezdetIdopont": "2026-11-10T06:00:00Z", "VegIdopont": "2026-11-10T06:00:00Z",
+    "Nev": "Fogadóóra", "Tantargy": {}
+  },
+  {
+    "Uid": "l5", "Datum": "2026-11-11T23:00:00Z", "KezdetIdopont": "2026-11-12T07:00:00Z", "VegIdopont": "2026-11-12T07:45:00Z",
+    "Oraszam": 1, "Nev": "Angol nyelv", "Tantargy": { "Uid": "angol", "Nev": "Angol nyelv" }, "TanarNeve": "Varga Erzsébet",
+    "TeremNeve": "Tornaterem"
+  }
+]

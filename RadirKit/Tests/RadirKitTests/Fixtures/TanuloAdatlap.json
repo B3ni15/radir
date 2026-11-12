@@ -1,0 +1,14 @@
+{
+  "Uid": "123456",
+  "Nev": "Teszt Elek",
+  "SzuletesiNev": "Teszt Elek",
+  "SzuletesiDatum": "2008-05-12T22:00:00Z",
+  "AnyjaNeve": "TESZT ANYA",
+  "Gondviselok": [{ "Nev": "Teszt Anya" }, { "Nev": "Teszt Apa" }],
+  "Cimek": ["1117 Budapest, Teszt utca 1."],
+  "IntezmenyAzonosito": "klik035046001",
+  "IntezmenyNev": "Teszt Gimnázium",
+  "TanevUid": "2026",
+  "Bankszamla": { "BankszamlaSzam": null },
+  "Intezmeny": { "TestreszabasBeallitasok": { "ErtekelesekMegjelenitesenekKesleltetesenekMerteke": 0 } }
+}

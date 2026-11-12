@@ -1,0 +1,12 @@
+[
+  { "Uid": "a1", "Datum": "2026-11-09T23:00:00Z", "KeszitesDatuma": "2026-11-10T08:00:00Z", "KesesPercben": null,
+    "IgazolasAllapota": "Igazolt", "IgazolasTipusa": { "Nev": "Orvosi", "Leiras": "Orvosi igazolás" },
+    "Tipus": { "Nev": "hianyzas", "Leiras": "Hiányzás" }, "Mod": { "Leiras": "Távollét" },
+    "Tantargy": { "Uid": "matek", "Nev": "Matematika" }, "RogzitoTanarNeve": " Nagy Katalin ",
+    "Ora": { "KezdoDatum": "2026-11-10T07:00:00Z", "VegDatum": "2026-11-10T07:45:00Z", "Oraszam": 1 } },
+  { "Uid": "a2", "Datum": "2026-11-10T23:00:00Z", "KesesPercben": 7, "IgazolasAllapota": "Igazolatlan",
+    "Tipus": { "Nev": "keses", "Leiras": "Késés" }, "Tantargy": { "Uid": "fizika", "Nev": "Fizika" },
+    "Ora": { "KezdoDatum": "2026-11-11T07:00:00Z", "VegDatum": "2026-11-11T07:45:00Z", "Oraszam": 1 } },
+  { "Uid": "a3", "Datum": "2026-11-11T23:00:00Z", "IgazolasAllapota": "Igazolando",
+    "Tipus": { "Nev": "hianyzas" }, "Tantargy": { "Uid": "matek", "Nev": "Matematika" } }
+]

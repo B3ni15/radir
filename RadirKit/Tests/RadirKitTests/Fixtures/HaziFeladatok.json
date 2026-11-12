@@ -1,0 +1,7 @@
+[
+  { "Uid": "h1", "RogzitesIdopontja": "2026-11-10T12:00:00Z", "FeladasDatuma": "2026-11-09T23:00:00Z",
+    "HataridoDatuma": "2026-11-12T23:00:00Z", "IsTanarRogzitette": true, "RogzitoTanarNeve": "Nagy Katalin",
+    "Szoveg": "<p>Tankönyv <b>45.</b> oldal 1–3. feladat</p>", "Tantargy": { "Uid": "matek", "Nev": "Matematika" },
+    "Csatolmanyok": [ { "Uid": "c1", "Nev": "feladatlap.pdf", "Tipus": "pdf" } ] },
+  { "Uid": "h2", "HataridoDatuma": "2026-11-16T23:00:00Z", "Tantargy": { "Uid": "angol", "Nev": "Angol nyelv" } }
+]
