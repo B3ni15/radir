@@ -18,7 +18,7 @@ struct LessonLiveActivity: Widget {
                     LessonIcon(state: s, size: 44).padding(.leading, 4)
                 }
                 DynamicIslandExpandedRegion(.trailing) {
-                    Timer(state: s).font(.title2.weight(.bold)).padding(.trailing, 4)
+                    Timer(state: s).font(.title2.weight(.bold)).frame(width: 84, alignment: .trailing).padding(.trailing, 4)
                 }
                 DynamicIslandExpandedRegion(.center) {
                     VStack(alignment: .leading, spacing: 2) {
@@ -36,7 +36,7 @@ struct LessonLiveActivity: Widget {
             } compactLeading: {
                 Image(systemName: s.icon).foregroundStyle(s.tint)
             } compactTrailing: {
-                Timer(state: s).frame(maxWidth: 52).font(.caption.weight(.semibold)).foregroundStyle(s.tint)
+                Timer(state: s).frame(width: 46, alignment: .trailing).font(.caption.weight(.semibold)).foregroundStyle(s.tint)
             } minimal: {
                 Image(systemName: s.icon).foregroundStyle(s.tint)
             }
@@ -59,7 +59,11 @@ private struct LockScreenView: View {
                     }
                 }
                 Spacer(minLength: 8)
-                Timer(state: state).font(.title2.weight(.bold)).foregroundStyle(state.tint).fixedSize()
+                Timer(state: state)
+                    .font(.title2.weight(.bold))
+                    .foregroundStyle(state.tint)
+                    // a visszaszámláló szöveg magától teljes szélességet kérne; fix szélesség kell (Apple ajánlás)
+                    .frame(width: 92, alignment: .trailing)
             }
             Progress(state: state)
             if let next = state.nextLine {
