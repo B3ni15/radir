@@ -130,11 +130,12 @@ h2 { font-weight: 800; font-size: clamp(30px, 4vw, 48px); line-height: 1.08; let
 
 /* „bizonyítvány”: a funkciók jegyként */
 .report { display: grid; grid-template-columns: 1fr 1.3fr; gap: 48px; padding-top: 120px; }
+.report > div { position: sticky; top: 110px; align-self: start; }
 .report h2 + p { margin-top: 18px; color: var(--muted); max-width: 32ch; }
 .report ol { list-style: none; padding: 0; display: grid; gap: 6px; }
 .report li { display: grid; grid-template-columns: 44px 1fr; gap: 16px; align-items: start; padding: 18px 20px; background: var(--surface); border-radius: 18px; }
 .report li b { display: block; font-weight: 700; font-size: 18px; }
-.report li span { color: var(--muted); font-size: 16px; }
+.report li div span { color: var(--muted); font-size: 16px; }
 .grade { width: 44px; height: 44px; border-radius: 50%; display: grid; place-items: center; font-weight: 800; font-size: 22px; background: var(--g5); color: #0F3B33; }
 
 /* adatvédelem röviden */
@@ -174,6 +175,7 @@ h2 { font-weight: 800; font-size: clamp(30px, 4vw, 48px); line-height: 1.08; let
   .step p { margin: 10px auto 0; font-size: 16px; }
   .phone3d { --w: min(210px, 52vw, 26vh); }
   .report, .privacy, .end .wrap { grid-template-columns: 1fr; }
+  .report > div { position: static; }
   .report, .privacy { gap: 28px; }
   .end .eraser { width: 130px; border-radius: 30px; }
 }
