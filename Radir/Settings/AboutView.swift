@@ -15,7 +15,7 @@ struct AboutView: View {
                         .accessibilityHidden(true)
                     Text("Radír").font(.display(30))
                     Text("Verzió \(AppModel.appVersion)")
-                        .font(.subheadline)
+                        .font(.m(.subheadline))
                         .foregroundStyle(Color(palette.secondaryText))
                 }
                 .padding(.top, 12)

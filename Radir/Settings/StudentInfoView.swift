@@ -37,7 +37,7 @@ struct StudentInfoView: View {
 
     private func row(_ title: LocalizedStringKey, _ value: String, _ icon: String) -> some View {
         PanelRow(title: title, systemImage: icon) {
-            Text(value).font(.subheadline).foregroundStyle(Color(palette.secondaryText)).multilineTextAlignment(.trailing).textSelection(.enabled)
+            Text(value).font(.m(.subheadline)).foregroundStyle(Color(palette.secondaryText)).multilineTextAlignment(.trailing).textSelection(.enabled)
         }
     }
 }

@@ -17,16 +17,16 @@ struct ReloginView: View {
                 AvatarView(name: account.student.name, size: 64)
                 Text("Jelentkezz be újra").font(.title(24, relativeTo: .title))
                 Text("\(account.student.name) · \(account.student.schoolName)")
-                    .font(.subheadline)
+                    .font(.m(.subheadline))
                     .foregroundStyle(Color(palette.secondaryText))
                     .multilineTextAlignment(.center)
                 Text("A felhasználónevet és az iskolát kitöltöttük, csak a jelszavad kell.")
-                    .font(.footnote)
+                    .font(.m(.footnote))
                     .foregroundStyle(Color(palette.secondaryText))
                     .multilineTextAlignment(.center)
                 if let errorText {
                     Label(errorText, systemImage: "exclamationmark.triangle.fill")
-                        .font(.footnote.weight(.semibold))
+                        .font(.m(.footnote, .semibold))
                         .foregroundStyle(Color(palette.warning))
                 }
             }
@@ -53,7 +53,7 @@ struct ReloginView: View {
                 Spacer()
                 Button("Kijelentkezés", role: .destructive) { confirmLogout = true }
             }
-            .font(.subheadline.weight(.semibold))
+            .font(.m(.subheadline, .semibold))
             .padding(.horizontal, 24)
             .padding(.vertical, 12)
         }

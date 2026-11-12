@@ -56,8 +56,8 @@ struct NotebookView: View {
                     LazyVGrid(columns: [GridItem(.flexible(), spacing: 8), GridItem(.flexible(), spacing: 8)], spacing: 8) {
                         Button { editing = Notebook.Note(title: "", text: "") } label: {
                             VStack(spacing: 8) {
-                                Image(systemName: "plus").font(.title2.weight(.semibold))
-                                Text("Új jegyzet").font(.subheadline.weight(.semibold))
+                                Image(systemName: "plus").font(.m(.title2, .semibold))
+                                Text("Új jegyzet").font(.m(.subheadline, .semibold))
                             }
                             .foregroundStyle(Color(palette.accent))
                             .frame(maxWidth: .infinity, minHeight: 110)
@@ -86,7 +86,7 @@ struct NotebookView: View {
                                 }
                             } label: {
                                 Image(systemName: todo.isDone ? "checkmark.circle.fill" : "circle")
-                                    .font(.title3)
+                                    .font(.m(.title3))
                                     .foregroundStyle(Color(todo.isDone ? palette.gradeColor(5)! : palette.secondaryText))
                             }
                             .buttonStyle(.plain)
@@ -103,7 +103,7 @@ struct NotebookView: View {
                         }
                     }
                     HStack(spacing: 12) {
-                        Image(systemName: "plus.circle.fill").font(.title3).foregroundStyle(Color(palette.accent))
+                        Image(systemName: "plus.circle.fill").font(.m(.title3)).foregroundStyle(Color(palette.accent))
                         TextField("Új teendő", text: $newTodo)
                             .submitLabel(.done)
                             .onSubmit(addTodo)
@@ -152,8 +152,8 @@ struct NotebookView: View {
 
     private func noteCard(_ note: Notebook.Note) -> some View {
         VStack(alignment: .leading, spacing: 6) {
-            if !note.title.isEmpty { Text(note.title).font(.subheadline.weight(.bold)).lineLimit(1) }
-            Text(note.text).font(.footnote).foregroundStyle(Color(palette.secondaryText)).lineLimit(4)
+            if !note.title.isEmpty { Text(note.title).font(.m(.subheadline, .bold)).lineLimit(1) }
+            Text(note.text).font(.m(.footnote)).foregroundStyle(Color(palette.secondaryText)).lineLimit(4)
             Spacer(minLength: 0)
         }
         .foregroundStyle(Color(palette.text))

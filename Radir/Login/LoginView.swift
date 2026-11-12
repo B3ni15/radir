@@ -1,97 +1,145 @@
 import RadirKit
 import SwiftUI
 
-/// Belépés KRÉTA fiókkal vagy demóval. Sheetben is használható új fiók hozzáadásához.
+/// Belépés KRÉTA fiókkal, a Firka kezdőképernyője mintájára: lapozható bemutató, alatta a belépés.
+/// A demó rejtett (mint a Firkában): a logóra tízszer koppintva indul. Az App Review jegyzetben le van írva.
+/// Sheetben is használható új fiók hozzáadásához.
 struct LoginView: View {
     var onDone: (() -> Void)?
 
     @Environment(AppModel.self) private var model
     @Environment(\.palette) private var palette
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @State private var request: LoginRequest?
     @State private var isWorking = false
     @State private var errorText: LocalizedStringKey?
+    @State private var page = 0
+    @State private var logoTaps = 0
+
+    private static let slides: [(title: LocalizedStringKey, text: LocalizedStringKey, image: String)] = [
+        ("Minden, ami ma számít", "A mostani és a következő órád, a házik, a dolgozatok és az új jegyeid egy helyen.", "Showcase1"),
+        ("Látod, merre tart az átlagod", "Grafikon, osztályátlag és jegyeloszlás. Jegykalkulátorral és céltervezővel.", "Showcase2"),
+        ("Az órarended, élőben", "Szünetek, helyettesítések, elmaradt órák. A következő órád a zárolt képernyőn is.", "Showcase3"),
+        ("Év végén jön a bizonyítvány", "Egy kis összefoglaló az évedről: jegyek, kedvenc óra, és hogy milyen diák voltál.", "Showcase4"),
+    ]
 
     var body: some View {
-        ScrollView {
-            VStack(spacing: 28) {
-                VStack(spacing: 14) {
-                    Image("Logo")
-                        .resizable()
-                        .frame(width: 104, height: 104)
-                        .clipShape(.rect(cornerRadius: 24, style: .continuous))
-                        .shadow(color: Color(palette.accent).opacity(0.3), radius: 18, y: 10)
-                        .rotationEffect(.degrees(-4))
-                        .accessibilityHidden(true)
-                    Text("Radír")
-                        .font(.display(54))
-                        .foregroundStyle(Color(palette.text))
-                    Text("Jegyek, órarend, házik. Szépen, egy helyen.")
-                        .font(.body.weight(.medium))
-                        .foregroundStyle(Color(palette.secondaryText))
-                        .multilineTextAlignment(.center)
-                }
-                .padding(.top, 48)
-
-                PanelGroup {
-                    PanelRow("Jegyek és átlagok", subtitle: "Grafikon, jegykalkulátor, céltervező",
-                             systemImage: "chart.line.uptrend.xyaxis", tint: Color(palette.gradeColor(5)!))
-                    PanelRow("Órarend és Live Activity", subtitle: "A következő órád a zárolt képernyőn",
-                             systemImage: "calendar.badge.clock")
-                    PanelRow("Minden ingyenes", subtitle: "Nincs Plus, nincs reklám",
-                             systemImage: "gift.fill", tint: Color(palette.warning))
-                }
-
-                if let errorText {
-                    Label(errorText, systemImage: "exclamationmark.triangle.fill")
-                        .font(.subheadline.weight(.semibold))
-                        .foregroundStyle(Color(palette.warning))
-                        .radirPanel()
-                }
+        VStack(alignment: .leading, spacing: 18) {
+            HStack(spacing: 8) {
+                Image("Logo")
+                    .resizable()
+                    .frame(width: 30, height: 30)
+                    .clipShape(.rect(cornerRadius: 8, style: .continuous))
+                    .accessibilityHidden(true)
+                Text("Radír").font(.custom("Montserrat-Bold", size: 18, relativeTo: .headline))
             }
-            .padding(.horizontal, 20)
-        }
-        .scrollBounceBehavior(.basedOnSize)
-        .safeAreaInset(edge: .bottom) {
-            VStack(spacing: 12) {
-                Button {
-                    errorText = nil
-                    request = .make()
-                } label: {
-                    Group {
-                        if isWorking { ProgressView().tint(.white) } else { Label("Belépés KRÉTA fiókkal", systemImage: "person.badge.key.fill") }
-                    }
-                    .font(.body.weight(.semibold))
-                    .frame(maxWidth: .infinity, minHeight: 34)
-                }
-                .radirProminentButton()
-                .disabled(isWorking)
-
-                Button {
+            .padding(.vertical, 6)
+            .contentShape(.rect)
+            .onTapGesture {
+                logoTaps += 1
+                if logoTaps >= 10 {
+                    logoTaps = 0
                     model.startDemo()
                     onDone?()
-                } label: {
-                    Text("Kipróbálom demóval")
-                        .font(.body.weight(.semibold))
-                        .frame(maxWidth: .infinity, minHeight: 34)
                 }
-                .radirSecondaryButton()
-                .disabled(isWorking)
-
-                Text("A belépés a KRÉTA saját oldalán történik.")
-                    .font(.footnote)
-                    .foregroundStyle(Color(palette.secondaryText))
             }
-            .controlSize(.large)
-            .padding(.horizontal, 20)
-            .padding(.top, 12)
-            .padding(.bottom, 8)
+            .padding(.horizontal, 24)
+            .padding(.top, 8)
+
+            TabView(selection: $page) {
+                ForEach(Self.slides.indices, id: \.self) { i in
+                    slide(Self.slides[i]).tag(i)
+                }
+            }
+            .tabViewStyle(.page(indexDisplayMode: .never))
         }
-        .background { LoginBackground() }
+        .safeAreaInset(edge: .bottom, spacing: 0) { bottomBar }
+        .background(Color(palette.background).ignoresSafeArea())
+        .foregroundStyle(Color(palette.text))
+        // automatikus lapozás 6 mp-enként; kézi lapozás után újraindul
+        .task(id: page) {
+            guard !reduceMotion, (try? await Task.sleep(for: .seconds(6))) != nil else { return }
+            withAnimation(.smooth) { page = (page + 1) % Self.slides.count }
+        }
         .sheet(item: $request) { req in
             KretaLoginSheet(request: req) { code in
                 request = nil
                 Task { await finish(code: code, request: req) }
             }
+        }
+    }
+
+    private func slide(_ s: (title: LocalizedStringKey, text: LocalizedStringKey, image: String)) -> some View {
+        VStack(alignment: .leading, spacing: 14) {
+            VStack(alignment: .leading, spacing: 10) {
+                Text(s.title).font(.m(.title2)).fixedSize(horizontal: false, vertical: true)
+                Text(s.text)
+                    .font(.m(.body))
+                    .foregroundStyle(Color(palette.secondaryText))
+                    .fixedSize(horizontal: false, vertical: true)
+            }
+            .padding(.horizontal, 24)
+            // teljes szélességben, alul levágva (a belépés sáv elhalványítja)
+            GeometryReader { g in
+                Image(s.image)
+                    .resizable()
+                    .frame(width: g.size.width, height: g.size.width * 2868 / 1320)
+                    .clipShape(.rect(cornerRadius: 34, style: .continuous))
+                    .overlay(RoundedRectangle(cornerRadius: 34, style: .continuous).stroke(Color(palette.separator), lineWidth: 1))
+            }
+            .padding(.horizontal, 16)
+            .mask(LinearGradient(stops: [.init(color: .black, location: 0.75), .init(color: .clear, location: 1)],
+                                 startPoint: .top, endPoint: .bottom))
+            .accessibilityHidden(true)
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+    }
+
+    private var bottomBar: some View {
+        VStack(spacing: 14) {
+            HStack(spacing: 6) {
+                ForEach(Self.slides.indices, id: \.self) { i in
+                    Capsule()
+                        .fill(Color(i == page ? palette.accent : palette.separator))
+                        .frame(width: i == page ? 20 : 7, height: 7)
+                }
+            }
+            .animation(.smooth, value: page)
+            .accessibilityHidden(true)
+
+            if let errorText {
+                Label(errorText, systemImage: "exclamationmark.triangle.fill")
+                    .font(.m(.subheadline, .semibold))
+                    .foregroundStyle(Color(palette.warning))
+            }
+
+            Button {
+                errorText = nil
+                request = .make()
+            } label: {
+                Group {
+                    if isWorking { ProgressView().tint(.white) } else { Label("Belépés KRÉTA fiókkal", systemImage: "person.badge.key.fill") }
+                }
+                .font(.m(.body, .semibold))
+                .frame(maxWidth: .infinity, minHeight: 34)
+            }
+            .radirProminentButton()
+            .controlSize(.large)
+            .disabled(isWorking)
+
+            Text("Ingyenes, reklám nélkül. A belépés a KRÉTA saját oldalán történik.")
+                .font(.m(.footnote))
+                .foregroundStyle(Color(palette.secondaryText))
+                .multilineTextAlignment(.center)
+        }
+        .padding(.horizontal, 20)
+        .padding(.top, 48)
+        .padding(.bottom, 8)
+        .background {
+            LinearGradient(stops: [.init(color: Color(palette.background).opacity(0), location: 0),
+                                   .init(color: Color(palette.background), location: 0.3)],
+                           startPoint: .top, endPoint: .bottom)
+                .ignoresSafeArea()
         }
     }
 

@@ -36,7 +36,7 @@ struct HomeView: View {
     @State private var showSummary = false
 
     var body: some View {
-        let now = Date.now
+        let now = Date.radirNow
         let all = sources(now: now)
         let available = [Filter.all] + Filter.allCases.dropFirst().filter { !entries(all, $0).isEmpty }
         let shown = filter == .all ? all : only(all, filter)
@@ -46,12 +46,8 @@ struct HomeView: View {
                 if let news = app.server.unseenEmergency {
                     NewsCard(item: news) { withAnimation { app.server.markSeen(news) } }
                 }
-                if (6...8).contains(Calendar.school.component(.month, from: now)) {
-                    Button { showSummary = true } label: {
-                        PanelRow("Itt az év végi összefoglalód!", subtitle: "Nézd meg, milyen éved volt.", systemImage: "sparkles.rectangle.stack") { Chevron() }
-                            .radirPanel()
-                    }
-                    .buttonStyle(.plain)
+                if app.summaryBook != nil {
+                    SummaryBadge { showSummary = true }
                 }
                 VStack(alignment: .leading, spacing: 8) {
                     SectionLabel("Ma", trailing: Text(now, format: .dateTime.weekday(.wide).month(.abbreviated).day()))
@@ -106,7 +102,9 @@ struct HomeView: View {
         .sheet(item: $wallDetail) { WallDetailSheet(item: $0) }
         .sheet(item: $messageDetail) { m in NavigationStack { MessageDetailView(message: m) } }
         .sheet(isPresented: $showMessages) { NavigationStack { MessagesView(showsClose: true) } }
-        .sheet(isPresented: $showSummary) { NavigationStack { SummaryView() } }
+        .fullScreenCover(isPresented: $showSummary) {
+            if let book = app.summaryBook { SummaryView(book: book, absences: app.school.absences ?? []) }
+        }
     }
 
     private func load() async {
@@ -204,7 +202,7 @@ struct HomeView: View {
                     .overlay(alignment: .topTrailing) {
                         let unread = app.messages.unreadCount
                         if unread > 0 {
-                            Text("\(unread)").font(.caption2.weight(.bold)).foregroundStyle(.white)
+                            Text("\(unread)").font(.m(.caption2, .bold)).foregroundStyle(.white)
                                 .padding(.horizontal, 5).frame(minWidth: 18, minHeight: 18)
                                 .background(Capsule().fill(Color(palette.warning)))
                                 .offset(x: 4, y: -4)
@@ -227,7 +225,7 @@ struct HomeView: View {
         let first = app.current?.student.name.split(separator: " ").last.map(String.init) ?? ""
         let custom = app.prefs.welcomeMessage.trimmingCharacters(in: .whitespaces)
         if !custom.isEmpty { return custom.replacingOccurrences(of: "%s", with: first) }
-        let hour = Calendar.school.component(.hour, from: .now)
+        let hour = Calendar.school.component(.hour, from: .radirNow)
         let format: String.LocalizationValue = switch hour {
         case 4..<10: "Jó reggelt, \(first)!"
         case 10..<18: "Szép napot, \(first)!"
@@ -243,7 +241,7 @@ private struct ChangeRow: View {
     @Environment(\.palette) private var palette
 
     var body: some View {
-        let tint = Color(lesson.isCancelled ? palette.warning : palette.accent)
+        let tint = lesson.isCancelled ? Color(palette.warning) : .substitution
         HStack(spacing: 12) {
             Image(systemName: lesson.isCancelled ? "xmark" : "person.2.fill")
                 .font(.system(size: 15, weight: .bold))
@@ -253,10 +251,10 @@ private struct ChangeRow: View {
                 .accessibilityHidden(true)
             VStack(alignment: .leading, spacing: 2) {
                 Text(lesson.isCancelled ? "\(lesson.title) elmarad" : "\(lesson.title): helyettesítés")
-                    .font(.body.weight(.semibold))
+                    .font(.m(.body, .semibold))
                     .foregroundStyle(Color(palette.text))
                     .lineLimit(1)
-                Text(detail).font(.footnote).foregroundStyle(Color(palette.secondaryText)).lineLimit(1)
+                Text(detail).font(.m(.footnote)).foregroundStyle(Color(palette.secondaryText)).lineLimit(1)
             }
             Spacer(minLength: 0)
         }

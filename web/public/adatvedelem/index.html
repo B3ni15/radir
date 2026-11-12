@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="hu">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Adatkezelés – Radír</title>
+<meta name="description" content="Milyen adatokat kezel a Radír, és mire használja őket.">
+<link rel="icon" href="/favicon.png">
+<link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+<header class="wrap top">
+  <a class="brand" href="/"><img src="/img/logo.png" alt="">Radír</a>
+  <nav><a href="/">Főoldal</a></nav>
+</header>
+
+<main class="wrap doc">
+  <h1>Adatkezelési tájékoztató</h1>
+  <p class="updated">Hatályos: 2026. november 12.</p>
+
+  <p>A Radír nem hivatalos e-KRÉTA kliens iPhone-ra. Ez az oldal leírja, milyen adatokat kezel az app, hol tárolja őket, és mit küld el bárkinek.</p>
+
+  <h2>KRÉTA-adataid</h2>
+  <p>A belépés a KRÉTA saját oldalán történik, a jelszavadat a Radír nem látja és nem tárolja. A belépés után kapott tokeneket az app a telefonod kulcskarikájában (Keychain) tartja. A jegyeidet, órarendedet és a többi iskolai adatot az app közvetlenül a KRÉTA szervereiről tölti le, és csak a telefonodon tárolja gyorsítótárként.</p>
+
+  <h2>Amit a Radír szervere kap</h2>
+  <ul>
+    <li><b>Live Activity (ha bekapcsolod):</b> a telefonod véletlenszerű eszközazonosítója, az Apple push-tokenje és az aznapi óráid (tantárgy, terem, kezdés és vége). Erre azért van szükség, hogy a zárolt képernyőn frissüljön a következő órád. Ha kikapcsolod, vagy kijelentkezel, az app törli a regisztrációt.</li>
+    <li><b>Témamegosztás (ha feltöltesz egy témát):</b> a téma színei és neve. A feltöltéshez a szerver ellenőrzi a KRÉTA-belépésedet, hogy a témát később csak te törölhesd.</li>
+    <li><b>Hírek és beállítások:</b> az app letölti a Radír híreit és távoli beállításait. Ehhez nem küld személyes adatot.</li>
+  </ul>
+
+  <h2>Amit nem csinálunk</h2>
+  <ul>
+    <li>Nincs reklám, nincs harmadik féltől származó követés vagy statisztika.</li>
+    <li>Nem adjuk el és nem adjuk át az adataidat senkinek.</li>
+  </ul>
+
+  <h2>Törlés</h2>
+  <p>Ha kijelentkezel egy fiókból, az app törli a hozzá tartozó tokeneket és gyorsítótárat a telefonodról. Az app törlése minden helyi adatot eltávolít.</p>
+
+  <h2>Kapcsolat</h2>
+  <!-- TODO: valódi kapcsolati e-mail (ugyanaz, mint az App Store Connect támogatási címe) -->
+  <p>Kérdés esetén írj nekünk: <a href="mailto:KAPCSOLAT">KAPCSOLAT</a>.</p>
+</main>
+</body>
+</html>

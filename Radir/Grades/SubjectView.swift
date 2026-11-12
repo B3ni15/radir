@@ -19,14 +19,13 @@ struct SubjectView: View {
                     HStack(spacing: 14) {
                         Image(systemName: SubjectIcon.name(for: subject))
                             .font(.system(size: 24, weight: .semibold))
-                            .foregroundStyle(Color(palette.accent))
+                            .foregroundStyle(Color(palette.text).opacity(0.8))
                             .frame(width: 56, height: 56)
-                            .background(Circle().fill(Color(palette.accentSoft)))
                             .accessibilityHidden(true)
                         VStack(alignment: .leading, spacing: 4) {
                             Text(subject.name).font(.title(24, relativeTo: .title))
                             if let teacher = grades.first?.teacher, !teacher.isEmpty {
-                                Text(teacher).font(.subheadline).foregroundStyle(Color(palette.secondaryText))
+                                Text(teacher).font(.m(.subheadline)).foregroundStyle(Color(palette.secondaryText))
                             }
                         }
                     }
@@ -41,7 +40,7 @@ struct SubjectView: View {
                         HStack(spacing: 10) {
                             ForEach(finals) { g in
                                 HStack(spacing: 6) {
-                                    Text(finalTitle(g.kind)).font(.subheadline.weight(.semibold))
+                                    Text(finalTitle(g.kind)).font(.m(.subheadline, .semibold))
                                     GradeBubble(grade: g, size: 30)
                                 }
                             }
@@ -93,8 +92,8 @@ struct SubjectView: View {
 
     private func statBlock(_ title: LocalizedStringKey, value: Double?, filled: Bool) -> some View {
         VStack(alignment: .leading, spacing: 6) {
-            Text(title).font(.footnote.weight(.semibold)).foregroundStyle(Color(palette.secondaryText))
-            if let value { AverageBadge(value: value, filled: filled) } else { Text("–").font(.title3.weight(.bold)) }
+            Text(title).font(.m(.footnote, .semibold)).foregroundStyle(Color(palette.secondaryText))
+            if let value { AverageBadge(value: value, filled: filled) } else { Text("–").font(.m(.title3, .bold)) }
         }
     }
 
@@ -123,7 +122,7 @@ struct GradeDetailSheet: View {
                     GradeBubble(grade: grade, size: 76)
                     Text(grade.valueName.isEmpty ? String(grade.value) : grade.valueName)
                         .font(.title(26, relativeTo: .title))
-                    Text(grade.subject.name).font(.subheadline).foregroundStyle(Color(palette.secondaryText))
+                    Text(grade.subject.name).font(.m(.subheadline)).foregroundStyle(Color(palette.secondaryText))
                 }
                 .padding(.top, 24)
                 PanelGroup {
@@ -147,7 +146,7 @@ struct GradeDetailSheet: View {
     private func detail(_ title: LocalizedStringKey, _ value: String, _ icon: String) -> some View {
         PanelRow(title: title, systemImage: icon) {
             Text(value)
-                .font(.subheadline)
+                .font(.m(.subheadline))
                 .foregroundStyle(Color(palette.secondaryText))
                 .multilineTextAlignment(.trailing)
         }

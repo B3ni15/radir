@@ -54,9 +54,9 @@ struct SectionLabel: View {
 
     var body: some View {
         HStack {
-            Text(text).font(.subheadline.weight(.semibold))
+            Text(text).font(.m(.subheadline, .semibold))
             Spacer()
-            trailing.font(.subheadline)
+            trailing.font(.m(.subheadline))
         }
         .foregroundStyle(Color(palette.secondaryText))
         .padding(.horizontal, 6)
@@ -78,17 +78,17 @@ struct PanelRow<Trailing: View>: View {
     var body: some View {
         HStack(spacing: 12) {
             if let systemImage {
+                // sima ikon, kör nélkül, mint a Firka listáiban
                 Image(systemName: systemImage)
-                    .font(.system(size: 15, weight: .semibold))
-                    .foregroundStyle(tint ?? Color(palette.accent))
-                    .frame(width: 34, height: 34)
-                    .background(Circle().fill((tint ?? Color(palette.accent)).opacity(0.12)))
+                    .font(.system(size: 18, weight: .medium))
+                    .foregroundStyle(tint ?? Color(palette.text).opacity(0.75))
+                    .frame(width: 26)
                     .accessibilityHidden(true)
             }
             VStack(alignment: .leading, spacing: 2) {
-                Text(title).font(.body.weight(.semibold)).foregroundStyle(destructive ? (tint ?? Color(palette.warning)) : Color(palette.text))
+                Text(title).font(.m(.body, .semibold)).foregroundStyle(destructive ? (tint ?? Color(palette.warning)) : Color(palette.text))
                 if let subtitle {
-                    Text(subtitle).font(.footnote).foregroundStyle(Color(palette.secondaryText))
+                    Text(subtitle).font(.m(.footnote)).foregroundStyle(Color(palette.secondaryText))
                 }
             }
             Spacer(minLength: 8)
@@ -119,7 +119,7 @@ struct Chevron: View {
     @Environment(\.palette) private var palette
     var body: some View {
         Image(systemName: "chevron.right")
-            .font(.footnote.weight(.semibold))
+            .font(.m(.footnote, .semibold))
             .foregroundStyle(Color(palette.secondaryText).opacity(0.6))
             .accessibilityHidden(true)
     }
@@ -133,7 +133,7 @@ struct Chip: View {
 
     var body: some View {
         Text(title)
-            .font(.subheadline.weight(.semibold))
+            .font(.m(.subheadline, .semibold))
             .padding(.horizontal, 14)
             .padding(.vertical, 8)
             .foregroundStyle(isSelected ? Color.white : Color(palette.text))
@@ -142,7 +142,7 @@ struct Chip: View {
     }
 }
 
-/// Monogram egy színátmenetes körben.
+/// Monogram egy teli, akcentusszínű körben.
 struct AvatarView: View {
     let name: String
     var size: CGFloat = 40
@@ -157,14 +157,12 @@ struct AvatarView: View {
             .font(.custom("Montserrat-Bold", size: size * 0.38))
             .foregroundStyle(.white)
             .frame(width: size, height: size)
-            .background(Circle().fill(LinearGradient(
-                colors: [Color(palette.accent), Color(palette.accent).mix(with: .black, by: 0.35)],
-                startPoint: .topLeading, endPoint: .bottomTrailing)))
+            .background(Circle().fill(Color(palette.accent)))
             .accessibilityHidden(true)
     }
 }
 
-/// Jegyátlag kapszulában: körvonalas vagy teli, a jegy színével.
+/// Jegyátlag: a saját halvány jegyszínű kapszulában (mint a Firkában), az osztályátlag (`filled`) csak szövegként.
 struct AverageBadge: View {
     let value: Double
     var filled = false
@@ -175,12 +173,11 @@ struct AverageBadge: View {
     var body: some View {
         let color = Color(palette.gradeColor(Averages.roundedGrade(value, threshold: threshold)) ?? palette.accent)
         Text(value, format: .number.precision(.fractionLength(2)))
-            .font(.subheadline.weight(.bold).monospacedDigit())
+            .font(.m(.subheadline, .bold).monospacedDigit())
             .padding(.horizontal, 9)
             .padding(.vertical, 4)
-            .foregroundStyle(filled || scheme == .light ? color.gradeInk(scheme) : color)
-            .background(Capsule().fill(filled ? color.opacity(0.28) : .clear))
-            .overlay(Capsule().strokeBorder(color, lineWidth: filled ? 0 : 1.5))
+            .foregroundStyle(filled ? Color(palette.secondaryText) : color.gradeInk(scheme))
+            .background(Capsule().fill(filled ? .clear : color.opacity(0.2)))
     }
 }
 

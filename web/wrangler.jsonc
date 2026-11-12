@@ -1,0 +1,12 @@
+// Radír landing page: statikus oldal Cloudflare Workers static assets-szel, kód nélkül.
+// Helyben: npx wrangler dev   Kitelepítés: npx wrangler deploy
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "radir-web",
+  "compatibility_date": "2026-11-01",
+  "assets": {
+    "directory": "./public",
+    "html_handling": "auto-trailing-slash",
+    "not_found_handling": "404-page"
+  }
+}

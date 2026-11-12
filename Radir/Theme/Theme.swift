@@ -28,6 +28,7 @@ private struct ThemeModifier: ViewModifier {
             .foregroundStyle(prefs.customEnabled ? AnyShapeStyle(Color(palette.text)) : AnyShapeStyle(.primary))
             .environment(\.roundingThreshold, prefs.roundingThreshold)
             .tint(Color(palette.accent))
+            .font(.m(.body))
     }
 }
 

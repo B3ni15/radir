@@ -22,7 +22,7 @@ struct AverageChart: View {
         Group {
             if points.isEmpty {
                 Text("Még nincs elég jegy a grafikonhoz.")
-                    .font(.subheadline)
+                    .font(.m(.subheadline))
                     .foregroundStyle(Color(palette.secondaryText))
                     .frame(maxWidth: .infinity, minHeight: 120)
             } else {
@@ -52,7 +52,7 @@ struct AverageChart: View {
                     AxisMarks(position: .leading, values: [1, 2, 3, 4, 5]) { _ in
                         AxisGridLine(stroke: StrokeStyle(lineWidth: 1, dash: [3, 4]))
                             .foregroundStyle(Color(palette.separator))
-                        AxisValueLabel().font(.footnote.weight(.semibold)).foregroundStyle(Color(palette.secondaryText))
+                        AxisValueLabel().font(.m(.footnote, .semibold)).foregroundStyle(Color(palette.secondaryText))
                     }
                 }
                 .chartXAxis {

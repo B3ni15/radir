@@ -61,17 +61,17 @@ struct MessageRow: View {
             VStack(alignment: .leading, spacing: 2) {
                 HStack {
                     Text(message.box == .sent ? message.recipients.joined(separator: ", ") : message.sender)
-                        .font(.subheadline.weight(message.isRead ? .medium : .bold))
+                        .font(.m(.subheadline, message.isRead ? .medium : .bold))
                         .foregroundStyle(Color(palette.text))
                         .lineLimit(1)
                     Spacer()
-                    Text(relativeDay(message.date, capitalized: true)).font(.caption).foregroundStyle(Color(palette.secondaryText))
+                    Text(relativeDay(message.date, capitalized: true)).font(.m(.caption)).foregroundStyle(Color(palette.secondaryText))
                 }
                 HStack(spacing: 6) {
                     if !message.isRead { Circle().fill(Color(palette.accent)).frame(width: 8, height: 8).accessibilityLabel("Olvasatlan") }
-                    Text(message.subject).font(.body.weight(message.isRead ? .regular : .semibold)).lineLimit(1)
+                    Text(message.subject).font(.m(.body, message.isRead ? .regular : .semibold)).lineLimit(1)
                         .foregroundStyle(Color(palette.text))
-                    if message.hasAttachments { Image(systemName: "paperclip").font(.caption).foregroundStyle(Color(palette.secondaryText)) }
+                    if message.hasAttachments { Image(systemName: "paperclip").font(.m(.caption)).foregroundStyle(Color(palette.secondaryText)) }
                 }
             }
         }
@@ -99,12 +99,12 @@ struct MessageDetailView: View {
                 HStack(spacing: 12) {
                     AvatarView(name: m.sender, size: 40)
                     VStack(alignment: .leading, spacing: 2) {
-                        Text(m.sender).font(.subheadline.weight(.semibold))
-                        Text(m.date.formatted(date: .abbreviated, time: .shortened)).font(.caption).foregroundStyle(Color(palette.secondaryText))
+                        Text(m.sender).font(.m(.subheadline, .semibold))
+                        Text(m.date.formatted(date: .abbreviated, time: .shortened)).font(.m(.caption)).foregroundStyle(Color(palette.secondaryText))
                     }
                 }
                 if !m.recipients.isEmpty {
-                    Text("Címzett: \(m.recipients.joined(separator: ", "))").font(.footnote).foregroundStyle(Color(palette.secondaryText))
+                    Text("Címzett: \(m.recipients.joined(separator: ", "))").font(.m(.footnote)).foregroundStyle(Color(palette.secondaryText))
                 }
                 Group {
                     if full == nil && !failed {
@@ -132,7 +132,7 @@ struct MessageDetailView: View {
                     Button {
                         reply(ComposeDraft(subject: m.subject.hasPrefix("Re:") ? m.subject : "Re: \(m.subject)", replyTo: m.sender))
                     } label: {
-                        Label("Válasz", systemImage: "arrowshape.turn.up.left").font(.body.weight(.semibold)).frame(maxWidth: .infinity, minHeight: 34)
+                        Label("Válasz", systemImage: "arrowshape.turn.up.left").font(.m(.body, .semibold)).frame(maxWidth: .infinity, minHeight: 34)
                     }
                     .radirProminentButton()
                     .controlSize(.large)
@@ -193,7 +193,7 @@ struct ComposeView: View {
                         .frame(minHeight: 240)
                         .radirPanel()
                     if let errorText {
-                        Label(errorText, systemImage: "exclamationmark.triangle.fill").foregroundStyle(Color(palette.warning)).font(.subheadline.weight(.semibold))
+                        Label(errorText, systemImage: "exclamationmark.triangle.fill").foregroundStyle(Color(palette.warning)).font(.m(.subheadline, .semibold))
                     }
                 }
                 .padding(16)
@@ -253,7 +253,7 @@ struct RecipientPicker: View {
                     HStack {
                         VStack(alignment: .leading) {
                             Text(r.name)
-                            Text(r.type.code == "IGAZGATOSAG" ? "Igazgatóság" : "Tanár").font(.caption).foregroundStyle(.secondary)
+                            Text(r.type.code == "IGAZGATOSAG" ? "Igazgatóság" : "Tanár").font(.m(.caption)).foregroundStyle(.secondary)
                         }
                         Spacer()
                         if selection.contains(r) { Image(systemName: "checkmark").foregroundStyle(.tint) }

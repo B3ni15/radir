@@ -34,12 +34,12 @@ struct ThemesView: View {
                         Button {
                             Task { await share() }
                         } label: {
-                            Label("Megosztás", systemImage: "square.and.arrow.up").font(.body.weight(.semibold)).frame(maxWidth: .infinity, minHeight: 32)
+                            Label("Megosztás", systemImage: "square.and.arrow.up").font(.m(.body, .semibold)).frame(maxWidth: .infinity, minHeight: 32)
                         }
                         .radirProminentButton()
                         .disabled(shareName.trimmingCharacters(in: .whitespaces).isEmpty || working || app.current?.isDemo == true)
                         if app.current?.isDemo == true {
-                            Text("Demó fiókkal nem lehet témát megosztani.").font(.footnote).foregroundStyle(Color(palette.secondaryText))
+                            Text("Demó fiókkal nem lehet témát megosztani.").font(.m(.footnote)).foregroundStyle(Color(palette.secondaryText))
                         }
                         if let sharedCode {
                             HStack {
@@ -58,7 +58,7 @@ struct ThemesView: View {
                             HStack {
                                 ThemeSwatch(theme: t)
                                 VStack(alignment: .leading) {
-                                    Text(t.displayName).font(.body.weight(.semibold))
+                                    Text(t.displayName).font(.m(.body, .semibold))
                                     Text(t.publicID).font(.caption.monospaced()).foregroundStyle(Color(palette.secondaryText))
                                 }
                                 Spacer()
@@ -86,7 +86,7 @@ struct ThemesView: View {
                 }
 
                 if let status {
-                    Text(status).font(.footnote).foregroundStyle(Color(palette.secondaryText)).padding(.horizontal, 6)
+                    Text(status).font(.m(.footnote)).foregroundStyle(Color(palette.secondaryText)).padding(.horizontal, 6)
                 }
             }
             .padding(16)
@@ -170,8 +170,8 @@ struct ThemeCard: View {
         VStack(alignment: .leading, spacing: 8) {
             RoundedRectangle(cornerRadius: 10).fill(Color(ARGB(theme.panelsColor))).frame(height: 26)
                 .overlay(alignment: .leading) { Capsule().fill(Color(ARGB(theme.accentColor))).frame(width: 40, height: 8).padding(.leading, 8) }
-            Text(theme.displayName).font(.subheadline.weight(.semibold)).foregroundStyle(Color(ARGB(theme.iconColor))).lineLimit(1)
-            Text(theme.nickname).font(.caption).foregroundStyle(Color(ARGB(theme.iconColor)).opacity(0.7)).lineLimit(1)
+            Text(theme.displayName).font(.m(.subheadline, .semibold)).foregroundStyle(Color(ARGB(theme.iconColor))).lineLimit(1)
+            Text(theme.nickname).font(.m(.caption)).foregroundStyle(Color(ARGB(theme.iconColor)).opacity(0.7)).lineLimit(1)
         }
         .padding(12)
         .background(Color(ARGB(theme.backgroundColor)), in: .rect(cornerRadius: 18, style: .continuous))

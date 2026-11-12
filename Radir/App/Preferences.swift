@@ -91,5 +91,18 @@ final class Preferences {
     }
 
     /// Az idő, amihez az élő kártya és a Live Activity igazodik.
-    var schoolNow: Date { .now.addingTimeInterval(TimeInterval(bellDelay)) }
+    var schoolNow: Date { .radirNow.addingTimeInterval(TimeInterval(bellDelay)) }
+}
+
+extension Date {
+    /// Az app „most”-ja. DEBUG buildben a `-RadirClock 09:12` kapcsoló a mai nap adott percére rögzíti (képernyőképekhez).
+    static var radirNow: Date {
+        #if DEBUG
+        if let hm = UserDefaults.standard.string(forKey: "RadirClock")?.split(separator: ":").compactMap({ Int($0) }), hm.count == 2,
+           let fixed = Calendar.current.date(bySettingHour: hm[0], minute: hm[1], second: 0, of: .now) {
+            return fixed
+        }
+        #endif
+        return .now
+    }
 }

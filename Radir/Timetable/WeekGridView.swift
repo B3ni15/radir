@@ -21,7 +21,7 @@ struct WeekGridView: View {
                         Color.clear.frame(width: 22, height: 1)
                         ForEach(week.days, id: \.self) { d in
                             Text(d.formatted(Date.FormatStyle(timeZone: Calendar.school.timeZone).weekday(.abbreviated)).capitalized)
-                                .font(.caption.weight(.bold)).foregroundStyle(Color(palette.secondaryText))
+                                .font(.m(.caption, .bold)).foregroundStyle(Color(palette.secondaryText))
                                 .frame(width: w)
                         }
                     }
@@ -50,7 +50,7 @@ struct WeekGridView: View {
         if let l = lesson {
             Button { detail = l } label: {
                 VStack(alignment: .leading, spacing: 2) {
-                    Text(l.title).font(.caption2.weight(.semibold)).lineLimit(3).minimumScaleFactor(0.8).strikethrough(l.isCancelled)
+                    Text(l.title).font(.m(.caption2, .semibold)).lineLimit(3).minimumScaleFactor(0.8).strikethrough(l.isCancelled)
                     Text(l.room).font(.system(size: 10)).foregroundStyle(Color(palette.secondaryText)).lineLimit(1)
                 }
                 .frame(width: width - 10, height: 56, alignment: .topLeading)

@@ -15,4 +15,4 @@ A Filc → reFilc → Firka család folytatása. Licenc: AGPL-3.0.
 xcodebuild -project Radir.xcodeproj -scheme Radir -destination 'generic/platform=iOS Simulator' -derivedDataPath DerivedData build
 ```
 
-Vagy nyisd meg a `Radir.xcodeproj`-ot Xcode-ban. Demó fiók a login képernyőn: „Kipróbálom demóval”.
+Vagy nyisd meg a `Radir.xcodeproj`-ot Xcode-ban. Demó fiók a login képernyőn: „Kipróbálom demóval” (Debug, TestFlight és App Review buildben; élesben a logó 2 mp-es nyomására jelenik meg).

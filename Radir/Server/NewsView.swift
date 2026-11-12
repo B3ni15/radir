@@ -42,11 +42,11 @@ struct NewsCard: View {
                 }
             }
             if !item.content.isEmpty {
-                Text(HTMLText.plain(item.content)).font(.subheadline).foregroundStyle(Color(palette.secondaryText))
+                Text(HTMLText.plain(item.content)).font(.m(.subheadline)).foregroundStyle(Color(palette.secondaryText))
             }
             if let url = URL(string: item.link), !item.link.isEmpty {
                 Link(item.openLabel.isEmpty ? String(localized: "Megnyitás") : item.openLabel, destination: url)
-                    .font(.subheadline.weight(.semibold))
+                    .font(.m(.subheadline, .semibold))
             }
         }
         .radirPanel()

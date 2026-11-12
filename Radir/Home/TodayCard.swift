@@ -8,8 +8,8 @@ struct TodayCard: View {
     @Environment(\.palette) private var palette
 
     var body: some View {
-        TimelineView(.periodic(from: .now, by: 1)) { context in
-            let now = context.date.addingTimeInterval(TimeInterval(app.prefs.bellDelay))
+        TimelineView(.periodic(from: .now, by: 1)) { _ in
+            let now = Date.radirNow.addingTimeInterval(TimeInterval(app.prefs.bellDelay))
             let lessons = LiveCard.relevant(app.timetable.day(now)?.lessons ?? [])
             let current = lessons.first { $0.start <= now && now < $0.end }
             let next = lessons.first { $0.start > now }
@@ -38,7 +38,7 @@ struct TodayCard: View {
                     VStack(alignment: .leading, spacing: 6) {
                         Text(lessons.isEmpty ? "Ma nincs órád" : "Mára végeztél!").font(.title(18, relativeTo: .headline))
                         Text(lessons.isEmpty ? "Pihenj, vagy nézd meg a heti órarendet." : "Ma nincs több órád.")
-                            .font(.subheadline).foregroundStyle(Color(palette.secondaryText))
+                            .font(.m(.subheadline)).foregroundStyle(Color(palette.secondaryText))
                     }
                     .padding(16)
                     .contentShape(.rect)
@@ -55,7 +55,10 @@ struct TodayCard: View {
 
     private func nowCard(icon: String, title: String, subtitle: String, highlight: Bool,
                          from: Date, to: Date, now: Date) -> some View {
-        VStack(alignment: .leading, spacing: 12) {
+        // a rendszeróra szerinti időzítők; DEBUG-ban a `-RadirClock` eltolásával
+        let shift = Date.radirNow.timeIntervalSinceNow
+        let (from, to, now) = (from - shift, to - shift, now - shift)
+        return VStack(alignment: .leading, spacing: 12) {
             HStack(alignment: .center, spacing: 12) {
                 Image(systemName: icon)
                     .font(.system(size: 18, weight: .semibold))
@@ -66,14 +69,14 @@ struct TodayCard: View {
                 VStack(alignment: .leading, spacing: 2) {
                     Text(title).font(.title(20, relativeTo: .headline)).lineLimit(1)
                     if !subtitle.isEmpty {
-                        Text(subtitle).font(.footnote)
+                        Text(subtitle).font(.m(.footnote))
                             .foregroundStyle(Color(highlight ? palette.accent : palette.secondaryText))
                             .lineLimit(1)
                     }
                 }
                 Spacer(minLength: 8)
                 VStack(alignment: .trailing, spacing: 0) {
-                    Text("még").font(.caption.weight(.semibold)).foregroundStyle(Color(palette.secondaryText))
+                    Text("még").font(.m(.caption, .semibold)).foregroundStyle(Color(palette.secondaryText))
                     Text(timerInterval: now...max(now, to), countsDown: true)
                         .font(.custom("Montserrat-Bold", size: 22, relativeTo: .title2))
                         .monospacedDigit()
@@ -91,14 +94,14 @@ struct TodayCard: View {
         HStack(spacing: 12) {
             LessonIndexBadge(text: lesson.index.map(String.init) ?? "+")
             VStack(alignment: .leading, spacing: 2) {
-                Text("Következő").font(.caption.weight(.semibold)).foregroundStyle(Color(palette.secondaryText))
-                Text(lesson.title).font(.body.weight(.semibold)).foregroundStyle(Color(palette.text)).lineLimit(1)
+                Text("Következő").font(.m(.caption, .semibold)).foregroundStyle(Color(palette.secondaryText))
+                Text(lesson.title).font(.m(.body, .semibold)).foregroundStyle(Color(palette.text)).lineLimit(1)
             }
             Spacer(minLength: 8)
             VStack(alignment: .trailing, spacing: 2) {
-                Text(lesson.start.schoolTime).font(.subheadline.weight(.semibold).monospacedDigit())
+                Text(lesson.start.schoolTime).font(.m(.subheadline, .semibold).monospacedDigit())
                 if !lesson.room.isEmpty {
-                    Text(lesson.room).font(.footnote).foregroundStyle(Color(palette.secondaryText))
+                    Text(lesson.room).font(.m(.footnote)).foregroundStyle(Color(palette.secondaryText))
                 }
             }
             .foregroundStyle(Color(palette.text))
@@ -127,7 +130,7 @@ struct CountdownDigits: View {
                                 .frame(width: 26, height: 34)
                                 .background(RoundedRectangle(cornerRadius: 8, style: .continuous).fill(Color(palette.background)))
                         }
-                        Text(part.1).font(.subheadline.weight(.medium)).foregroundStyle(Color(palette.secondaryText))
+                        Text(part.1).font(.m(.subheadline, .medium)).foregroundStyle(Color(palette.secondaryText))
                             .padding(.leading, 2)
                     }
                 }

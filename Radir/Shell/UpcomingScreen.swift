@@ -13,14 +13,14 @@ struct UpcomingScreen: View {
                 PanelGroup {
                     HStack(alignment: .top, spacing: 14) {
                         Image(systemName: icon)
-                            .font(.title2.weight(.semibold))
+                            .font(.m(.title2, .semibold))
                             .foregroundStyle(Color(palette.accent))
                             .frame(width: 48, height: 48)
                             .background(Circle().fill(Color(palette.accentSoft)))
                             .accessibilityHidden(true)
                         VStack(alignment: .leading, spacing: 4) {
                             Text("Hamarosan").font(.title(18, relativeTo: .headline))
-                            Text(description).font(.subheadline).foregroundStyle(Color(palette.secondaryText))
+                            Text(description).font(.m(.subheadline)).foregroundStyle(Color(palette.secondaryText))
                         }
                     }
                     .padding(16)

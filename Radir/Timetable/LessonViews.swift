@@ -17,25 +17,31 @@ struct LessonIndexBadge: View {
 
     var body: some View {
         Text(text)
-            .font(.custom("Montserrat-Bold", size: 15))
-            .foregroundStyle(isCurrent ? .white : Color(isFree ? palette.secondaryText : palette.accent))
-            .frame(width: 34, height: 34)
-            .background(Circle().fill(isCurrent ? Color(palette.accent) : (isFree ? .clear : Color(palette.accentSoft))))
-            .overlay(Circle().strokeBorder(Color(palette.separator), style: StrokeStyle(lineWidth: isFree ? 1.5 : 0, dash: [3, 3])))
+            // sima sorszám, mint a Firka órarendjében; a mostani óra akcentusszínű
+            .font(.custom("Montserrat-Bold", size: 18))
+            .foregroundStyle(isCurrent ? Color(palette.accent) : Color(palette.secondaryText).opacity(isFree ? 0.5 : 1))
+            .frame(width: 28, height: 34)
             .accessibilityHidden(true)
     }
+}
+
+extension Color {
+    /// Helyettesítés jelölése: sárga, ugyanúgy halvány háttérrel, mint az elmaradó óra pirosa.
+    static let substitution = Color(red: 0.96, green: 0.74, blue: 0.0)
 }
 
 struct Tag: View {
     let text: LocalizedStringKey
     let color: Color
+    @Environment(\.colorScheme) private var scheme
 
     var body: some View {
         Text(text)
-            .font(.caption2.weight(.bold))
+            .font(.m(.caption2, .bold))
             .padding(.horizontal, 7)
             .padding(.vertical, 3)
-            .foregroundStyle(color)
+            // világosban sötétebb felirat, különben a sárga nem olvasható
+            .foregroundStyle(scheme == .light ? color.mix(with: .black, by: 0.3) : color)
             .background(Capsule().fill(color.opacity(0.15)))
     }
 }
@@ -53,7 +59,7 @@ struct LessonRow: View {
                 LessonIndexBadge(text: lesson.index.map(String.init) ?? "+", isCurrent: isCurrent)
                 VStack(alignment: .leading, spacing: 3) {
                     Text(lesson.title)
-                        .font(.body.weight(.semibold))
+                        .font(.m(.body, .semibold))
                         .strikethrough(lesson.isCancelled)
                         .foregroundStyle(Color(lesson.isCancelled ? palette.secondaryText : palette.text))
                         .lineLimit(1)
@@ -61,20 +67,20 @@ struct LessonRow: View {
                     if lesson.isCancelled || lesson.isSubstitution || lesson.examID != nil {
                         HStack(spacing: 6) {
                             if lesson.isCancelled { Tag(text: "Elmarad", color: Color(palette.warning)) }
-                            if lesson.isSubstitution { Tag(text: "Helyettesítés", color: Color(palette.accent)) }
+                            if lesson.isSubstitution { Tag(text: "Helyettesítés", color: .substitution) }
                             if lesson.examID != nil { Tag(text: "Számonkérés", color: Color(palette.gradeColor(2)!)) }
                         }
                     }
                 }
                 Spacer(minLength: 8)
                 VStack(alignment: .trailing, spacing: 2) {
-                    Text(lesson.start.schoolTime).font(.subheadline.weight(.semibold).monospacedDigit())
-                    Text(lesson.end.schoolTime).font(.footnote.monospacedDigit()).foregroundStyle(Color(palette.secondaryText))
+                    Text(lesson.start.schoolTime).font(.m(.subheadline, .semibold).monospacedDigit())
+                    Text(lesson.end.schoolTime).font(.m(.footnote).monospacedDigit()).foregroundStyle(Color(palette.secondaryText))
                 }
                 .foregroundStyle(Color(palette.text))
             }
             if isCurrent {
-                ProgressView(timerInterval: lesson.start...lesson.end, countsDown: false) { EmptyView() } currentValueLabel: { EmptyView() }
+                ProgressView(timerInterval: (lesson.start - Date.radirNow.timeIntervalSinceNow)...(lesson.end - Date.radirNow.timeIntervalSinceNow), countsDown: false) { EmptyView() } currentValueLabel: { EmptyView() }
                     .tint(Color(palette.accent))
                     .padding(.leading, 46)
             }
@@ -89,7 +95,7 @@ struct LessonRow: View {
         let parts = [lesson.room, lesson.substituteTeacher ?? lesson.teacher].filter { !$0.isEmpty }
         if !parts.isEmpty {
             Text(parts.joined(separator: " · "))
-                .font(.footnote)
+                .font(.m(.footnote))
                 .foregroundStyle(Color(lesson.isSubstitution ? palette.accent : palette.secondaryText))
                 .lineLimit(1)
         }
@@ -103,7 +109,7 @@ struct FreeLessonRow: View {
     var body: some View {
         HStack(spacing: 12) {
             LessonIndexBadge(text: String(index), isFree: true)
-            Text("Lyukas óra").font(.body.weight(.semibold)).foregroundStyle(Color(palette.secondaryText))
+            Text("Lyukas óra").font(.m(.body, .semibold)).foregroundStyle(Color(palette.secondaryText))
             Spacer()
         }
         .padding(.horizontal, 14)
@@ -123,18 +129,18 @@ struct BreakRow: View {
         let isNow = from <= now && now < to
         HStack(spacing: 8) {
             Image(systemName: "cup.and.saucer.fill")
-                .font(.caption)
+                .font(.m(.caption))
                 .accessibilityHidden(true)
             if isNow {
                 Text("Szünet, még")
-                Text(timerInterval: now...to, countsDown: true).monospacedDigit()
+                Text(timerInterval: Date.now...max(.now, to - Date.radirNow.timeIntervalSinceNow), countsDown: true).monospacedDigit()
             } else {
                 Text("\(minutes) perc szünet")
             }
             Spacer()
             Text("\(from.schoolTime) – \(to.schoolTime)").monospacedDigit()
         }
-        .font(.footnote.weight(.semibold))
+        .font(.m(.footnote, .semibold))
         .foregroundStyle(Color(isNow ? palette.accent : palette.secondaryText))
         .padding(.horizontal, 14)
         .padding(.vertical, isNow ? 8 : 4)
@@ -162,7 +168,7 @@ struct LessonDetailSheet: View {
                         .accessibilityHidden(true)
                     Text(lesson.title).font(.title(26, relativeTo: .title)).multilineTextAlignment(.center)
                     Text("\(lesson.start.formatted(.dateTime.weekday(.wide).month(.abbreviated).day())), \(lesson.start.schoolTime) – \(lesson.end.schoolTime)")
-                        .font(.subheadline)
+                        .font(.m(.subheadline))
                         .foregroundStyle(Color(palette.secondaryText))
                     if lesson.isCancelled { Tag(text: "Elmarad", color: Color(palette.warning)) }
                 }
@@ -187,7 +193,7 @@ struct LessonDetailSheet: View {
 
     private func detail(_ title: LocalizedStringKey, _ value: String, _ icon: String) -> some View {
         PanelRow(title: title, systemImage: icon) {
-            Text(value).font(.subheadline).foregroundStyle(Color(palette.secondaryText)).multilineTextAlignment(.trailing)
+            Text(value).font(.m(.subheadline)).foregroundStyle(Color(palette.secondaryText)).multilineTextAlignment(.trailing)
         }
     }
 }

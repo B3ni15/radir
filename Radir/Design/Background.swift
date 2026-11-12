@@ -1,20 +1,13 @@
 import RadirKit
 import SwiftUI
 
-/// Tollkék tónusú füzetlap: színátmenet, fent halvány kockás vonalakkal.
+/// Lapos háttér, mint a Firkában; csak saját témánál lehet színátmenetes (`backgroundTop`).
 struct RadirBackground: View {
-    var gridHeight: CGFloat = 320
     @Environment(\.palette) private var palette
 
     var body: some View {
-        ZStack(alignment: .top) {
-            LinearGradient(colors: [Color(palette.backgroundTop), Color(palette.background)],
-                           startPoint: .top, endPoint: .init(x: 0.5, y: 0.45))
-            GridLines(spacing: 24)
-                .stroke(Color(palette.grid), lineWidth: 1)
-                .frame(height: gridHeight)
-                .mask(LinearGradient(colors: [.black.opacity(0.9), .clear], startPoint: .top, endPoint: .bottom))
-        }
+        LinearGradient(colors: [Color(palette.backgroundTop), Color(palette.background)],
+                       startPoint: .top, endPoint: .init(x: 0.5, y: 0.45))
         .ignoresSafeArea()
         .accessibilityHidden(true)
     }

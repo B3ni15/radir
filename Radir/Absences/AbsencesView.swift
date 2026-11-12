@@ -54,7 +54,7 @@ struct AbsencesView: View {
     private func stat(_ title: LocalizedStringKey, _ value: Int, _ color: Color) -> some View {
         VStack(alignment: .leading, spacing: 4) {
             Text("\(value)").font(.custom("Montserrat-Bold", size: 28, relativeTo: .title)).foregroundStyle(color)
-            Text(title).font(.footnote.weight(.semibold)).foregroundStyle(Color(palette.secondaryText))
+            Text(title).font(.m(.footnote, .semibold)).foregroundStyle(Color(palette.secondaryText))
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding(14)
@@ -65,12 +65,11 @@ struct AbsencesView: View {
     private func subjectRow(_ g: AbsenceSummary.BySubject) -> some View {
         HStack(spacing: 12) {
             Image(systemName: SubjectIcon.name(for: g.subject))
-                .font(.system(size: 16, weight: .semibold))
-                .foregroundStyle(Color(palette.accent))
-                .frame(width: 38, height: 38)
-                .overlay(Circle().strokeBorder(Color(palette.separator), lineWidth: 1.5))
+                .font(.system(size: 20, weight: .medium))
+                .foregroundStyle(Color(palette.text).opacity(0.75))
+                .frame(width: 32, height: 38)
                 .accessibilityHidden(true)
-            Text(g.subject.name).font(.body.weight(.semibold)).foregroundStyle(Color(palette.text)).lineLimit(2)
+            Text(g.subject.name).font(.m(.body, .semibold)).foregroundStyle(Color(palette.text)).lineLimit(2)
             Spacer(minLength: 8)
             if g.late > 0 { Tag(text: "\(g.late) késés", color: Color(palette.gradeColor(2)!)) }
             if g.absences > 0 { Tag(text: "\(g.absences) óra", color: Color(palette.warning)) }

@@ -30,7 +30,7 @@ struct AppearanceSettingsView: View {
                                     Circle().fill(Color(scheme == .dark ? a.dark : a.light))
                                         .frame(width: 44, height: 44)
                                         .overlay(Circle().strokeBorder(Color(palette.text), lineWidth: prefs.accentIndex == i ? 3 : 0).padding(-4))
-                                    Text(a.name).font(.caption2).foregroundStyle(Color(palette.secondaryText)).lineLimit(1)
+                                    Text(a.name).font(.m(.caption2)).foregroundStyle(Color(palette.secondaryText)).lineLimit(1)
                                 }
                             }
                             .buttonStyle(.plain)
@@ -45,9 +45,9 @@ struct AppearanceSettingsView: View {
                     VStack(spacing: 4) {
                         Toggle(isOn: $prefs.customEnabled) {
                             VStack(alignment: .leading, spacing: 2) {
-                                Text("Saját színek").font(.body.weight(.semibold))
+                                Text("Saját színek").font(.m(.body, .semibold))
                                 Text("Bármilyen szín, mint a Firkában. A sötét és világos mód ilyenkor ugyanazokat a színeket használja.")
-                                    .font(.footnote).foregroundStyle(Color(palette.secondaryText))
+                                    .font(.m(.footnote)).foregroundStyle(Color(palette.secondaryText))
                             }
                         }
                         .padding(.horizontal, 14).padding(.vertical, 10)
@@ -57,7 +57,7 @@ struct AppearanceSettingsView: View {
                             customColor("Kártyák", "surface", fallback: palette.surface)
                             customColor("Szöveg", "text", fallback: palette.text)
                             Button("Saját színek törlése") { prefs.customColors = [:] }
-                                .font(.subheadline.weight(.semibold)).padding(12)
+                                .font(.m(.subheadline, .semibold)).padding(12)
                         }
                     }
                     .radirPanel()
@@ -79,7 +79,7 @@ struct AppearanceSettingsView: View {
                         }
                         if prefs.gradeColors != nil {
                             Button("Alap jegyszínek visszaállítása") { prefs.gradeColors = nil }
-                                .font(.subheadline.weight(.semibold)).padding(12)
+                                .font(.m(.subheadline, .semibold)).padding(12)
                         }
                     }
                     .radirPanel()
@@ -148,7 +148,7 @@ struct GeneralSettingsView: View {
                 PanelGroup(title: "Jegyek") {
                     VStack(alignment: .leading, spacing: 6) {
                         PanelRow(title: "Kerekítés", subtitle: "Ennyitől kerekít felfelé a jegyszín (pl. 3,50 → 4).", systemImage: "arrow.up.right") {
-                            Text(prefs.roundingThreshold, format: .number.precision(.fractionLength(1))).font(.body.weight(.semibold).monospacedDigit())
+                            Text(prefs.roundingThreshold, format: .number.precision(.fractionLength(1))).font(.m(.body, .semibold).monospacedDigit())
                         }
                         Slider(value: $prefs.roundingThreshold, in: 0.1...0.9, step: 0.1).padding([.horizontal, .bottom], 14)
                     }
@@ -157,7 +157,7 @@ struct GeneralSettingsView: View {
                 PanelGroup(title: "Órarend") {
                     PanelRow(title: "Csengetési eltolás", subtitle: "Ha az iskola órája siet vagy késik.", systemImage: "bell.badge") {
                         Stepper(value: $prefs.bellDelay, in: -300...300, step: 15) {
-                            Text(delayText(prefs.bellDelay)).font(.subheadline.weight(.semibold).monospacedDigit())
+                            Text(delayText(prefs.bellDelay)).font(.m(.subheadline, .semibold).monospacedDigit())
                         }
                         .fixedSize()
                     }

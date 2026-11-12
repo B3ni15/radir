@@ -50,6 +50,23 @@ final class AppModel {
     private(set) var notebook = NotebookModel()
     private(set) var messages = MessagesModel()
     let liveActivity = LiveActivityController()
+
+    /// Az év végi összefoglaló jegyei: csak bizonyítványosztás után (van év végi jegy).
+    var summaryBook: GradeBook? {
+        guard var book = grades.book else { return nil }
+        #if DEBUG
+        // `-RadirPreviewSummary` indítási kapcsolóval tanév közben is kipróbálható: a kerekített átlag lesz a „bizonyítvány”.
+        if ProcessInfo.processInfo.arguments.contains("-RadirPreviewSummary") && !YearSummary.isAvailable(book) {
+            book.grades += book.subjects.compactMap { s in
+                Averages.weighted(book.grades(for: s)).map { avg in
+                    Grade(id: "preview-\(s.id)", date: .now, writeDate: .now, value: Averages.roundedGrade(avg), valueName: "",
+                          shortName: "", weight: 100, kind: .endYear, subject: s, topic: "", mode: "", teacher: "", valueTypeID: "")
+                }
+            }
+        }
+        #endif
+        return YearSummary.isAvailable(book) ? book : nil
+    }
     let cache = AccountCache(root: URL.applicationSupportDirectory.appending(path: "cache"))
 
     init(store: AccountStore = AppModel.defaultStore(), transport: any HTTPTransport = URLSessionTransport()) {

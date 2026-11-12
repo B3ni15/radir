@@ -66,9 +66,9 @@ struct GradesView: View {
             } label: {
                 HStack(spacing: 4) {
                     Text(Self.periods[period].title)
-                    Image(systemName: "chevron.down").font(.caption.weight(.bold))
+                    Image(systemName: "chevron.down").font(.m(.caption, .bold))
                 }
-                .font(.subheadline.weight(.semibold))
+                .font(.m(.subheadline, .semibold))
                 .padding(.horizontal, 14)
                 .padding(.vertical, 8)
                 .foregroundStyle(Color(palette.text))
@@ -88,13 +88,12 @@ struct GradesView: View {
         let grades = book.grades(for: subject)
         return HStack(spacing: 12) {
             Image(systemName: SubjectIcon.name(for: subject))
-                .font(.system(size: 16, weight: .semibold))
-                .foregroundStyle(Color(palette.accent))
-                .frame(width: 38, height: 38)
-                .overlay(Circle().strokeBorder(Color(palette.separator), lineWidth: 1.5))
+                .font(.system(size: 20, weight: .medium))
+                .foregroundStyle(Color(palette.text).opacity(0.75))
+                .frame(width: 32, height: 38)
                 .accessibilityHidden(true)
             Text(subject.name)
-                .font(.body.weight(.semibold))
+                .font(.m(.body, .semibold))
                 .foregroundStyle(Color(palette.text))
                 .lineLimit(2)
                 .minimumScaleFactor(0.85)

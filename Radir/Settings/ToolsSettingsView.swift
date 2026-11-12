@@ -32,7 +32,7 @@ struct ToolsSettingsView: View {
                 }
 
                 if let status {
-                    Text(status).font(.footnote).foregroundStyle(Color(palette.secondaryText)).padding(.horizontal, 6)
+                    Text(status).font(.m(.footnote)).foregroundStyle(Color(palette.secondaryText)).padding(.horizontal, 6)
                 }
             }
             .padding(16)

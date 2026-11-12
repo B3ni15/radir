@@ -72,9 +72,6 @@ struct SettingsView: View {
                         NavigationLink { NewsView() } label: {
                             PanelRow(title: "Hírek", systemImage: "newspaper") { Chevron() }
                         }.buttonStyle(.plain)
-                        NavigationLink { SummaryView() } label: {
-                            PanelRow(title: "Év végi összefoglaló", systemImage: "sparkles.rectangle.stack") { Chevron() }
-                        }.buttonStyle(.plain)
                         if let current = model.current {
                             NavigationLink { StudentInfoView(account: current) } label: {
                                 PanelRow(title: "Személyes adatok", systemImage: "person.text.rectangle") { Chevron() }
@@ -97,7 +94,7 @@ struct SettingsView: View {
                     }
 
                     Text("Radír \(AppModel.appVersion)")
-                        .font(.footnote)
+                        .font(.m(.footnote))
                         .foregroundStyle(Color(palette.secondaryText))
                 }
                 .padding(16)
@@ -141,18 +138,17 @@ struct SettingsView: View {
     private func profile(_ account: Account) -> some View {
         VStack(spacing: 10) {
             AvatarView(name: account.student.name, size: 88)
-                .shadow(color: Color(palette.accent).opacity(0.35), radius: 16, y: 8)
             Text(account.student.name)
                 .font(.title(24, relativeTo: .title))
                 .foregroundStyle(Color(palette.text))
                 .multilineTextAlignment(.center)
             Text(account.student.schoolName)
-                .font(.subheadline)
+                .font(.m(.subheadline))
                 .foregroundStyle(Color(palette.secondaryText))
                 .multilineTextAlignment(.center)
             if account.isDemo {
                 Text("Demó fiók")
-                    .font(.caption.weight(.bold))
+                    .font(.m(.caption, .bold))
                     .padding(.horizontal, 10)
                     .padding(.vertical, 4)
                     .foregroundStyle(Color(palette.accent))
@@ -167,16 +163,16 @@ struct SettingsView: View {
         HStack(spacing: 12) {
             AvatarView(name: account.student.name, size: 36)
             VStack(alignment: .leading, spacing: 2) {
-                Text(account.student.name).font(.body.weight(.semibold)).foregroundStyle(Color(palette.text))
+                Text(account.student.name).font(.m(.body, .semibold)).foregroundStyle(Color(palette.text))
                 Text(account.needsRelogin ? "Újra be kell lépni" : LocalizedStringKey(account.student.schoolName))
-                    .font(.footnote.weight(account.needsRelogin ? .semibold : .regular))
+                    .font(.m(.footnote, account.needsRelogin ? .semibold : .regular))
                     .foregroundStyle(account.needsRelogin ? Color(palette.warning) : Color(palette.secondaryText))
                     .lineLimit(1)
             }
             Spacer()
             if account.id == model.current?.id {
                 Image(systemName: "checkmark.circle.fill")
-                    .font(.title3)
+                    .font(.m(.title3))
                     .foregroundStyle(Color(palette.accent))
                     .accessibilityLabel("Aktív fiók")
             }

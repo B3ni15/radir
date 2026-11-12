@@ -46,13 +46,13 @@ struct CalculatorView: View {
                             }
                             .frame(maxWidth: .infinity)
                             VStack(alignment: .leading, spacing: 4) {
-                                Text("Súly: \(Int(weight))%").font(.subheadline.weight(.semibold))
+                                Text("Súly: \(Int(weight))%").font(.m(.subheadline, .semibold))
                                 Slider(value: $weight, in: 50...400, step: 50)
                             }
                             Button {
                                 withAnimation(.snappy) { ghosts.append(.ghost(value: value, weight: Int(weight), subject: subject)) }
                             } label: {
-                                Label("Hozzáadás", systemImage: "plus").font(.body.weight(.semibold)).frame(maxWidth: .infinity, minHeight: 32)
+                                Label("Hozzáadás", systemImage: "plus").font(.m(.body, .semibold)).frame(maxWidth: .infinity, minHeight: 32)
                             }
                             .radirProminentButton()
                             .disabled(ghosts.count >= 50)
@@ -65,7 +65,7 @@ struct CalculatorView: View {
                             ForEach(ghosts) { g in
                                 HStack {
                                     GradeBubble(grade: g, size: 36)
-                                    Text("\(g.weight)%").font(.subheadline.weight(.semibold))
+                                    Text("\(g.weight)%").font(.m(.subheadline, .semibold))
                                     Spacer()
                                     Button("Törlés", systemImage: "xmark.circle.fill") {
                                         withAnimation(.snappy) { ghosts.removeAll { $0.id == g.id } }
@@ -94,8 +94,8 @@ struct CalculatorView: View {
 
     private func avgBlock(_ title: LocalizedStringKey, _ v: Double?) -> some View {
         VStack(spacing: 6) {
-            Text(title).font(.footnote.weight(.semibold)).foregroundStyle(Color(palette.secondaryText))
-            if let v { AverageBadge(value: v) } else { Text("–").font(.title3.weight(.bold)) }
+            Text(title).font(.m(.footnote, .semibold)).foregroundStyle(Color(palette.secondaryText))
+            if let v { AverageBadge(value: v) } else { Text("–").font(.m(.title3, .bold)) }
         }
     }
 }
@@ -115,14 +115,14 @@ struct GoalPlannerView: View {
             ScrollView {
                 VStack(spacing: 18) {
                     VStack(spacing: 10) {
-                        Text("Célátlag").font(.footnote.weight(.semibold)).foregroundStyle(Color(palette.secondaryText))
+                        Text("Célátlag").font(.m(.footnote, .semibold)).foregroundStyle(Color(palette.secondaryText))
                         Text(goal, format: .number.precision(.fractionLength(2)))
                             .font(.custom("Montserrat-Bold", size: 44, relativeTo: .largeTitle))
                             .foregroundStyle(Color(palette.gradeColor(forAverage: goal)).gradeInk(.light))
                             .contentTransition(.numericText())
                         Slider(value: $goal, in: 2...5, step: 0.05)
                         if let avg = Averages.weighted(grades) {
-                            Text("Most: \(avg, format: .number.precision(.fractionLength(2)))").font(.subheadline).foregroundStyle(Color(palette.secondaryText))
+                            Text("Most: \(avg, format: .number.precision(.fractionLength(2)))").font(.m(.subheadline)).foregroundStyle(Color(palette.secondaryText))
                         }
                     }
                     .radirPanel()
@@ -167,7 +167,7 @@ struct GoalPlannerView: View {
 
     private func planRow(_ plan: GoalPlan) -> some View {
         VStack(alignment: .leading, spacing: 10) {
-            Text("\(plan.grades.count) jegy kell").font(.subheadline.weight(.semibold)).foregroundStyle(Color(palette.secondaryText))
+            Text("\(plan.grades.count) jegy kell").font(.m(.subheadline, .semibold)).foregroundStyle(Color(palette.secondaryText))
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack(spacing: 6) {
                     ForEach(Array(plan.grades.enumerated()), id: \.offset) { _, v in

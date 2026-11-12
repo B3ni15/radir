@@ -1,34 +1,146 @@
 {
   "sourceLanguage" : "hu",
   "strings" : {
-    "Betűtípus: Montserrat" : {
+    "Minden, ami ma számít" : {
       "localizations" : {
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Schriftart: Montserrat"
+            "value" : "Alles, was heute zählt"
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Font: Montserrat"
+            "value" : "Everything that matters today"
           }
         }
       }
     },
-    "© The Montserrat Project Authors, SIL Open Font License 1.1" : {
+    "A mostani és a következő órád, a házik, a dolgozatok és az új jegyeid egy helyen." : {
       "localizations" : {
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "© The Montserrat Project Authors, SIL Open Font License 1.1"
+            "value" : "Deine aktuelle und nächste Stunde, Hausaufgaben, Tests und neue Noten an einem Ort."
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "© The Montserrat Project Authors, SIL Open Font License 1.1"
+            "value" : "Your current and next lesson, homework, tests and new grades in one place."
+          }
+        }
+      }
+    },
+    "Látod, merre tart az átlagod" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sieh, wohin dein Durchschnitt geht"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "See where your average is heading"
+          }
+        }
+      }
+    },
+    "Grafikon, osztályátlag és jegyeloszlás. Jegykalkulátorral és céltervezővel." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Diagramm, Klassendurchschnitt und Notenverteilung. Mit Notenrechner und Zielplaner."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Chart, class average and grade distribution. With a grade calculator and goal planner."
+          }
+        }
+      }
+    },
+    "Az órarended, élőben" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dein Stundenplan, live"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your timetable, live"
+          }
+        }
+      }
+    },
+    "Szünetek, helyettesítések, elmaradt órák. A következő órád a zárolt képernyőn is." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pausen, Vertretungen, ausgefallene Stunden. Deine nächste Stunde auch auf dem Sperrbildschirm."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Breaks, substitutions, cancelled lessons. Your next lesson on the Lock Screen too."
+          }
+        }
+      }
+    },
+    "Év végén jön a bizonyítvány" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Am Jahresende kommt das Zeugnis"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "At year end, the report card"
+          }
+        }
+      }
+    },
+    "Egy kis összefoglaló az évedről: jegyek, kedvenc óra, és hogy milyen diák voltál." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ein kleiner Rückblick auf dein Jahr: Noten, Lieblingsfach und was für ein Schüler du warst."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A little recap of your year: grades, favourite lesson, and what kind of student you were."
+          }
+        }
+      }
+    },
+    "Ingyenes, reklám nélkül. A belépés a KRÉTA saját oldalán történik." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kostenlos, ohne Werbung. Die Anmeldung erfolgt auf der eigenen Seite von KRÉTA."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Free, no ads. You sign in on KRÉTA's own page."
           }
         }
       }
@@ -189,6 +301,7 @@
       }
     },
     "%lld alkalommal" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -364,6 +477,22 @@
         }
       }
     },
+    "© The Montserrat Project Authors, SIL Open Font License 1.1" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "© The Montserrat Project Authors, SIL Open Font License 1.1"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "© The Montserrat Project Authors, SIL Open Font License 1.1"
+          }
+        }
+      }
+    },
     "×%lld" : {
       "localizations" : {
         "de" : {
@@ -524,6 +653,22 @@
         }
       }
     },
+    "A bizonyítványod 🎓" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dein Zeugnis 🎓"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your report card 🎓"
+          }
+        }
+      }
+    },
     "A busz mindig pont akkor késik, igaz?" : {
       "localizations" : {
         "de" : {
@@ -680,6 +825,22 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Top right: accounts, Live Activity and other settings."
+          }
+        }
+      }
+    },
+    "A kedvenc órád 💓" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dein Lieblingsfach 💓"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your favourite lesson 💓"
           }
         }
       }
@@ -925,6 +1086,7 @@
       }
     },
     "A személyiséged" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -936,6 +1098,22 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Your personality"
+          }
+        }
+      }
+    },
+    "A te személyiséged..." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Deine Persönlichkeit ist..."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your personality is..."
           }
         }
       }
@@ -1000,6 +1178,22 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Recommended path"
+          }
+        }
+      }
+    },
+    "Ajjaj... 🥴" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Autsch... 🥴"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ouch... 🥴"
           }
         }
       }
@@ -1228,6 +1422,22 @@
         }
       }
     },
+    "Az átlagod" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dein Durchschnitt"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your average"
+          }
+        }
+      }
+    },
     "Az átlagod most is legalább ennyi." : {
       "localizations" : {
         "de" : {
@@ -1261,6 +1471,7 @@
       }
     },
     "Az éved a Radírban" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -1272,6 +1483,22 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Your year in Radír"
+          }
+        }
+      }
+    },
+    "Az éved számokban" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dein Jahr in Zahlen"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your year in numbers"
           }
         }
       }
@@ -1528,6 +1755,22 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Load"
+          }
+        }
+      }
+    },
+    "Betűtípus: Montserrat" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Schriftart: Montserrat"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Font: Montserrat"
           }
         }
       }
@@ -1965,6 +2208,7 @@
       }
     },
     "Előbb töltsd be a jegyeidet" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -2108,7 +2352,24 @@
         }
       }
     },
+    "Év végi átlagod" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Jahresdurchschnitt"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Year-end average"
+          }
+        }
+      }
+    },
     "Év végi összefoglaló" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -2156,6 +2417,22 @@
         }
       }
     },
+    "Ez nem igazán tetszett..." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Das mochtest du nicht so..."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You didn't like this one..."
+          }
+        }
+      }
+    },
     "Ezen a héten nincs iskola" : {
       "localizations" : {
         "de" : {
@@ -2189,6 +2466,7 @@
       }
     },
     "Ezen még dolgozhatsz" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -2716,6 +2994,22 @@
         }
       }
     },
+    "hiányzás" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fehlstunden"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "absences"
+          }
+        }
+      }
+    },
     "Hiányzás" : {
       "localizations" : {
         "de" : {
@@ -2749,6 +3043,7 @@
       }
     },
     "hiányzott óra" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -2972,6 +3267,22 @@
         }
       }
     },
+    "igazolatlan" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "unentschuldigt"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "unexcused"
+          }
+        }
+      }
+    },
     "Igazolatlan" : {
       "localizations" : {
         "de" : {
@@ -3117,6 +3428,7 @@
       }
     },
     "Itt az év végi összefoglalód!" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -3468,6 +3780,38 @@
         }
       }
     },
+    "Jó éved volt, %@!" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Du hattest ein gutes Jahr, %@!"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You had a good year, %@!"
+          }
+        }
+      }
+    },
+    "Jó éved volt? Nézzük meg!" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gutes Jahr gehabt? Schauen wir mal!"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Had a good year? Let's see!"
+          }
+        }
+      }
+    },
     "Jó reggelt, %@!" : {
       "localizations" : {
         "de" : {
@@ -3596,6 +3940,22 @@
         }
       }
     },
+    "Késtél!" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zu spät!"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You're late!"
+          }
+        }
+      }
+    },
     "Kész" : {
       "localizations" : {
         "de" : {
@@ -3640,6 +4000,22 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "I'm done with it"
+          }
+        }
+      }
+    },
+    "Kezdés" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Los geht’s"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Start"
           }
         }
       }
@@ -3789,6 +4165,7 @@
       }
     },
     "Koppints a felfedéshez" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -3800,6 +4177,22 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Tap to reveal"
+          }
+        }
+      }
+    },
+    "Koppints a felfedéshez..." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tippe zum Aufdecken..."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tap to reveal..."
           }
         }
       }
@@ -3939,6 +4332,7 @@
       }
     },
     "Leggyakoribb jegyed" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -3971,6 +4365,7 @@
       }
     },
     "Legjobb tantárgy" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -4338,6 +4733,22 @@
         }
       }
     },
+    "Megjött a bizonyítványod!" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dein Zeugnis ist da!"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your report card is here!"
+          }
+        }
+      }
+    },
     "Megmutatja, melyik jegyből hány van" : {
       "localizations" : {
         "de" : {
@@ -4366,6 +4777,22 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Open"
+          }
+        }
+      }
+    },
+    "Megnyitja az év végi összefoglalót" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Öffnet deinen Jahresrückblick"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Opens your year-end summary"
           }
         }
       }
@@ -4851,6 +5278,7 @@
       }
     },
     "Nézd meg, milyen éved volt." : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -4862,6 +5290,22 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "See what kind of year you had."
+          }
+        }
+      }
+    },
+    "Nézzük a jegyeidet... 📖" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Schauen wir uns deine Noten an... 📖"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Let's look at your grades... 📖"
           }
         }
       }
@@ -5042,7 +5486,24 @@
         }
       }
     },
+    "Nincsenek jegyek" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Keine Noten"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No grades found"
+          }
+        }
+      }
+    },
     "Nyisd meg a Jegyek fület." : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -5219,6 +5680,7 @@
       }
     },
     "Összefoglaló" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -5230,6 +5692,22 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Summary"
+          }
+        }
+      }
+    },
+    "Összegezzünk hát..." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fassen wir zusammen..."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "So let's sum it up..."
           }
         }
       }
@@ -5362,6 +5840,22 @@
         }
       }
     },
+    "perc késés" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Min. verspätet"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "minutes late"
+          }
+        }
+      }
+    },
     "Pihenj, vagy nézd meg a heti órarendet." : {
       "localizations" : {
         "de" : {
@@ -5390,6 +5884,22 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "e.g. AbC123xyz789"
+          }
+        }
+      }
+    },
+    "Próba teszi a mestert! 🔃" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Übung macht den Meister! 🔃"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Practice makes perfect! 🔃"
           }
         }
       }
@@ -5950,6 +6460,22 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Teachers"
+          }
+        }
+      }
+    },
+    "tantárgy" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fächer"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "subjects"
           }
         }
       }

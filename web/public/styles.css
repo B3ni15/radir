@@ -1,0 +1,141 @@
+@font-face { font-family: Montserrat; src: url(/fonts/Montserrat-Medium.ttf) format("truetype"); font-weight: 500; font-display: swap; }
+@font-face { font-family: Montserrat; src: url(/fonts/Montserrat-Bold.ttf) format("truetype"); font-weight: 700; font-display: swap; }
+@font-face { font-family: Montserrat; src: url(/fonts/Montserrat-ExtraBold.ttf) format("truetype"); font-weight: 800; font-display: swap; }
+
+:root {
+  --paper: #F4F3EE;
+  --surface: #FFFFFF;
+  --ink: #15161A;
+  --muted: #5F616A;
+  --rule: rgba(110, 112, 122, .14);
+  --blue: #2F6FEB;
+  --night1: #1D56AC;
+  --night2: #170A3D;
+  --g1: #FF54A1; --g2: #FFA046; --g3: #F9CF00; --g4: #92EA3B; --g5: #22CCAD;
+  --grade-ink: #0F3B33;
+  color-scheme: light dark;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --paper: #0E0F12;
+    --surface: #191A1F;
+    --ink: #F3F3F5;
+    --muted: #A3A5AD;
+    --rule: rgba(160, 162, 175, .10);
+    --blue: #6C9BFF;
+    --grade-ink: #0E0F12;
+  }
+}
+
+* { box-sizing: border-box; margin: 0; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font: 500 18px/1.55 Montserrat, system-ui, sans-serif;
+  /* kockás füzetlap, mint a Radír belépő képernyője */
+  background-image: linear-gradient(var(--rule) 1px, transparent 1px), linear-gradient(90deg, var(--rule) 1px, transparent 1px);
+  background-size: 28px 28px;
+  overflow-x: hidden;
+}
+main { overflow-x: clip; }
+img { display: block; max-width: 100%; height: auto; }
+a { color: inherit; }
+:focus-visible { outline: 3px solid var(--blue); outline-offset: 3px; border-radius: 8px; }
+
+.wrap { width: min(1160px, 100% - 32px); margin-inline: auto; }
+
+/* fejléc */
+.top { display: flex; align-items: center; justify-content: space-between; padding-block: 20px; }
+.brand { display: flex; align-items: center; gap: 10px; font-weight: 800; font-size: 22px; text-decoration: none; }
+.brand img { width: 38px; height: 38px; border-radius: 10px; }
+.top nav { display: flex; gap: 24px; font-weight: 700; font-size: 15px; }
+.top nav a { text-decoration: none; color: var(--muted); }
+.top nav a:hover { color: var(--ink); }
+
+/* nyitó rész */
+.hero { position: relative; display: grid; grid-template-columns: 1.05fr 1fr; align-items: center; gap: 24px; padding-block: 40px 0; }
+.hero h1 { font-weight: 800; font-size: clamp(44px, 7vw, 84px); line-height: 1; letter-spacing: -.035em; }
+.hero .lede { margin-top: 24px; font-size: clamp(18px, 2vw, 22px); color: var(--muted); max-width: 30ch; }
+.store {
+  display: inline-flex; align-items: center; gap: 12px; margin-top: 36px;
+  padding: 14px 24px 14px 18px; border-radius: 999px;
+  background: var(--ink); color: var(--paper); font-weight: 700; font-size: 16px; text-decoration: none;
+}
+.store svg { width: 22px; height: 22px; fill: currentColor; }
+.store small { display: block; font-weight: 500; font-size: 12px; opacity: .7; line-height: 1.2; }
+.note { margin-top: 14px; font-size: 14px; color: var(--muted); }
+
+.phones { position: relative; height: 740px; }
+.phone {
+  position: absolute; width: 290px; padding: 9px; border-radius: 48px; background: #0b0c0f;
+  box-shadow: inset 0 0 0 2px #2a2c31, 0 30px 60px rgba(20, 22, 40, .22);
+}
+.phone img { border-radius: 40px; }
+.phone::after { content: ""; position: absolute; top: 19px; left: 50%; width: 80px; height: 24px; transform: translateX(-50%); border-radius: 12px; background: #000; }
+.phone.a { left: 4%; top: 20px; transform: rotate(-4deg); }
+.phone.b { left: 44%; top: 90px; transform: rotate(5deg); }
+
+/* a ceruzavonal: egyszer, betöltéskor rajzolódik ki */
+.pencil { position: absolute; left: -10vw; top: 140px; width: 120vw; height: 760px; pointer-events: none; z-index: -1; }
+.pencil path { fill: none; stroke: var(--blue); stroke-width: 7; stroke-linecap: round; stroke-dasharray: 4200; stroke-dashoffset: 4200; animation: draw 2.4s .3s cubic-bezier(.6, 0, .2, 1) forwards; }
+@keyframes draw { to { stroke-dashoffset: 0; } }
+@media (prefers-reduced-motion: reduce) { .pencil path { animation: none; stroke-dashoffset: 0; } }
+
+/* App Store képek egy összefüggő csíkban */
+.strip-head { display: flex; align-items: end; justify-content: space-between; gap: 16px; margin-top: 96px; }
+h2 { font-weight: 800; font-size: clamp(32px, 4.4vw, 52px); line-height: 1.05; letter-spacing: -.03em; }
+.strip-head p { color: var(--muted); max-width: 34ch; }
+.strip {
+  display: flex; margin-top: 32px; overflow-x: auto; scroll-snap-type: x mandatory;
+  padding-inline: max(16px, (100vw - 1160px) / 2); scrollbar-width: thin;
+}
+.strip img { width: min(300px, 72vw); flex: none; scroll-snap-align: start; }
+.strip img:first-child { border-radius: 26px 0 0 26px; }
+.strip img:last-child { border-radius: 0 26px 26px 0; }
+
+/* „bizonyítvány”: a funkciók jegyként */
+.report { display: grid; grid-template-columns: 1fr 1.3fr; gap: 48px; margin-top: 120px; }
+.report h2 + p { margin-top: 18px; color: var(--muted); max-width: 32ch; }
+.report ol { list-style: none; padding: 0; display: grid; gap: 4px; }
+.report li { display: grid; grid-template-columns: 48px 1fr; gap: 16px; align-items: start; padding: 18px 20px; background: var(--surface); border-radius: 18px; }
+.report li b { display: block; font-weight: 700; font-size: 19px; }
+.report li span { color: var(--muted); font-size: 16px; }
+.grade { width: 44px; height: 44px; border-radius: 50%; display: grid; place-items: center; font-weight: 800; font-size: 22px; color: var(--grade-ink); }
+
+/* adatvédelem röviden */
+.privacy { margin-top: 120px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; border-top: 2px solid var(--ink); padding-top: 28px; }
+.privacy h3 { font-weight: 800; font-size: 21px; line-height: 1.2; }
+.privacy p { margin-top: 10px; color: var(--muted); font-size: 16px; }
+
+/* lábléc: év végi éjkék, a radír a végén */
+.end { margin-top: 140px; background: linear-gradient(160deg, var(--night1), var(--night2)); color: #fff; overflow: hidden; }
+.end .wrap { display: grid; grid-template-columns: 1fr auto; gap: 32px; align-items: center; padding-block: 88px 56px; }
+.end h2 { max-width: 14ch; }
+.end p { margin-top: 18px; color: rgba(255, 255, 255, .72); max-width: 44ch; }
+.end .eraser { width: 220px; border-radius: 52px; transform: rotate(-14deg); box-shadow: 0 30px 60px rgba(0, 0, 0, .35); }
+.end .store { background: #fff; color: #15161A; }
+.legal { grid-column: 1 / -1; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px 24px; padding-top: 28px; border-top: 1px solid rgba(255, 255, 255, .16); font-size: 14px; color: rgba(255, 255, 255, .6); }
+.legal a { color: rgba(255, 255, 255, .85); }
+
+/* szöveges aloldal (adatvédelem) */
+.doc { max-width: 70ch; padding-block: 40px 96px; }
+.doc h1 { font-weight: 800; font-size: clamp(36px, 6vw, 56px); line-height: 1.05; letter-spacing: -.03em; }
+.doc .updated { margin-top: 12px; color: var(--muted); font-size: 15px; }
+.doc h2 { font-size: 26px; margin-top: 44px; }
+.doc p, .doc li { margin-top: 12px; }
+.doc ul { padding-left: 22px; }
+
+@media (max-width: 860px) {
+  .top nav a:not(:last-child) { display: none; }
+  .hero { grid-template-columns: 1fr; padding-top: 16px; }
+  .phones { height: 560px; }
+  .phone { width: 230px; border-radius: 40px; }
+  .phone img { border-radius: 32px; }
+  .phone.a { left: 0; }
+  .phone.b { left: auto; right: 0; top: 70px; }
+  .strip-head, .report, .privacy { grid-template-columns: 1fr; display: grid; }
+  .report, .privacy { gap: 28px; }
+  .end .wrap { grid-template-columns: 1fr; }
+  .end .eraser { width: 140px; border-radius: 34px; }
+}

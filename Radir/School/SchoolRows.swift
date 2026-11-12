@@ -41,10 +41,10 @@ struct InfoRow: View {
         HStack(spacing: 12) {
             icon
             VStack(alignment: .leading, spacing: 2) {
-                Text(title).font(.body.weight(.semibold)).foregroundStyle(Color(palette.text)).lineLimit(1)
+                Text(title).font(.m(.body, .semibold)).foregroundStyle(Color(palette.text)).lineLimit(1)
                     .strikethrough(dimmed)
                 if !subtitle.isEmpty {
-                    Text(subtitle).font(.footnote).foregroundStyle(Color(palette.secondaryText)).lineLimit(2)
+                    Text(subtitle).font(.m(.footnote)).foregroundStyle(Color(palette.secondaryText)).lineLimit(2)
                 }
             }
             Spacer(minLength: 8)
@@ -151,7 +151,7 @@ struct DetailSheet<Extra: View>: View {
                     icon.scaleEffect(1.6).frame(height: 70)
                     Text(title).font(.title(24, relativeTo: .title)).multilineTextAlignment(.center)
                     if !subtitle.isEmpty {
-                        Text(subtitle).font(.subheadline).foregroundStyle(Color(palette.secondaryText)).multilineTextAlignment(.center)
+                        Text(subtitle).font(.m(.subheadline)).foregroundStyle(Color(palette.secondaryText)).multilineTextAlignment(.center)
                     }
                 }
                 .padding(.top, 24)
@@ -161,7 +161,7 @@ struct DetailSheet<Extra: View>: View {
                 PanelGroup {
                     ForEach(rows.indices, id: \.self) { i in
                         PanelRow(title: rows[i].0, systemImage: rows[i].2) {
-                            Text(rows[i].1).font(.subheadline).foregroundStyle(Color(palette.secondaryText)).multilineTextAlignment(.trailing)
+                            Text(rows[i].1).font(.m(.subheadline)).foregroundStyle(Color(palette.secondaryText)).multilineTextAlignment(.trailing)
                         }
                     }
                 }
@@ -218,7 +218,7 @@ struct HomeworkDetailSheet: View {
                 }
             } label: {
                 Label(done ? "Mégsincs kész" : "Kész vagyok vele", systemImage: done ? "arrow.uturn.backward" : "checkmark")
-                    .font(.body.weight(.semibold)).frame(maxWidth: .infinity, minHeight: 34)
+                    .font(.m(.body, .semibold)).frame(maxWidth: .infinity, minHeight: 34)
             }
             .radirProminentButton()
             .controlSize(.large)

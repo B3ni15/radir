@@ -11,11 +11,10 @@ struct GradeBubble: View {
     var body: some View {
         let color = Color(palette.gradeColor(grade.value) ?? palette.secondaryText)
         Text(grade.value > 0 ? String(grade.value) : String(grade.shortName.prefix(2)))
-            .font(.custom("Montserrat-Bold", size: size * 0.48))
+            // nagy, jegyszínű szám kör nélkül, mint a Firka jegysoraiban
+            .font(.custom("Montserrat-ExtraBold", size: size * 0.68))
             .foregroundStyle(color.gradeInk(scheme))
             .frame(width: size, height: size)
-            .background(Circle().fill(color.opacity(0.22)))
-            .overlay(Circle().strokeBorder(color.opacity(0.5), lineWidth: grade.weight > 100 ? 2 : 0))
             .accessibilityLabel(Text(grade.valueName.isEmpty ? String(grade.value) : grade.valueName))
     }
 }
@@ -30,18 +29,18 @@ struct GradeRow: View {
             GradeBubble(grade: grade)
             VStack(alignment: .leading, spacing: 2) {
                 Text(showSubject ? grade.subject.name : (grade.topic.isEmpty ? grade.mode : grade.topic))
-                    .font(.body.weight(.semibold))
+                    .font(.m(.body, .semibold))
                     .foregroundStyle(Color(palette.text))
                     .lineLimit(1)
                 Text(subtitle)
-                    .font(.footnote)
+                    .font(.m(.footnote))
                     .foregroundStyle(Color(palette.secondaryText))
                     .lineLimit(1)
             }
             Spacer(minLength: 8)
             if grade.weight != 100 && grade.weight > 0 {
                 Text("\(grade.weight)%")
-                    .font(.caption.weight(.bold))
+                    .font(.m(.caption, .bold))
                     .padding(.horizontal, 7)
                     .padding(.vertical, 3)
                     .foregroundStyle(Color(palette.accent))
@@ -74,7 +73,7 @@ struct GradeDistribution: View {
             Button { withAnimation(.snappy) { expanded.toggle() } } label: {
                 HStack(spacing: 12) {
                     Text("Jegyek száma: \(total)")
-                        .font(.body.weight(.semibold))
+                        .font(.m(.body, .semibold))
                         .foregroundStyle(Color(palette.text))
                     GeometryReader { geo in
                         HStack(spacing: 3) {
@@ -90,7 +89,7 @@ struct GradeDistribution: View {
                     }
                     .frame(height: 10)
                     Image(systemName: "chevron.down")
-                        .font(.footnote.weight(.bold))
+                        .font(.m(.footnote, .bold))
                         .foregroundStyle(Color(palette.secondaryText))
                         .rotationEffect(.degrees(expanded ? 180 : 0))
                 }
@@ -109,7 +108,7 @@ struct GradeDistribution: View {
                                 .frame(width: 26, height: 26)
                                 .background(Circle().fill(Color(palette.gradeColor(v)!).opacity(0.22)))
                             Text("×\(d[v] ?? 0)")
-                                .font(.subheadline.weight(.semibold).monospacedDigit())
+                                .font(.m(.subheadline, .semibold).monospacedDigit())
                                 .foregroundStyle(Color(palette.text))
                         }
                         .frame(maxWidth: .infinity)
@@ -135,7 +134,7 @@ struct TrendLabel: View {
             } icon: {
                 Image(systemName: up ? "arrow.up.right" : "arrow.down.right")
             }
-            .font(.caption.weight(.bold))
+            .font(.m(.caption, .bold))
             .labelStyle(.titleAndIcon)
             .foregroundStyle(Color(up ? palette.gradeColor(5)! : palette.warning))
             .accessibilityLabel(up ? "Javult" : "Romlott")

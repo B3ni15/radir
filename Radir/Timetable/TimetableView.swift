@@ -56,13 +56,13 @@ struct TimetableView: View {
                 .accessibilityLabel("Előző hét")
             VStack(spacing: 2) {
                 Text(rangeText(model.week)).font(.title(17, relativeTo: .headline))
-                Text("\(model.week.number). hét").font(.footnote.weight(.semibold)).foregroundStyle(Color(palette.secondaryText))
+                Text("\(model.week.number). hét").font(.m(.footnote, .semibold)).foregroundStyle(Color(palette.secondaryText))
             }
             .frame(maxWidth: .infinity)
             Button { move(1, model) } label: { Image(systemName: "chevron.right").frame(width: 36, height: 36) }
                 .accessibilityLabel("Következő hét")
         }
-        .font(.body.weight(.semibold))
+        .font(.m(.body, .semibold))
         .buttonStyle(.plain)
         .foregroundStyle(Color(palette.accent))
         .overlay(alignment: .trailing) {
@@ -74,7 +74,7 @@ struct TimetableView: View {
                         selectedDay = Calendar.school.startOfDay(for: .now)
                     }
                 }
-                .font(.footnote.weight(.bold))
+                .font(.m(.footnote, .bold))
                 .padding(.trailing, 44)
             }
         }
@@ -92,7 +92,7 @@ struct TimetableView: View {
                 } label: {
                     VStack(spacing: 3) {
                         Text(day.formatted(Date.FormatStyle(timeZone: Calendar.school.timeZone).weekday(.abbreviated)).capitalized)
-                            .font(.caption.weight(.semibold))
+                            .font(.m(.caption, .semibold))
                         Text(day.formatted(Date.FormatStyle(timeZone: Calendar.school.timeZone).day()))
                             .font(.custom("Montserrat-Bold", size: 18, relativeTo: .headline))
                         Circle()
@@ -114,18 +114,18 @@ struct TimetableView: View {
     @ViewBuilder
     private func dayContent(_ model: TimetableModel) -> some View {
         if let day = model.days(for: model.week).first(where: { $0.date == selectedDay }) {
-            TimelineView(.periodic(from: .now, by: 1)) { context in
+            TimelineView(.periodic(from: .now, by: 1)) { _ in
                 PanelGroup {
                     ForEach(day.items) { item in
                         switch item {
                         case .entry(.lesson(let lesson)):
-                            Button { detail = lesson } label: { LessonRow(lesson: lesson, now: context.date) }
+                            Button { detail = lesson } label: { LessonRow(lesson: lesson, now: .radirNow) }
                                 .buttonStyle(.plain)
                         case .entry(.free(let index, _)):
                             FreeLessonRow(index: index)
                         case .pause(let from, let to):
-                            if isRelevantBreak(from: from, to: to, day: day, now: context.date) {
-                                BreakRow(from: from, to: to, now: context.date)
+                            if isRelevantBreak(from: from, to: to, day: day, now: .radirNow) {
+                                BreakRow(from: from, to: to, now: .radirNow)
                             }
                         }
                     }

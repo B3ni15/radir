@@ -28,10 +28,10 @@ struct LiveActivityConsent: View {
                 }
                 VStack(spacing: 10) {
                     Button(action: accept) {
-                        Text("Bekapcsolom").font(.body.weight(.semibold)).frame(maxWidth: .infinity, minHeight: 34)
+                        Text("Bekapcsolom").font(.m(.body, .semibold)).frame(maxWidth: .infinity, minHeight: 34)
                     }
                     .radirProminentButton()
-                    Button("Mégse", action: cancel).font(.body.weight(.semibold))
+                    Button("Mégse", action: cancel).font(.m(.body, .semibold))
                 }
                 .controlSize(.large)
             }

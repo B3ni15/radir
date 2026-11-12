@@ -44,7 +44,7 @@ struct OnboardingView: View {
         VStack(spacing: 0) {
             HStack {
                 Spacer()
-                Button("Kihagyás", action: finish).font(.subheadline.weight(.semibold))
+                Button("Kihagyás", action: finish).font(.m(.subheadline, .semibold))
             }
             .padding(.horizontal, 20)
             .padding(.top, 12)
@@ -60,7 +60,7 @@ struct OnboardingView: View {
                 Button {
                     withAnimation(.snappy) { page += 1 }
                 } label: {
-                    Text("Tovább").font(.body.weight(.semibold)).frame(maxWidth: .infinity, minHeight: 34)
+                    Text("Tovább").font(.m(.body, .semibold)).frame(maxWidth: .infinity, minHeight: 34)
                 }
                 .radirProminentButton()
                 .controlSize(.large)
@@ -79,12 +79,11 @@ struct OnboardingView: View {
                     .foregroundStyle(.white)
                     .frame(width: 92, height: 92)
                     .background(Circle().fill(Color(palette.accent).gradient))
-                    .shadow(color: Color(palette.accent).opacity(0.35), radius: 16, y: 8)
                     .padding(.top, 40)
                     .accessibilityHidden(true)
                 Text(p.title).font(.display(34))
                 Text(p.text)
-                    .font(.body.weight(.medium))
+                    .font(.m(.body, .medium))
                     .foregroundStyle(Color(palette.secondaryText))
                     .multilineTextAlignment(.center)
                 if !p.tips.isEmpty {
@@ -112,7 +111,7 @@ struct OnboardingView: View {
                     .accessibilityHidden(true)
                 Text("Live Activity").font(.display(34))
                 Text("A mostani órád, a szünet és a következő óra a zárolt képernyőn és a Dynamic Islandben.")
-                    .font(.body.weight(.medium))
+                    .font(.m(.body, .medium))
                     .foregroundStyle(Color(palette.secondaryText))
                     .multilineTextAlignment(.center)
                 PanelGroup {
@@ -127,12 +126,12 @@ struct OnboardingView: View {
                         Task { await app.liveActivity.sync(app: app, now: app.prefs.schoolNow) }
                         finish()
                     } label: {
-                        Text("Bekapcsolom").font(.body.weight(.semibold)).frame(maxWidth: .infinity, minHeight: 34)
+                        Text("Bekapcsolom").font(.m(.body, .semibold)).frame(maxWidth: .infinity, minHeight: 34)
                     }
                     .radirProminentButton()
-                    Button("Most nem", action: finish).font(.body.weight(.semibold))
+                    Button("Most nem", action: finish).font(.m(.body, .semibold))
                     Text("Később a profilodban is bekapcsolhatod.")
-                        .font(.footnote).foregroundStyle(Color(palette.secondaryText))
+                        .font(.m(.footnote)).foregroundStyle(Color(palette.secondaryText))
                 }
                 .controlSize(.large)
             }

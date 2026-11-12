@@ -28,4 +28,13 @@ import Testing
         let excused = (0..<20).map { _ in absence(.absence, .excused) }
         #expect(YearSummary(book: book([grade(3), grade(3), grade(4)]), absences: excused).personality == .average)
     }
+
+    @Test func availableOnlyWithReportCard() {
+        #expect(!YearSummary.isAvailable(nil))
+        #expect(!YearSummary.isAvailable(book([grade(5), grade(4, kind: .halfYear)])))
+        let b = book([grade(5, subject: "a"), grade(4, kind: .endYear, subject: "a"), grade(3, kind: .endYear, subject: "b")])
+        #expect(YearSummary.isAvailable(b))
+        let s = YearSummary(book: b, absences: [])
+        #expect(s.reportCard.map(\.grade) == [4, 3] && s.reportAverage == 3.5)
+    }
 }
