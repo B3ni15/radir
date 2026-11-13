@@ -6,7 +6,7 @@
 // Exportálás: npx wrangler kv key list --binding WAITLIST --remote
 
 const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
-const PAGES = ['/', '/adatvedelem/'];
+const PAGES = ['/', '/kreta-api/', '/adatvedelem/'];
 
 const json = (body, status = 200) =>
   new Response(JSON.stringify(body), { status, headers: { 'content-type': 'application/json; charset=utf-8' } });

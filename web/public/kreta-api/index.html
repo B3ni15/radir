@@ -1,0 +1,495 @@
+<!doctype html>
+<html lang="hu">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>KRÉTA API dokumentáció – bejelentkezés, jegyek, órarend, üzenetek | Radír</title>
+<meta name="description" content="Nem hivatalos e-KRÉTA API dokumentáció magyarul: OAuth bejelentkezés PKCE-vel, tokenfrissítés, jegyek, átlagok, órarend, hiányzások, házi feladatok és üzenetek végpontjai, mezőkkel és példákkal.">
+<meta name="robots" content="index, follow, max-image-preview:large">
+<link rel="canonical" href="/kreta-api/" data-abs>
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Radír">
+<meta property="og:locale" content="hu_HU">
+<meta property="og:url" content="/kreta-api/" data-abs>
+<meta property="og:title" content="KRÉTA API dokumentáció">
+<meta property="og:description" content="Az e-KRÉTA végpontjai egy helyen: bejelentkezés, jegyek, órarend, hiányzások, házik és üzenetek. Mezőkkel és példákkal.">
+<meta property="og:image" content="/img/og-api.jpg" data-abs>
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="KRÉTA API dokumentáció: bejelentkezés, jegyek, órarend és üzenetek végpontjai.">
+<meta property="article:modified_time" content="2026-11-13">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="KRÉTA API dokumentáció">
+<meta name="twitter:description" content="Az e-KRÉTA végpontjai egy helyen: bejelentkezés, jegyek, órarend, hiányzások, házik és üzenetek.">
+<meta name="twitter:image" content="/img/og-api.jpg" data-abs>
+<meta name="theme-color" content="#2F6FEB">
+<meta name="theme-color" content="#F4F3EE" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0E0F12" media="(prefers-color-scheme: dark)">
+<link rel="icon" href="/favicon.ico" sizes="48x48">
+<link rel="icon" href="/icon-192.png" type="image/png" sizes="192x192">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="manifest" href="/manifest.webmanifest">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@graph":[
+  {"@type":"TechArticle","headline":"KRÉTA API dokumentáció","inLanguage":"hu","dateModified":"2026-11-13",
+   "description":"Nem hivatalos e-KRÉTA API dokumentáció: OAuth bejelentkezés PKCE-vel, jegyek, átlagok, órarend, hiányzások, házi feladatok és üzenetek végpontjai.",
+   "image":"{{ORIGIN}}/img/og-api.jpg","url":"{{ORIGIN}}/kreta-api/","mainEntityOfPage":"{{ORIGIN}}/kreta-api/",
+   "author":{"@type":"Organization","name":"Radír","url":"{{ORIGIN}}/"},"publisher":{"@type":"Organization","name":"Radír","url":"{{ORIGIN}}/"}},
+  {"@type":"BreadcrumbList","itemListElement":[
+    {"@type":"ListItem","position":1,"name":"Radír","item":"{{ORIGIN}}/"},
+    {"@type":"ListItem","position":2,"name":"KRÉTA API","item":"{{ORIGIN}}/kreta-api/"}]}
+]}
+</script>
+<link rel="stylesheet" href="/styles.css">
+<link rel="stylesheet" href="/docs.css">
+</head>
+<body>
+<header class="bar">
+  <a class="brand" href="/"><img src="/img/logo.png" alt="" width="32" height="32">Radír</a>
+  <nav>
+    <a href="/#bemutato">Az app</a>
+    <a href="/kreta-api/" aria-current="page">KRÉTA API</a>
+    <a href="/adatvedelem/">Adatvédelem</a>
+  </nav>
+  <a class="pill" href="/#varolista">Várólista</a>
+</header>
+
+<main class="docs">
+  <header class="docs-head">
+    <h1>KRÉTA API dokumentáció</h1>
+    <p class="lede">Az e-KRÉTA végpontjai egy helyen: bejelentkezés, tokenek, jegyek, órarend, hiányzások, házik, üzenetek és DKT, a valódi mezőnevekkel. A neten szétszórt, sokszor elavult leírásokat összevetettük a ma is működő kliensekkel, és mindenhol jelöljük, mi működik.</p>
+    <p class="meta">Utoljára ellenőrizve: 2026. november 13. · <a href="#forrasok">Források</a></p>
+  </header>
+
+  <div class="docs-body">
+    <nav class="toc" aria-label="Tartalom">
+      <ol>
+        <li><a href="#attekintes">Áttekintés</a></li>
+        <li><a href="#iskola">Iskola keresése</a></li>
+        <li><a href="#bejelentkezes">Bejelentkezés (OAuth + PKCE)</a></li>
+        <li><a href="#tokenek">Token frissítés és visszavonás</a></li>
+        <li><a href="#keresek">Hitelesített kérések</a></li>
+        <li><a href="#ellenorzo">Ellenőrző végpontok</a>
+          <ol>
+            <li><a href="#tanuloadatlap">Tanuló adatlap</a></li>
+            <li><a href="#ertekelesek">Értékelések</a></li>
+            <li><a href="#atlagok">Átlagok</a></li>
+            <li><a href="#orarend">Órarend</a></li>
+            <li><a href="#mulasztasok">Mulasztások</a></li>
+            <li><a href="#szamonkeresek">Számonkérések</a></li>
+            <li><a href="#hazifeladatok">Házi feladatok</a></li>
+            <li><a href="#feljegyzesek">Feljegyzések</a></li>
+            <li><a href="#faliujsag">Faliújság</a></li>
+          </ol>
+        </li>
+        <li><a href="#uzenetek">Üzenetek (eÜgyintézés)</a></li>
+        <li><a href="#dkt">DKT: beadandó feladatok</a></li>
+        <li><a href="#elavult">Elavult módszerek</a></li>
+        <li><a href="#buktatok">Buktatók</a></li>
+        <li><a href="#forrasok">Források</a></li>
+      </ol>
+    </nav>
+
+    <article class="content">
+      <aside class="warn">
+        <b>Nem hivatalos dokumentáció.</b> A KRÉTA-nak nincs nyilvános API-ja. Ezt az oldalt a hivatalos mobilapp forgalmából és nyílt forrású kliensekből (Filc, reFilc, Firka, Radír) állítottuk össze. Bármikor változhat. Csak a saját fiókoddal használd, ne terheld a szervereket, és ne gyűjts mások adatairól.
+      </aside>
+
+      <section id="attekintes">
+        <h2>Áttekintés</h2>
+        <p>Három szerverrel dolgozol. Mindegyik HTTPS-en, JSON-t ad vissza.</p>
+        <table>
+          <thead><tr><th>Szerver</th><th>Mire való</th></tr></thead>
+          <tbody>
+            <tr><td><code>https://idp.e-kreta.hu</code></td><td>Bejelentkezés (OpenID Connect): authorize, token, revocation</td></tr>
+            <tr><td><code>https://{intezmeny}.e-kreta.hu</code></td><td>Az iskola saját szervere. Az ellenőrző végpontjai az <code>/ellenorzo/V3/Sajat/</code> alatt vannak.</td></tr>
+            <tr><td><code>https://eugyintezes.e-kreta.hu</code></td><td>Üzenetek, címzettek, csatolmányok (<code>/api/v1/</code>)</td></tr>
+          </tbody>
+        </table>
+        <p>Minden végpont mellett jelöljük, mennyire biztos: <span class="st ok" title="A Radír app használja és teszteli">működik</span> a Radír app napi szinten használja, tesztekkel; <span class="st ext" title="A kreta-tui (2026) használja, a Radír nem tesztelte">működik · kreta-tui</span> egy friss nyílt forrású kliens (kreta-tui, 2026. október) használja, mi nem teszteltük; <span class="st unk">nem ellenőrzött</span> régebbi kliensekből ismert; <span class="st old">elavult</span> már nem működik.</p>
+        <p>Az <code>{intezmeny}</code> az iskola intézménykódja, például <code>klik012345001</code>. A bejelentkezés után az access tokenből olvasható ki (lásd lent).</p>
+      </section>
+
+      <section id="iskola">
+        <h2>Iskola keresése</h2>
+        <div class="ep"><span class="st ok" title="2026. november 13-án kipróbálva">működik</span><span class="m get">GET</span><code>https://idp.e-kreta.hu/logininstituteselector?searchValue={keresés}</code></div>
+        <p>Ugyanaz a kereső, ami a KRÉTA bejelentkező oldalán az iskolaválasztó mezőt tölti ki. Legalább 3 karakter kell: OM-azonosító, névrészlet vagy intézménykód. Nem JSON-t ad, hanem HTML-részletet; minden találat egy link, a <code>data-val</code> attribútumban az intézménykóddal:</p>
+<pre><code>&lt;a … data-val="klik012345001"&gt;Petőfi Sándor Gimnázium (Budapest)&lt;/a&gt;</code></pre>
+        <p>Böngészős user agenttel kérd le. A régi, JSON-os intézménylista (<code>kretaglobalmobileapi2.ekreta.hu/api/v3/Institute</code>) már <code>404</code>-et ad, lásd az <a href="#elavult">elavult módszereknél</a>.</p>
+      </section>
+
+      <section id="bejelentkezes">
+        <h2>Bejelentkezés (OAuth + PKCE)</h2>
+        <p>A mobilapp ugyanazt a folyamatot használja, mint egy böngészős OAuth bejelentkezés. A felhasználó a KRÉTA saját oldalán adja meg a jelszavát, a kliens csak egy egyszer használható kódot kap vissza. Jelszót a kliensnek soha nem kell látnia.</p>
+
+        <h3>1. A PKCE kulcspár</h3>
+        <p>Minden bejelentkezéshez új <code>code_verifier</code> kell: egy véletlen, base64url kódolású érték (32 bájt). A <code>code_challenge</code> ennek SHA-256 hashe, szintén base64url, kiegészítő <code>=</code> nélkül (RFC 7636, <code>S256</code>).</p>
+
+        <h3>2. A bejelentkező oldal megnyitása</h3>
+        <div class="ep"><span class="st ok" title="A Radír app használja és teszteli">működik</span><span class="m get">GET</span><code>https://idp.e-kreta.hu/connect/authorize</code></div>
+        <table>
+          <thead><tr><th>Paraméter</th><th>Érték</th></tr></thead>
+          <tbody>
+            <tr><td><code>client_id</code></td><td><code>kreta-ellenorzo-student-mobile-ios</code></td></tr>
+            <tr><td><code>redirect_uri</code></td><td><code>https://mobil.e-kreta.hu/ellenorzo-student/prod/oauthredirect</code></td></tr>
+            <tr><td><code>response_type</code></td><td><code>code</code></td></tr>
+            <tr><td><code>scope</code></td><td><code>openid email offline_access kreta-ellenorzo-webapi.public kreta-eugyintezes-webapi.public kreta-fileservice-webapi.public kreta-mobile-global-webapi.public kreta-dkt-webapi.public kreta-ier-webapi.public</code></td></tr>
+            <tr><td><code>code_challenge</code></td><td>az 1. lépés challenge-e</td></tr>
+            <tr><td><code>code_challenge_method</code></td><td><code>S256</code></td></tr>
+            <tr><td><code>state</code>, <code>nonce</code></td><td>véletlen értékek; a <code>state</code>-et a visszatéréskor ellenőrizd</td></tr>
+            <tr><td><code>prompt</code></td><td><code>login</code> (mindig kérje a belépést)</td></tr>
+          </tbody>
+        </table>
+        <p>Nyisd meg ezt az URL-t egy webnézetben. Sikeres belépés után a KRÉTA átirányít a <code>redirect_uri</code>-ra, <code>?code=…&amp;state=…</code> paraméterekkel. Az átirányítást a webnézetben kell elkapni: ellenőrizd, hogy a host és az útvonal pontosan a <code>redirect_uri</code>-é, és hogy a <code>state</code> egyezik.</p>
+
+        <h3 id="fej-nelkul">Webnézet nélkül <span class="st ext" title="A kreta-tui (2026) használja, a Radír nem tesztelte">működik · kreta-tui</span></h3>
+        <p>Ha nincs böngésződ (például parancssori kliensnél), a bejelentkező űrlapot el lehet küldeni közvetlenül is. Mobilappban ne így csináld: ekkor a jelszó a te kódodon megy át.</p>
+        <ol>
+          <li>Kérd le az authorize URL-t (sütikkel, átirányításokat követve). A bejelentkező oldal HTML-jéből olvasd ki a <code>__RequestVerificationToken</code> és a <code>ReturnUrl</code> rejtett mezőt.</li>
+          <li><code>POST https://idp.e-kreta.hu/account/login</code> form-kódolva, <code>Referer</code> (a bejelentkező oldal) és <code>Origin: https://idp.e-kreta.hu</code> fejléccel. Mezők: <code>ReturnUrl</code>, <code>IsTemporaryLogin=False</code>, <code>UserName</code>, <code>Password</code>, <code>InstituteCode</code>, <code>loginType=InstituteLogin</code>, <code>ClientId</code> (üres), <code>__RequestVerificationToken</code>.</li>
+          <li>Kövesd az átirányításokat a <code>redirect_uri</code>-ig, és vedd ki a <code>code</code>-ot. Néha a válasz egy <code>/connect/authorize/callback?…</code> linket tartalmaz átirányítás helyett; ezt kell megnyitni.</li>
+          <li>Ha az oldalon captcha (<code>g-recaptcha</code>) van, ez az út nem működik, a böngészős belépés kell.</li>
+        </ol>
+
+        <h3 id="kodcsere">3. A kód cseréje tokenre</h3>
+        <div class="ep"><span class="st ok" title="A Radír app használja és teszteli">működik</span><span class="m post">POST</span><code>https://idp.e-kreta.hu/connect/token</code></div>
+        <p><code>Content-Type: application/x-www-form-urlencoded; charset=UTF-8</code>, és a token végpont a hivatalos app user agentjét várja:</p>
+<pre><code>User-Agent: eKretaStudent/264745 CFNetwork/1494.0.7 Darwin/23.4.0</code></pre>
+        <table>
+          <thead><tr><th>Mező</th><th>Érték</th></tr></thead>
+          <tbody>
+            <tr><td><code>grant_type</code></td><td><code>authorization_code</code></td></tr>
+            <tr><td><code>code</code></td><td>az átirányításból kapott kód</td></tr>
+            <tr><td><code>code_verifier</code></td><td>az 1. lépés verifiere</td></tr>
+            <tr><td><code>redirect_uri</code>, <code>client_id</code></td><td>ugyanaz, mint fent</td></tr>
+          </tbody>
+        </table>
+        <div class="code"><button class="copy" type="button">Másolás</button>
+<pre><code>curl -X POST https://idp.e-kreta.hu/connect/token \
+  -H 'Content-Type: application/x-www-form-urlencoded; charset=UTF-8' \
+  -H 'User-Agent: eKretaStudent/264745 CFNetwork/1494.0.7 Darwin/23.4.0' \
+  --data-urlencode 'grant_type=authorization_code' \
+  --data-urlencode 'client_id=kreta-ellenorzo-student-mobile-ios' \
+  --data-urlencode 'redirect_uri=https://mobil.e-kreta.hu/ellenorzo-student/prod/oauthredirect' \
+  --data-urlencode 'code=KOD' \
+  --data-urlencode 'code_verifier=VERIFIER'</code></pre></div>
+        <p>Válasz:</p>
+<pre><code>{
+  "access_token": "eyJ…",
+  "refresh_token": "…",
+  "expires_in": 1800,
+  "token_type": "Bearer"
+}</code></pre>
+
+        <h3 id="jwt">Mi van az access tokenben?</h3>
+        <p>Az access token egy JWT. A payloadból (a második, base64url részből) ezek kellenek:</p>
+        <table>
+          <thead><tr><th>Claim</th><th>Jelentés</th></tr></thead>
+          <tbody>
+            <tr><td><code>kreta:institute_code</code></td><td>intézménykód, ez kerül a szerver címébe</td></tr>
+            <tr><td><code>kreta:user_name</code></td><td>felhasználónév (oktatási azonosító)</td></tr>
+            <tr><td><code>role</code></td><td><code>Tanulo</code> vagy <code>Gondviselo</code></td></tr>
+            <tr><td><code>name</code></td><td>a felhasználó neve (nem mindig van benne)</td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section id="tokenek">
+        <h2>Token frissítés és visszavonás</h2>
+        <div class="ep"><span class="st ok" title="A Radír app használja és teszteli">működik</span><span class="m post">POST</span><code>https://idp.e-kreta.hu/connect/token</code></div>
+        <p>Ugyanaz a végpont és user agent, mint a kódcserénél, más mezőkkel:</p>
+        <table>
+          <thead><tr><th>Mező</th><th>Érték</th></tr></thead>
+          <tbody>
+            <tr><td><code>grant_type</code></td><td><code>refresh_token</code></td></tr>
+            <tr><td><code>refresh_token</code></td><td>az utolsó kapott refresh token</td></tr>
+            <tr><td><code>institute_code</code></td><td>intézménykód</td></tr>
+            <tr><td><code>client_id</code></td><td><code>kreta-ellenorzo-student-mobile-ios</code></td></tr>
+            <tr><td><code>refresh_user_data</code></td><td><code>false</code></td></tr>
+          </tbody>
+        </table>
+        <p>A válasz új access <em>és</em> új refresh tokent ad, a régi refresh token ezután érvénytelen. Ha a kérésre <code>400</code> jön <code>{"error": "invalid_grant"}</code> törzzsel, a refresh token lejárt vagy visszavonták: újra be kell jelentkezni.</p>
+
+        <h3>Kijelentkezés</h3>
+        <div class="ep"><span class="st ok" title="A Radír app használja és teszteli">működik</span><span class="m post">POST</span><code>https://idp.e-kreta.hu/connect/revocation</code></div>
+        <p>Mezők: <code>token</code> (a refresh token), <code>token_type_hint=refresh_token</code>, <code>client_id</code>. A hibát nyugodtan elnyelheted, a helyi tokeneket úgyis törölni kell.</p>
+      </section>
+
+      <section id="keresek">
+        <h2>Hitelesített kérések</h2>
+        <p>Minden további kéréshez két fejléc kell:</p>
+<pre><code>Authorization: Bearer ACCESS_TOKEN
+User-Agent: hu.ekreta.student/{appverzió}/{platform}/0</code></pre>
+        <p>Például <code>hu.ekreta.student/1.0.5/Android/0/0</code> vagy <code>hu.ekreta.student/5.0.0/iOS/0</code>. A szerver ezt a mintát várja. Ismeretlen user agentnél előfordult, hogy lassított vagy elutasított.</p>
+        <ul>
+          <li>Az access token kb. 30 percig él. Érdemes lejárat előtt (pl. 30 mp ráhagyással) frissíteni, és <code>401</code>-re is frissíteni, majd egyszer újrapróbálni.</li>
+          <li>Ha egyszerre több kérés indul, csak egy frissítés fusson. Két párhuzamos refresh közül a második már érvénytelen refresh tokennel menne.</li>
+          <li>A dátumok ISO 8601-ben jönnek, UTC-ben (<code>2026-11-12T08:55:00Z</code>), néha tört másodperccel. A lekérdezési paramétereknél elég a nap: <code>2026-11-09</code>.</li>
+        </ul>
+      </section>
+
+      <section id="ellenorzo">
+        <h2>Ellenőrző végpontok</h2>
+        <p>Mindegyik <code>GET</code>, az alapcím <code>https://{intezmeny}.e-kreta.hu/ellenorzo/V3/Sajat/</code>. A válasz egy JSON tömb vagy objektum, a mezők nagybetűvel kezdődnek. Az azonosítók (<code>Uid</code>) szövegek. A hivatkozott objektumok (<code>Tantargy</code>, <code>Tipus</code>…) általában <code>Uid</code> + <code>Nev</code> (+ <code>Leiras</code>) mezőket tartalmaznak.</p>
+
+        <section id="tanuloadatlap">
+          <h3>Tanuló adatlap</h3>
+          <div class="ep"><span class="st ok" title="A Radír app használja és teszteli">működik</span><span class="m get">GET</span><code>/ellenorzo/V3/Sajat/TanuloAdatlap</code></div>
+          <table>
+            <thead><tr><th>Mező</th><th>Jelentés</th></tr></thead>
+            <tbody>
+              <tr><td><code>Uid</code>, <code>Nev</code></td><td>azonosító, név</td></tr>
+              <tr><td><code>SzuletesiNev</code>, <code>SzuletesiDatum</code>, <code>AnyjaNeve</code></td><td>személyes adatok</td></tr>
+              <tr><td><code>Cimek</code>, <code>Gondviselok</code></td><td>címek, gondviselők listája</td></tr>
+              <tr><td><code>IntezmenyAzonosito</code>, <code>IntezmenyNev</code></td><td>az iskola</td></tr>
+              <tr><td><code>Intezmeny.TestreszabasBeallitasok.ErtekelesekMegjelenitesenekKesleltetesenekMerteke</code></td><td>hány percig rejtett egy új jegy a beírás után</td></tr>
+            </tbody>
+          </table>
+        </section>
+
+        <section id="ertekelesek">
+          <h3>Értékelések (jegyek)</h3>
+          <div class="ep"><span class="st ok" title="A Radír app használja és teszteli">működik</span><span class="m get">GET</span><code>/ellenorzo/V3/Sajat/Ertekelesek</code></div>
+          <table>
+            <thead><tr><th>Mező</th><th>Jelentés</th></tr></thead>
+            <tbody>
+              <tr><td><code>Uid</code></td><td>azonosító</td></tr>
+              <tr><td><code>Tantargy</code></td><td><code>Uid</code>, <code>Nev</code>, <code>Kategoria.Nev</code></td></tr>
+              <tr><td><code>SzamErtek</code></td><td>a jegy számként (1–5), szöveges értékelésnél 0</td></tr>
+              <tr><td><code>SzovegesErtek</code>, <code>SzovegesErtekelesRovidNev</code></td><td>pl. <code>Jeles(5)</code>, illetve rövid alak</td></tr>
+              <tr><td><code>SulySzazalekErteke</code></td><td>súly százalékban (100, 200…)</td></tr>
+              <tr><td><code>Tipus.Nev</code></td><td>lásd lent: évközi, félévi, év végi…</td></tr>
+              <tr><td><code>Mod.Leiras</code></td><td>az értékelés módja, pl. <i>Írásbeli témazáró dolgozat</i></td></tr>
+              <tr><td><code>ErtekFajta</code></td><td>az értékelés fajtája (osztályzat, szöveges…)</td></tr>
+              <tr><td><code>Tema</code></td><td>téma</td></tr>
+              <tr><td><code>KeszitesDatuma</code>, <code>RogzitesDatuma</code></td><td>a jegy dátuma, illetve a beírás ideje</td></tr>
+              <tr><td><code>ErtekeloTanarNeve</code></td><td>a tanár</td></tr>
+            </tbody>
+          </table>
+          <p>Opcionálisan szűrhető: <code>?datumTol=2026-09-01&amp;datumIg=2026-12-31</code>. Ugyanez működik a <code>Mulasztasok</code> és a <code>BejelentettSzamonkeresek</code> végponton is; szűrés nélkül az egész tanévet adja.</p>
+          <p><code>Tipus.Nev</code> értékei: <code>evkozi_jegy_ertekeles</code>, <code>I_ne_jegy_ertekeles</code>, <code>II_ne_jegy_ertekeles</code>, <code>felevi_jegy_ertekeles</code>, <code>III_ne_jegy_ertekeles</code>, <code>IV_ne_jegy_ertekeles</code>, <code>evvegi_jegy_ertekeles</code>, <code>osztalyozo_vizsga</code>. Az év végi bizonyítvány jegyei <code>evvegi_jegy_ertekeles</code> típusúak.</p>
+        </section>
+
+        <section id="atlagok">
+          <h3>Átlagok</h3>
+          <p>Az osztályátlaghoz előbb kell az osztály <em>oktatási-nevelési feladatának</em> azonosítója:</p>
+          <div class="ep"><span class="st ok" title="A Radír app használja és teszteli">működik</span><span class="m get">GET</span><code>/ellenorzo/V3/Sajat/OsztalyCsoportok</code></div>
+          <p>A lista első elemének <code>OktatasNevelesiFeladat.Uid</code> mezője kell. Ezzel:</p>
+          <div class="ep"><span class="st ok" title="A Radír app használja és teszteli">működik</span><span class="m get">GET</span><code>/ellenorzo/V3/Sajat/Ertekelesek/Atlagok/OsztalyAtlagok?oktatasiNevelesiFeladatUid={Uid}</code></div>
+          <p>Elemenként <code>Tantargy.Uid</code> és <code>OsztalyCsoportAtlag</code> (az osztály átlaga az adott tantárgyból).</p>
+          <div class="ep"><span class="st ok" title="A Radír app használja és teszteli">működik</span><span class="m get">GET</span><code>/ellenorzo/V3/Sajat/Ertekelesek/Atlagok/TantargyiAtlagok?oktatasiNevelesiFeladatUid={Uid}</code></div>
+          <p>A csoport <em>összes</em> tantárgya, azok is, amelyekből még nincs jegy. Jó arra, hogy az üres tantárgyak is megjelenjenek.</p>
+        </section>
+
+        <section id="orarend">
+          <h3>Órarend</h3>
+          <div class="ep"><span class="st ok" title="A Radír app használja és teszteli">működik</span><span class="m get">GET</span><code>/ellenorzo/V3/Sajat/OrarendElemek?datumTol=2026-11-09&amp;datumIg=2026-11-13</code></div>
+          <table>
+            <thead><tr><th>Mező</th><th>Jelentés</th></tr></thead>
+            <tbody>
+              <tr><td><code>Uid</code>, <code>Datum</code></td><td>azonosító, a nap</td></tr>
+              <tr><td><code>KezdetIdopont</code>, <code>VegIdopont</code></td><td>az óra kezdete és vége</td></tr>
+              <tr><td><code>Oraszam</code>, <code>OraEvesSorszama</code></td><td>hányadik óra a napon, illetve az évben</td></tr>
+              <tr><td><code>Nev</code>, <code>Tantargy</code></td><td>az óra neve, a tantárgy</td></tr>
+              <tr><td><code>TeremNeve</code>, <code>TanarNeve</code></td><td>terem, tanár</td></tr>
+              <tr><td><code>HelyettesTanarNeve</code></td><td>ha nem üres, az óra helyettesítés</td></tr>
+              <tr><td><code>Allapot.Nev</code></td><td><code>Elmaradt</code>, ha az óra elmarad</td></tr>
+              <tr><td><code>Tema</code>, <code>TanuloJelenlet</code></td><td>az óra témája, a jelenlét</td></tr>
+              <tr><td><code>HaziFeladatUid</code>, <code>BejelentettSzamonkeresUid</code></td><td>kapcsolt házi feladat és számonkérés</td></tr>
+              <tr><td><code>OsztalyCsoport.Nev</code>, <code>IsDigitalisOra</code></td><td>csoport, digitális óra-e</td></tr>
+            </tbody>
+          </table>
+          <p>Egy héten belül kérj (hétfőtől péntekig vagy vasárnapig). A szünetek nincsenek benne, azokat a szomszédos órák idejéből lehet kiszámolni.</p>
+        </section>
+
+        <section id="mulasztasok">
+          <h3>Mulasztások</h3>
+          <div class="ep"><span class="st ok" title="A Radír app használja és teszteli">működik</span><span class="m get">GET</span><code>/ellenorzo/V3/Sajat/Mulasztasok</code></div>
+          <table>
+            <thead><tr><th>Mező</th><th>Jelentés</th></tr></thead>
+            <tbody>
+              <tr><td><code>Uid</code>, <code>Datum</code></td><td>azonosító, a nap</td></tr>
+              <tr><td><code>Tipus.Nev</code></td><td>hiányzás vagy késés</td></tr>
+              <tr><td><code>KesesPercben</code></td><td>késésnél a percek</td></tr>
+              <tr><td><code>IgazolasAllapota</code></td><td><code>Igazolt</code>, <code>Igazolando</code> vagy igazolatlan</td></tr>
+              <tr><td><code>IgazolasTipusa</code></td><td>az igazolás fajtája</td></tr>
+              <tr><td><code>Ora</code></td><td><code>KezdoDatum</code>, <code>VegDatum</code>, <code>Oraszam</code></td></tr>
+              <tr><td><code>Tantargy</code>, <code>RogzitoTanarNeve</code>, <code>KeszitesDatuma</code></td><td>tantárgy, ki és mikor írta be</td></tr>
+            </tbody>
+          </table>
+        </section>
+
+        <section id="szamonkeresek">
+          <h3>Bejelentett számonkérések</h3>
+          <div class="ep"><span class="st ok" title="A Radír app használja és teszteli">működik</span><span class="m get">GET</span><code>/ellenorzo/V3/Sajat/BejelentettSzamonkeresek</code></div>
+          <p>Mezők: <code>Uid</code>, <code>Datum</code> (a dolgozat napja), <code>BejelentesDatuma</code>, <code>OrarendiOraOraszama</code>, <code>Tantargy</code>, <code>Temaja</code>, <code>Modja</code> (pl. írásbeli témazáró), <code>RogzitoTanarNeve</code>.</p>
+        </section>
+
+        <section id="hazifeladatok">
+          <h3>Házi feladatok</h3>
+          <div class="ep"><span class="st ok" title="A Radír app használja és teszteli">működik</span><span class="m get">GET</span><code>/ellenorzo/V3/Sajat/HaziFeladatok?datumTol=2026-11-01</code></div>
+          <div class="ep"><span class="st ok" title="A Radír app használja és teszteli">működik</span><span class="m get">GET</span><code>/ellenorzo/V3/Sajat/HaziFeladatok/{Uid}</code></div>
+          <p>Mezők: <code>Uid</code>, <code>Tantargy</code>, <code>Szoveg</code> (HTML), <code>FeladasDatuma</code>, <code>HataridoDatuma</code>, <code>RogzitoTanarNeve</code>, <code>IsTanarRogzitette</code>, <code>Csatolmanyok</code>. A lista rövidített lehet; a teljes szöveghez kérd le az elemet külön.</p>
+        </section>
+
+        <section id="feljegyzesek">
+          <h3>Feljegyzések</h3>
+          <div class="ep"><span class="st ok" title="A Radír app használja és teszteli">működik</span><span class="m get">GET</span><code>/ellenorzo/V3/Sajat/Feljegyzesek</code></div>
+          <p>Dicséretek, figyelmeztetések, üzenőfüzet-bejegyzések. Mezők: <code>Uid</code>, <code>Cim</code>, <code>Tartalom</code>, <code>Tipus</code>, <code>Datum</code>, <code>KeszitesDatuma</code>, <code>KeszitoTanarNeve</code>.</p>
+        </section>
+
+        <section id="faliujsag">
+          <h3>Faliújság</h3>
+          <div class="ep"><span class="st ok" title="A Radír app használja és teszteli">működik</span><span class="m get">GET</span><code>/ellenorzo/V3/Sajat/FaliujsagElemek</code></div>
+          <p>Iskolai hirdetmények. Mezők: <code>Uid</code>, <code>Cim</code>, <code>Tartalom</code> (HTML), <code>ErvenyessegKezdete</code>, <code>ErvenyessegVege</code>. Csak az érvényességi időn belüli elemeket érdemes mutatni.</p>
+        </section>
+
+        <h3 id="nem-ellenorzott">További végpontok <span class="st unk">nem ellenőrzött</span></h3>
+        <p>Ezeket a reFilc forráskódja ismeri, a Radír nem használja, ezért nem teszteltük:</p>
+        <ul>
+          <li><code>GET /ellenorzo/V3/Sajat/Intezmenyek</code>: az iskola adatai</li>
+          <li><code>GET /ellenorzo/V3/Sajat/Csatolmany/{Uid}</code>: házi feladat csatolmánya</li>
+          <li><code>/ellenorzo/V3/Sajat/HaziFeladatok/Megoldva</code>: házi feladat megoldottnak jelölése</li>
+        </ul>
+      </section>
+
+      <section id="uzenetek">
+        <h2>Üzenetek (eÜgyintézés)</h2>
+        <p>Alapcím: <code>https://eugyintezes.e-kreta.hu/api/v1/</code>. Ugyanaz az access token és user agent kell, de itt a mezők kisbetűsek.</p>
+
+        <div class="ep"><span class="st ok" title="A Radír app használja és teszteli">működik</span><span class="m get">GET</span><code>/api/v1/kommunikacio/postaladaelemek/{mappa}</code></div>
+        <p>A <code>{mappa}</code> értéke <code>beerkezett</code>, <code>elkuldott</code> vagy <code>torolt</code>. Elemenként: <code>azonosito</code> (szám), <code>isElolvasva</code>, <code>uzenetFeladoNev</code>, <code>uzenetTargy</code>, <code>uzenetKuldesDatum</code>, <code>hasCsatolmany</code>. A szöveg itt még nincs benne.</p>
+
+        <div class="ep"><span class="st ok" title="A Radír app használja és teszteli">működik</span><span class="m get">GET</span><code>/api/v1/kommunikacio/postaladaelemek/{azonosito}</code></div>
+        <p>Egy üzenet részletei; a KRÉTA ilyenkor olvasottnak jelöli. A <code>uzenet</code> objektumban: <code>kuldesDatum</code>, <code>feladoNev</code>, <code>targy</code>, <code>szoveg</code> (HTML), <code>cimzettLista[].nev</code>, <code>csatolmanyok[]</code> (<code>azonosito</code>, <code>fajlNev</code>).</p>
+
+        <div class="ep"><span class="st ok" title="A Radír app használja és teszteli">működik</span><span class="m get">GET</span><code>/api/v1/dokumentumok/uzenetek/{csatolmanyAzonosito}</code></div>
+        <p>A csatolmány bináris tartalma.</p>
+
+        <h3 id="cimzettek">Címzettek</h3>
+        <div class="ep"><span class="st ok" title="A Radír app használja és teszteli">működik</span><span class="m get">GET</span><code>/api/v1/adatszotarak/cimzetttipusok</code></div>
+        <div class="ep"><span class="st ok" title="A Radír app használja és teszteli">működik</span><span class="m get">GET</span><code>/api/v1/kreta/alkalmazottak/tanar</code></div>
+        <div class="ep"><span class="st ok" title="A Radír app használja és teszteli">működik</span><span class="m get">GET</span><code>/api/v1/kreta/alkalmazottak/igazgatosag</code></div>
+        <p>A címzetttípusok közül diákként a <code>TANAR</code> és az <code>IGAZGATOSAG</code> kódú címezhető (<code>azonosito</code>, <code>kod</code>, <code>leiras</code>, <code>nev</code>, <code>rovidNev</code>). Az alkalmazottak listájában <code>kretaAzonosito</code> és <code>nev</code> van.</p>
+
+        <h3 id="kuldes">Üzenet küldése</h3>
+        <div class="ep"><span class="st ok" title="A Radír app használja és teszteli">működik</span><span class="m post">POST</span><code>/api/v1/kommunikacio/uzenetek</code></div>
+        <p>JSON törzs, <code>Content-Type: application/json</code> és <code>X-Uzenet-Lokalizacio: hu-HU</code> fejléccel:</p>
+<pre><code>{
+  "cimzettLista": [{
+    "kretaAzonosito": 12345,
+    "nev": "Tanár Neve",
+    "tipus": { "azonosito": 1, "kod": "TANAR", "leiras": "…", "nev": "…", "rovidNev": "…" }
+  }],
+  "csatolmanyok": [],
+  "azonosito": 12345,
+  "feladoNev": "Diák Neve",
+  "feladoTitulus": "Diák",
+  "kuldesDatum": "2026-11-13T10:00:00Z",
+  "targy": "Tárgy",
+  "szoveg": "Az üzenet szövege"
+}</code></pre>
+        <p>Ha az iskola nem engedi a diákoknak az üzenetküldést, a válaszban <code>"hibakod": "UzenetKuldesEngedelyRule"</code> jön. Gondviselőnél a <code>feladoTitulus</code> <code>Szülő</code>.</p>
+        <p>Nem ellenőrzött (reFilc): <code>postaladaelemek/kuka</code> és <code>postaladaelemek/torles</code> (kukába tétel, végleges törlés), <code>cimezhetotipusok</code>.</p>
+      </section>
+
+      <section id="dkt">
+        <h2>DKT: beadandó feladatok <span class="st ext" title="A kreta-tui (2026) használja, a Radír nem tesztelte">működik · kreta-tui</span></h2>
+        <p>A Digitális Kollaborációs Tér (DKT) a házi és órai feladatok beadására való, saját API-val. Ugyanaz az access token kell hozzá. Forrás: kreta-tui (2026); a Radír nem használja.</p>
+
+        <h3>Az iskola DKT-címe</h3>
+        <div class="ep"><span class="m get">GET</span><code>https://kretadktapi-kk.e-kreta.hu/dktapi/intezmenyek/bff/url</code></div>
+        <p>Egy JSON szöveget ad vissza: az iskola saját DKT alapcímét (a továbbiakban <code>{dkt}</code>). Utána:</p>
+        <div class="ep"><span class="m get">GET</span><code>{dkt}/intezmenyek/felhasznalo/tanulo</code></div>
+        <p>Ebből kell az <code>intezmenyId</code> és a <code>tanevId</code>. Minden további DKT-kéréshez fejlécként is el kell küldeni őket:</p>
+<pre><code>IntezmenyId: {intezmenyId}
+TanevId: {tanevId}</code></pre>
+
+        <h3>Feladatok és beadás</h3>
+        <p>A <code>{fajta}</code> értéke <code>hazifeladatok</code> vagy <code>oraifeladatok</code>.</p>
+        <table>
+          <thead><tr><th>Kérés</th><th>Mire való</th></tr></thead>
+          <tbody>
+            <tr><td><span class="m get">GET</span> <code>/intezmenyek/tanulok/{fajta}</code></td><td>a feladatok listája</td></tr>
+            <tr><td><span class="m get">GET</span> <code>/intezmenyek/tanulok/{fajta}/{feladat}/fajlok</code></td><td>a tanár által csatolt fájlok</td></tr>
+            <tr><td><span class="m get">GET</span> <code>/intezmenyek/tanulok/{fajta}/{feladat}/beadas</code></td><td>a saját beadásod. <b>Az első hívás létre is hozza</b> („Megnyitotta” állapot), mint a weben a megnyitás.</td></tr>
+            <tr><td><span class="m put">PUT</span> <code>/intezmenyek/tanulok/{fajta}/beadasok/{beadas}</code></td><td>válaszszöveg mentése beadás nélkül: <code>{"szoveg": "&lt;p&gt;…&lt;/p&gt;"}</code> (HTML)</td></tr>
+            <tr><td><span class="m get">GET</span> <code>/intezmenyek/tanulok/{fajta}/beadasok/{beadas}/beadas</code></td><td><b>beadja a feladatot</b>. Igen, GET kéréssel.</td></tr>
+            <tr><td><span class="m get">GET</span> <code>/intezmenyek/tanulok/{fajta}/beadasok/{beadas}/fajlok</code></td><td>a beadáshoz csatolt saját fájlok</td></tr>
+            <tr><td><span class="m del">DELETE</span> <code>/intezmenyek/tanulok/{fajta}/beadasok/{beadas}/fajlok/{fajl}</code></td><td>csatolt fájl törlése</td></tr>
+          </tbody>
+        </table>
+
+        <h3>Fájl feltöltése</h3>
+        <ol>
+          <li><span class="m post">POST</span> <code>{dkt}/intezmenyek/fajlok/feltoltes/ideiglenes/proxy</code>, multipart: <code>fajl</code> (a fájl) és <code>Utvonal</code> = <code>DKT/{intezmenyId}/{tanevId}/{fajta}/{feladat}</code>. Fejlécek: <code>X-version: 3.0</code> és <b>böngészős</b> user agent; az app user agentjére a fájlszolgáltatás üres <code>500</code>-at ad. A válaszban: <code>fajlId</code>, <code>fajlMeretByteLength</code>.</li>
+          <li><span class="m post">POST</span> <code>/intezmenyek/tanulok/{fajta}/beadasok/{beadas}/fajlok/veglegesites</code>: <code>{"fajlId": …, "teljesFajlNev": "valasz.pdf", "meretInBytes": …}</code></li>
+        </ol>
+
+        <h3>Fájl letöltése</h3>
+        <p>Egy fájl API-útvonala után <code>/url</code>-t írva (például <code>…/fajlok/{fajl}/url</code>) egy egyszer használható letöltési linket kapsz. Azt token nélkül, böngészős user agenttel kell megnyitni, mert a <code>files.e-kreta.hu</code> az app user agentjét elutasítja.</p>
+      </section>
+
+      <section id="elavult">
+        <h2>Elavult módszerek</h2>
+        <p>A neten található KRÉTA API leírások nagy része ezeket mutatja. Ha valami „nem működik” egy régi doksi alapján, általában ez az oka.</p>
+        <table>
+          <thead><tr><th>Régi módszer</th><th>Mi van helyette</th></tr></thead>
+          <tbody>
+            <tr><td><span class="st old">elavult</span> Jelszavas tokenkérés: <code>grant_type=password</code>, <code>client_id=kreta-ellenorzo-mobile-android</code>, <code>X-AuthorizationPolicy-Key</code>/<code>-Nonce</code> fejlécek a <code>/nonce</code> végpontról</td><td>Böngészős OAuth + PKCE (<a href="#bejelentkezes">lásd fent</a>); a hivatalos app is így lép be. A régi módszerre jellemzően <code>invalid_request</code>/<code>invalid_grant</code> jön.</td></tr>
+            <tr><td><span class="st old">elavult</span> Intézménylista: <code>GET https://kretaglobalmobileapi2.ekreta.hu/api/v3/Institute</code> <code>apiKey</code> fejléccel</td><td><code>404</code> (2026. november 13-án kipróbálva). Helyette: <a href="#iskola">iskola keresése</a>.</td></tr>
+            <tr><td><span class="st old">elavult</span> v1/v2 API: <code>https://{intezmeny}.e-kreta.hu/idp/api/v1/Token</code>, <code>/mapi/api/v1/…</code></td><td>Az IdP és az <code>/ellenorzo/V3/Sajat/</code> végpontok.</td></tr>
+            <tr><td>Elírás régi doksikban: <code>…/api/v1/kommunkacio/…</code></td><td>Helyesen <code>kommunikacio</code>.</td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section id="buktatok">
+        <h2>Buktatók</h2>
+        <ul>
+          <li><b>A <code>+</code> jel a tokenkérésben.</b> Form-kódolásban a <code>+</code> szóközt jelent, ezért a refresh tokenben lévő <code>+</code>-t <code>%2B</code>-ként kell küldeni, különben <code>invalid_grant</code> jön.</li>
+          <li><b>User agent.</b> A token végpont a hivatalos app user agentjét várja; mással előfordulhat, hogy elutasítja.</li>
+          <li><b>Rejtett új jegyek.</b> Az iskola beállíthatja, hogy egy új jegy csak néhány perc múlva látsszon (<code>ErtekelesekMegjelenitesenekKesleltetesenekMerteke</code>).</li>
+          <li><b>Időzóna.</b> A dátumok UTC-ben jönnek; az órarendet Europe/Budapest szerint kell megjeleníteni.</li>
+          <li><b>HTML a szövegekben.</b> A házik, a faliújság és az üzenetek szövege HTML, <code>\r</code> sortörésekkel.</li>
+          <li><b>Nincs push.</b> A KRÉTA nem küld értesítést a változásokról; időnként újra le kell kérni az adatokat. Kíméld a szervert, ne pollozz percenként.</li>
+        </ul>
+      </section>
+
+      <section id="forrasok">
+        <h2>Források</h2>
+        <p>Ezt az oldalt több nem hivatalos forrás összevetéséből állítottuk össze. Ahol eltértek, a ma is működő változat került ide.</p>
+        <ul>
+          <li><b>Radír</b> (<code>RadirKit</code>, AGPL-3.0): az <span class="st ok" title="A Radír app használja és teszteli">működik</span> jelölésű végpontok, tesztekkel.</li>
+          <li><a href="https://github.com/aronkv/kreta-tui" rel="noopener">aronkv/kreta-tui</a> (Rust, 2026): fej nélküli belépés, iskolakereső, DKT.</li>
+          <li><a href="https://github.com/bczsalba/ekreta-docs-v3" rel="noopener">bczsalba/ekreta-docs-v3</a> (2022): a V3 végpontok első összefoglalója; a bejelentkezési része elavult.</li>
+          <li><a href="https://github.com/boapps/e-kreta-api-docs" rel="noopener">boapps/e-kreta-api-docs</a>: a régi v1 API leírása, ma már csak történeti érdekesség.</li>
+          <li><a href="https://documenter.getpostman.com/view/10379752/SzKPULz6" rel="noopener">KRÉTA Ellenőrző (Postman)</a>: régi Postman-gyűjtemény.</li>
+          <li><a href="https://pkg.go.dev/github.com/manen/gokreta/endpoints" rel="noopener">manen/gokreta</a>: Go kliens végpontlistája.</li>
+          <li>A <b>Filc</b>, a <b>reFilc</b> és a <b>Firka</b> nyílt forrású kliensei, amelyekre a Radír épül.</li>
+        </ul>
+        <p>Hibát találtál, vagy változott valami a KRÉTA-ban? Írd meg, és frissítjük.</p>
+      </section>
+    </article>
+  </div>
+</main>
+
+<footer class="end">
+  <div class="wrap">
+    <div>
+      <h2>Radír: ugyanez, appként</h2>
+      <p>Ha nem API-t akarsz írni, csak jól látni a jegyeidet: ingyenes iPhone-app a KRÉTÁ-hoz, reklám nélkül.</p>
+      <p><a href="/#varolista">Jelentkezz a várólistára</a></p>
+    </div>
+    <img class="eraser" src="/img/logo.png" alt="" width="512" height="512">
+    <div class="legal">
+      <span>Filc → reFilc → Firka → Radír</span>
+      <span>A Radír nem hivatalos alkalmazás, és nem áll kapcsolatban az e-KRÉTA fejlesztőjével.</span>
+      <a href="/adatvedelem/">Adatkezelési tájékoztató</a>
+    </div>
+  </div>
+</footer>
+<script src="/docs.js" defer></script>
+</body>
+</html>
