@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="hu">
+<head>
+<meta charset="utf-8">
+<title>Radír TikTok borító</title>
+<!-- 1080×1920 TikTok borító. A fontos rész a középső 3:4 sávban (y ≈ 240–1680), mert a profilrács ezt vágja ki.
+     Render (a radir mappából): swift marketing/snap.swift marketing/tiktok/cover.html marketing/tiktok/cover.jpg 1080 1920 -->
+<style>
+  @font-face { font-family: M; src: url(../../Radir/Fonts/Montserrat-Bold.ttf); font-weight: 700; }
+  @font-face { font-family: M; src: url(../../Radir/Fonts/Montserrat-ExtraBold.ttf); font-weight: 800; }
+  * { margin: 0; box-sizing: border-box; }
+  html, body { width: 1080px; height: 1920px; overflow: hidden; }
+  body { position: relative; font-family: M, sans-serif; color: #15161A; background: #F4F3EE;
+         background-image: linear-gradient(rgba(110,112,122,.13) 2px, transparent 2px), linear-gradient(90deg, rgba(110,112,122,.13) 2px, transparent 2px);
+         background-size: 54px 54px; }
+  /* a „KRÉTA” jobb fele ki van radírozva */
+  .kreta { position: absolute; left: 70px; top: 300px; font-weight: 800; font-size: 250px; letter-spacing: -10px; line-height: 1;
+           -webkit-mask-image: linear-gradient(90deg, #000 0, #000 48%, rgba(0,0,0,.18) 72%, transparent 88%);
+                   mask-image: linear-gradient(90deg, #000 0, #000 48%, rgba(0,0,0,.18) 72%, transparent 88%); }
+  .eraser { position: absolute; left: 700px; top: 250px; width: 300px; height: 300px; border-radius: 72px; transform: rotate(-18deg);
+            box-shadow: 0 30px 60px rgba(20,22,40,.28); }
+  .crumb { position: absolute; border-radius: 40% 60% 50% 45%; background: #c9c6bd; }
+  .sub { position: absolute; left: 76px; top: 590px; font-weight: 800; font-size: 104px; letter-spacing: -3px; color: #2F6FEB; }
+  .phone { position: absolute; left: 270px; top: 820px; width: 540px; padding: 16px; border-radius: 86px; background: #0b0c0f;
+           transform: rotate(-5deg); box-shadow: inset 0 0 0 5px #2a2c31, 0 60px 120px rgba(20,22,40,.28); }
+  .phone img { display: block; width: 100%; border-radius: 72px; }
+  .phone::after { content: ""; position: absolute; top: 34px; left: 50%; width: 150px; height: 44px; margin-left: -75px; border-radius: 22px; background: #000; }
+  svg { position: absolute; inset: 0; }
+</style>
+</head>
+<body>
+  <svg width="1080" height="1920" viewBox="0 0 1080 1920">
+    <path d="M -30 1500 C 200 1380, 330 1640, 520 1560 C 640 1510, 600 1420, 540 1450 C 480 1480, 560 1600, 760 1520 C 900 1460, 1000 1300, 1120 1330"
+          fill="none" stroke="#2F6FEB" stroke-width="16" stroke-linecap="round" opacity=".5"/>
+  </svg>
+  <div class="kreta">KRÉTA</div>
+  <div class="crumb" style="left:690px;top:560px;width:26px;height:20px"></div>
+  <div class="crumb" style="left:740px;top:590px;width:18px;height:15px"></div>
+  <div class="crumb" style="left:640px;top:600px;width:14px;height:12px"></div>
+  <div class="crumb" style="left:800px;top:575px;width:22px;height:17px"></div>
+  <img class="eraser" src="../../Radir/Assets.xcassets/Logo.imageset/Logo.png" alt="">
+  <div class="sub">de végre szépen.</div>
+  <div class="phone"><img src="../raw/home-light.png" alt=""></div>
+</body>
+</html>
