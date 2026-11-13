@@ -1,0 +1,13 @@
+{
+  "name": "Radír – a KRÉTA, ahogy szeretnéd",
+  "short_name": "Radír",
+  "lang": "hu",
+  "start_url": "/",
+  "display": "browser",
+  "background_color": "#F4F3EE",
+  "theme_color": "#2F6FEB",
+  "icons": [
+    { "src": "/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "/icon-512.png", "sizes": "512x512", "type": "image/png" }
+  ]
+}
