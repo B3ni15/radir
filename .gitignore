@@ -6,3 +6,7 @@ xcuserdata/
 .swiftpm/
 DerivedData/
 build/
+
+# TikTok: munkafájlok, és a kész videó (benne a jogvédett zene, nem kerül a nyilvános repóba)
+marketing/tiktok/work/
+marketing/tiktok/brag.mp4

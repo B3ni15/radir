@@ -1,12 +1,19 @@
-// Radír landing page: statikus oldal Cloudflare Workers static assets-szel, kód nélkül.
+// Radír landing page: statikus oldal + egy kis Worker a várólistához (KV).
 // Helyben: npx wrangler dev   Kitelepítés: npx wrangler deploy
+// Első kitelepítés előtt: npx wrangler kv namespace create WAITLIST, és a kapott id ide kerül.
 {
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "radir-web",
+  "main": "src/index.js",
   "compatibility_date": "2026-11-01",
   "assets": {
     "directory": "./public",
+    "binding": "ASSETS",
     "html_handling": "auto-trailing-slash",
-    "not_found_handling": "404-page"
-  }
+    "not_found_handling": "404-page",
+    "run_worker_first": ["/api/*"]
+  },
+  "kv_namespaces": [
+    { "binding": "WAITLIST", "id": "4cf9cc469f71426d9fdad8e9dd6c746f" }
+  ]
 }

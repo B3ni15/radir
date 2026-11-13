@@ -1,4 +1,31 @@
-// Radír landing: sima görgetés (Lenis) és a görgetésre forgó 3D telefon.
+// Radír landing: sima görgetés (Lenis), a görgetésre forgó 3D telefon és a várólista űrlap.
+
+// várólista: POST /api/waitlist (src/index.js)
+document.querySelectorAll('form.wait').forEach((form) => {
+  const msg = form.querySelector('.msg');
+  const say = (text, kind) => { msg.textContent = text; msg.className = 'msg ' + kind; };
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const email = form.email.value.trim();
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) { say('Ez nem tűnik e-mail címnek.', 'err'); form.email.focus(); return; }
+    const button = form.querySelector('button');
+    button.disabled = true;
+    try {
+      const res = await fetch('/api/waitlist', {
+        method: 'POST', headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({ email, website: form.website.value }),
+      });
+      if (!res.ok) throw new Error(String(res.status));
+      form.classList.add('done');
+      say('Megvagy! Szólunk, amint kijön a Radír.', 'ok');
+    } catch {
+      say('Nem sikerült elküldeni. Próbáld újra egy kicsit később.', 'err');
+    } finally {
+      button.disabled = false;
+    }
+  });
+});
+
 (() => {
   const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
   const tour = document.querySelector('.tour');

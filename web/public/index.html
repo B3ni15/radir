@@ -24,7 +24,7 @@
     <a href="/adatvedelem/">Adatvédelem</a>
   </nav>
   <!-- Ha kint lesz az app: <a class="pill" href="https://apps.apple.com/…">Letöltés</a> -->
-  <span class="pill">Hamarosan</span>
+  <a class="pill" href="#varolista">Várólista</a>
 </header>
 
 <main>
@@ -34,11 +34,14 @@
     </svg>
     <h1>A KRÉTA, ahogy szeretnéd</h1>
     <p class="lede">Jegyek, átlagok, órarend, házik és üzenetek egy gyors, szép iPhone-appban. Ingyen, reklám nélkül.</p>
-    <div class="actions">
-      <span class="store"><small>Hamarosan</small>az App Store-ban</span>
-      <a class="more" href="#bemutato">Nézd meg, mit tud</a>
-    </div>
-    <p class="note">iOS 18-tól. Nem hivatalos alkalmazás.</p>
+    <form class="wait" id="wait-top" novalidate>
+        <label class="sr" for="wait-top-email">E-mail címed</label>
+        <input id="wait-top-email" name="email" type="email" autocomplete="email" inputmode="email" placeholder="E-mail címed" required>
+        <input name="website" tabindex="-1" autocomplete="off" class="trap" aria-hidden="true">
+        <button type="submit">Jelentkezem</button>
+        <p class="msg" role="status"></p>
+      </form>
+    <p class="note">Szólunk, amint kijön az App Store-ba. iOS 18-tól, nem hivatalos alkalmazás. <a href="#bemutato">Nézd meg, mit tud</a></p>
   </section>
 
   <!-- görgetésre forgó telefon: a .tour magassága adja a „hosszt”, a .stage ragad -->
@@ -100,9 +103,15 @@
 <footer class="end">
   <div class="wrap">
     <div>
-      <h2>Ingyenes. Tényleg.</h2>
-      <p>A Radír a Filc, a reFilc és a Firka nyílt forráskódú munkájára épül. Köszönjük minden fejlesztőjüknek.</p>
-      <span class="store light"><small>Hamarosan</small>az App Store-ban</span>
+      <h2 id="varolista">Jelentkezz a várólistára</h2>
+      <p>Ingyenes, reklám nélkül. Csak arra használjuk a címedet, hogy szóljunk, amikor kijön a Radír. <a href="/adatvedelem/">Adatkezelés</a></p>
+      <form class="wait light" id="wait-end" novalidate>
+        <label class="sr" for="wait-end-email">E-mail címed</label>
+        <input id="wait-end-email" name="email" type="email" autocomplete="email" inputmode="email" placeholder="E-mail címed" required>
+        <input name="website" tabindex="-1" autocomplete="off" class="trap" aria-hidden="true">
+        <button type="submit">Jelentkezem</button>
+        <p class="msg" role="status"></p>
+      </form>
     </div>
     <img class="eraser" src="/img/logo.png" alt="" width="512" height="512">
     <div class="legal">

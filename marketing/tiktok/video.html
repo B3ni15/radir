@@ -1,0 +1,274 @@
+<!doctype html>
+<html lang="hu">
+<head>
+<meta charset="utf-8">
+<title>Radír TikTok</title>
+<!-- 1080×1920-as vászon fele méretben (#stage scale .5), a 2×-es snapshot adja a teljes felbontást.
+     Minden képkocka a render(t) tiszta függvénye; a render.swift hívja képkockánként. -->
+<style>
+  @font-face { font-family: M; src: url(../../Radir/Fonts/Montserrat-Medium.ttf); font-weight: 500; }
+  @font-face { font-family: M; src: url(../../Radir/Fonts/Montserrat-Bold.ttf); font-weight: 700; }
+  @font-face { font-family: M; src: url(../../Radir/Fonts/Montserrat-ExtraBold.ttf); font-weight: 800; }
+  * { margin: 0; box-sizing: border-box; }
+  html, body { width: 540px; height: 960px; overflow: hidden; background: #000; }
+  #stage { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; transform: scale(.5); transform-origin: 0 0;
+           overflow: hidden; font-family: M, sans-serif; color: #15161A; }
+  .layer { position: absolute; inset: 0; }
+  .grid { background-image: linear-gradient(var(--gc) 2px, transparent 2px), linear-gradient(90deg, var(--gc) 2px, transparent 2px); background-size: 54px 54px; }
+
+  /* felirat a TikTok biztonságos sávjában */
+  .cap { position: absolute; left: 70px; right: 140px; top: 250px; font-weight: 800; font-size: 84px; line-height: 1.02; letter-spacing: -2.5px; }
+  .cap small { display: block; margin-top: 22px; font-weight: 600; font-size: 42px; letter-spacing: 0; line-height: 1.25; opacity: .72; }
+
+  /* 3D telefon (mint a weboldalon) */
+  .scene { position: absolute; left: 0; right: 0; top: 0; bottom: 0; perspective: 2600px; }
+  .phone3d { position: absolute; left: 50%; top: 1170px; width: 500px; height: 1070px; margin: -535px 0 0 -250px; transform-style: preserve-3d; }
+  .layers, .layers i, .face { position: absolute; inset: 0; border-radius: 80px; }
+  .layers { transform-style: preserve-3d; }
+  .layers i { background: linear-gradient(90deg, #3a3d44, #1d1f24 30%, #2b2e34 70%, #44474e); }
+  .face { backface-visibility: hidden; -webkit-backface-visibility: hidden; overflow: hidden; }
+  .front { transform: translateZ(20px); background: #0b0c0f; }
+  .front .scr { position: absolute; inset: 15px; border-radius: 66px; overflow: hidden; }
+  .front .scr img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: top; opacity: 0; }
+  .island { position: absolute; top: 28px; left: 50%; width: 140px; height: 42px; margin-left: -70px; border-radius: 30px; background: #000; z-index: 2; }
+  .back { transform: rotateY(180deg) translateZ(20px); background: linear-gradient(150deg, #2d3037, #15161a); display: grid; place-items: center; }
+  .back img { width: 34%; border-radius: 22%; }
+
+  /* a „régi app”: márka nélküli szürke felület */
+  .old { position: absolute; inset: 0; background: #d9d9d9; filter: saturate(.2); }
+  .old .hdr { height: 150px; background: #8a8f96; }
+  .old .row { margin: 22px 26px 0; height: 64px; background: #c4c4c4; border-radius: 6px; }
+  .spin { position: absolute; left: 50%; top: 46%; width: 110px; height: 110px; margin: -55px 0 0 -55px; border-radius: 50%;
+          border: 12px solid rgba(0,0,0,.12); border-top-color: #6d7178; }
+  .toast { position: absolute; left: 30px; right: 30px; top: 40%; padding: 30px 28px; border-radius: 14px; background: #fff;
+           box-shadow: 0 20px 50px rgba(0,0,0,.35); font: 600 32px/1.3 M, sans-serif; color: #333; opacity: 0; }
+  .toast b { display: block; font-weight: 800; font-size: 36px; color: #c0392b; margin-bottom: 8px; }
+
+  .logo { position: absolute; left: 50%; top: 760px; width: 300px; height: 300px; margin-left: -150px; border-radius: 72px; box-shadow: 0 40px 90px rgba(20,40,120,.3); }
+  .word { position: absolute; left: 0; right: 0; top: 1110px; text-align: center; font-weight: 800; font-size: 190px; letter-spacing: -7px; color: #15161A; }
+  .tag { position: absolute; left: 0; right: 0; top: 1350px; text-align: center; font-weight: 700; font-size: 54px; color: #5F616A; }
+  .stamp { position: absolute; width: 170px; height: 170px; border-radius: 50%; display: grid; place-items: center; font-weight: 800; font-size: 104px; color: #0F3B33; box-shadow: 0 20px 40px rgba(0,0,0,.25); }
+  .flash { position: absolute; inset: 0; background: #fff; pointer-events: none; }
+  .vignette { position: absolute; inset: 0; background: radial-gradient(ellipse at 50% 55%, transparent 40%, rgba(0,0,0,.65)); }
+  .cta { position: absolute; left: 60px; right: 60px; top: 300px; text-align: center; color: #fff; }
+  .cta h1 { font-weight: 800; font-size: 104px; line-height: 1; letter-spacing: -3px; }
+  .cta p { margin-top: 30px; font-weight: 700; font-size: 48px; color: rgba(255,255,255,.75); }
+  .cta .btn { display: inline-block; margin-top: 44px; padding: 28px 54px; border-radius: 999px; background: #fff; color: #170A3D; font-weight: 800; font-size: 50px; }
+</style>
+</head>
+<body>
+<div id="stage">
+  <div class="layer" id="bg"></div>
+  <div class="layer grid" id="grid"></div>
+
+  <div class="scene">
+    <div class="phone3d" id="phone">
+      <div class="layers" id="layers"></div>
+      <div class="face front" id="front"><span class="island"></span>
+        <div class="scr" id="scr">
+          <div class="old" id="old">
+            <div class="hdr"></div><div class="row"></div><div class="row"></div><div class="row"></div><div class="row"></div><div class="row"></div><div class="row"></div><div class="row"></div>
+            <div class="spin" id="spin"></div>
+            <div class="toast" id="t1"><b>Hiba történt</b>Kérjük, próbálja újra később.</div>
+            <div class="toast" id="t2"><b>A munkamenet lejárt</b>Jelentkezzen be újra a folytatáshoz.</div>
+          </div>
+          <img data-k="home" src="../raw/home-light.png" alt="">
+          <img data-k="grades" src="../raw/grades-light.png" alt="">
+          <img data-k="timetable" src="../raw/timetable-dark.png" alt="">
+          <img data-k="subject" src="../raw/subject-light.png" alt="">
+          <img data-k="summary" src="../raw/summary-light.png" alt="">
+          <img data-k="homeD" src="../raw/home-dark.png" alt="">
+          <img data-k="gradesD" src="../raw/grades-dark.png" alt="">
+          <img data-k="timetableL" src="../raw/timetable-light.png" alt="">
+          <img data-k="login" src="../raw/login.png" alt="">
+        </div>
+      </div>
+      <div class="face back" id="backf"><img src="../../Radir/Assets.xcassets/Logo.imageset/Logo.png" alt=""></div>
+    </div>
+  </div>
+
+  <div id="stamps"></div>
+  <img class="logo" id="logo" src="../../Radir/Assets.xcassets/Logo.imageset/Logo.png" alt="">
+  <div class="word" id="word">Radír</div>
+  <div class="tag" id="tag">A KRÉTA, ahogy szeretnéd</div>
+  <div class="cap" id="cap"></div>
+  <div class="cta" id="cta"><h1>Jelentkezz a várólistára</h1><p>Ingyenes iPhone-app a KRÉTÁ-hoz</p><span class="btn">Link a bióban</span></div>
+  <div class="vignette" id="vig"></div>
+  <div class="flash" id="flash"></div>
+</div>
+
+<script>
+const $ = (id) => document.getElementById(id);
+const BEAT = 0.4475, B0 = 0.04, B = (k) => B0 + BEAT * k;
+const clamp = (v, a = 0, b = 1) => Math.min(b, Math.max(a, v));
+const lerp = (a, b, t) => a + (b - a) * t;
+const seg = (t, a, b) => clamp((t - a) / (b - a));
+const eo = (x) => 1 - Math.pow(1 - x, 3);           // ease-out
+const eio = (x) => x < .5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2;
+const back = (x) => { const c = 1.9; return 1 + (c + 1) * Math.pow(x - 1, 3) + c * Math.pow(x - 1, 2); };
+// determinisztikus „zaj” a remegéshez
+const noise = (t, f, s) => Math.sin(t * f + s) * Math.sin(t * f * 1.7 + s * 2.3);
+
+for (let z = -18; z <= 18; z += 3) { const i = document.createElement('i'); i.style.transform = `translateZ(${z}px)`; $('layers').append(i); }
+const imgs = {}; document.querySelectorAll('#scr img').forEach((el) => imgs[el.dataset.k] = el);
+const STAMP_COLORS = ['#22CCAD', '#92EA3B', '#22CCAD', '#F9CF00', '#22CCAD', '#92EA3B'];
+const stampPos = [[120, 760, -14], [800, 690, 12], [90, 1420, 9], [820, 1480, -10], [150, 1100, -6], [790, 1090, 8]];
+stampPos.forEach(([x, y, r], i) => {
+  const s = document.createElement('div'); s.className = 'stamp'; s.textContent = i % 3 === 1 ? '4' : '5';
+  s.style.left = x + 'px'; s.style.top = y + 'px'; s.style.background = STAMP_COLORS[i]; s.dataset.r = r; $('stamps').append(s);
+});
+
+// vágások: ezeken villan a kép (fehér, gyorsan lecsengő)
+const CUTS = [B(16), B(18), B(22), B(26), B(29), B(32), B(36), B(37), B(38), B(39), B(40), B(42)];
+const PAIN_HITS = [B(8), B(10), B(12), B(14), B(14.5), B(15), B(15.5)];
+
+const CAPS = [
+  // [kezdet, vég, szöveg, szín, alcím]
+  [B(0) + .25, B(8), 'Amikor megnézed a jegyeidet a KRÉTÁ-ban…', '#fff'],
+  [B(8), B(10), 'Töltés… megint.', '#fff'],
+  [B(10), B(12), 'Hiba történt.', '#fff'],
+  [B(12), B(14), 'Újra be kell lépni?!', '#fff'],
+  [B(18), B(22), 'Minden, ami ma számít', '#15161A', 'Kezdőlap: mostani óra, házik, új jegyek'],
+  [B(22), B(26), 'Látod, merre tart az átlagod', '#15161A', 'Grafikon és osztályátlag'],
+  [B(26), B(29), 'Az órarended, élőben', '#15161A', 'Helyettesítés, elmaradt óra, szünet'],
+  [B(29), B(32), 'Mennyi kell az ötöshöz?', '#15161A', 'Jegykalkulátor és céltervező'],
+  [B(32), B(36), 'Év végén jön a meglepetés', '#fff'],
+  [B(36), B(40), 'Sötét mód. Témák. Több fiók.', '#fff'],
+  [B(40), B(42), 'Ingyenes.', '#fff'],
+  [B(42), B(44), 'Nincs Plus, nincs reklám.', '#fff'],
+];
+
+function showScreen(key, t) {
+  for (const k in imgs) imgs[k].style.opacity = k === key ? 1 : 0;
+  $('old').style.opacity = key === 'old' ? 1 : 0;
+}
+
+function render(t) {
+  // ── háttér ──
+  const drop = B(16), night = B(32), outro = B(44);
+  let bg, gc;
+  if (t < drop) { bg = '#0c0d10'; gc = 'rgba(255,255,255,.035)'; }
+  else if (t < night - BEAT * .5) { bg = '#F4F3EE'; gc = 'rgba(110,112,122,.12)'; }
+  else { bg = 'linear-gradient(160deg, #1D56AC, #170A3D)'; gc = 'rgba(255,255,255,.07)'; }
+  $('bg').style.background = bg; $('grid').style.setProperty('--gc', gc);
+  $('vig').style.opacity = t < drop ? lerp(.4, 1, seg(t, 0, drop)) : 0;
+
+  // ── telefon ──
+  let ry = 0, rx = 0, rz = 0, s = 1, tx = 0, ty = 0, op = 1, screen = 'old';
+  if (t < drop) {
+    // build-up: lassú ráközelítés, egyre erősebb remegés, szürke és kicsit megdöntött
+    const k = seg(t, 0, drop);
+    s = lerp(.86, 1.06, eio(k)); ry = -8; rx = 6; rz = -2;
+    const amp = t < B(8) ? 0 : lerp(2, 16, seg(t, B(8), drop));
+    let hit = 0; for (const h of PAIN_HITS) if (t >= h) hit = Math.max(hit, Math.exp(-(t - h) / .07));
+    tx = noise(t, 41, 1) * amp + hit * 18; ty = noise(t, 37, 4) * amp; rz += noise(t, 23, 2) * amp * .08;
+    s += hit * .035;
+  } else if (t < B(18)) {
+    op = 0; // a drop pillanata a logóé
+  } else if (t < night) {
+    // beforog a hátoldaláról, aztán ütésenként billen és ráközelít
+    const intro = eo(seg(t, B(18), B(19.2)));
+    const beatPos = (t - B(18)) / BEAT, kick = Math.exp(-(beatPos % 1) * 3.2);
+    const side = Math.floor(beatPos) % 2 ? 1 : -1;
+    ry = lerp(200, side * 14, intro); rx = lerp(18, 4, intro);
+    if (intro >= 1) ry = lerp(-side * 14, side * 14, eo(clamp((beatPos % 1) * 2.5)));
+    s = lerp(.7, 1, intro) + kick * .045 * intro; ty = lerp(500, 0, intro);
+    screen = t < B(22) ? 'home' : t < B(26) ? 'grades' : t < B(29) ? 'timetable' : 'subject';
+  } else if (t < outro) {
+    const beatPos = (t - night) / BEAT, kick = Math.exp(-((beatPos * 2) % 1) * 3);
+    const side = Math.floor(beatPos) % 2 ? 1 : -1;
+    if (t < B(33)) { ry = -14 + 360 * eio(seg(t, night, B(33))); }          // 360°-os pörgés a második részre
+    else ry = lerp(-side * 16, side * 16, eo(clamp((beatPos % 1) * 2.5)));
+    rx = 4; s = .96 + kick * .05;
+    if (t < B(36)) screen = 'summary';
+    else if (t < B(40)) screen = ['homeD', 'gradesD', 'timetable', 'summary', 'homeD', 'timetableL', 'gradesD', 'home'][Math.floor((t - B(36)) / (BEAT / 2)) % 8];
+    else screen = 'home';
+    if (t >= B(40)) { s = lerp(.96, .82, eo(seg(t, B(40), B(41)))) + kick * .03; ty = lerp(0, 230, eo(seg(t, B(40), B(41)))); }
+  } else {
+    // lecsengés: szembefordul, lassan lebeg, összemegy a felhívás alá
+    const k = eio(seg(t, outro, outro + 1.2));
+    ry = lerp(16, -6, k) + Math.sin(t * 1.3) * 3; rx = lerp(4, 8, k); s = lerp(.82, .62, k); ty = lerp(230, 420, k);
+    screen = 'home';
+  }
+  $('phone').style.transform = `translate(${tx}px, ${ty}px) rotateX(${rx}deg) rotateY(${ry}deg) rotateZ(${rz}deg) scale(${s})`;
+  // a snapshot laposan rajzol (nincs preserve-3d): mi döntjük el, melyik lap néz felénk, és a peremet oldalra toljuk
+  const rad = ry * Math.PI / 180, front = Math.cos(rad) > 0;
+  $('front').style.display = front ? '' : 'none';
+  $('backf').style.display = front ? 'none' : '';
+  [...$('layers').children].forEach((el, i, all) => {
+    const z = (i / (all.length - 1) - .5) * 40;
+    el.style.transform = `translateX(${(front ? -1 : 1) * Math.sin(rad) * (z + 20) * 1.1}px)`;
+  });
+  $('phone').style.opacity = op;
+  $('phone').style.filter = t < drop ? `grayscale(1) brightness(${lerp(.75, .95, seg(t, 0, drop))})` : 'none';
+  showScreen(screen, t);
+
+  // régi app: forgó töltés, hibák
+  $('spin').style.transform = `rotate(${t * 520}deg)`;
+  $('spin').style.opacity = t < B(10) || (t >= B(14) && t < drop) ? 1 : .0;
+  $('t1').style.opacity = t >= B(10) && t < B(12) ? 1 : 0;
+  $('t1').style.transform = `scale(${lerp(.85, 1, back(seg(t, B(10), B(10) + .25)))})`;
+  $('t2').style.opacity = t >= B(12) && t < B(14) ? 1 : 0;
+  $('t2').style.transform = `scale(${lerp(.85, 1, back(seg(t, B(12), B(12) + .25)))})`;
+
+  // ── logó a dropon ──
+  // a logó elmegy, mielőtt a telefon bejön (nincs dupla expozíció)
+  const L = t >= drop && t < B(18);
+  const lk = back(seg(t, drop, drop + .32)), lout = eio(seg(t, B(17.25), B(18)));
+  $('logo').style.opacity = L ? 1 - lout : 0;
+  $('logo').style.transform = `scale(${lerp(1.9, 1, lk) * (1 - lout * .3)}) rotate(${lerp(-24, -8, lk)}deg) translateY(${-lout * 300}px)`;
+  for (const id of ['word', 'tag']) {
+    const d = id === 'tag' ? .12 : .05;
+    const k = eo(seg(t, drop + d, drop + d + .3));
+    $(id).style.opacity = L ? k * (1 - lout) : 0;
+    $(id).style.transform = `translateY(${lerp(60, 0, k) - lout * 300}px)`;
+  }
+
+  // ── feliratok ──
+  let cap = null;
+  for (const c of CAPS) if (t >= c[0] && t < c[1]) cap = c;
+  const el = $('cap');
+  if (cap) {
+    const html = cap[2] + (cap[4] ? `<small>${cap[4]}</small>` : '');
+    if (el.dataset.html !== html) { el.innerHTML = html; el.dataset.html = html; }
+    const k = eo(seg(t, cap[0], cap[0] + .22));
+    el.style.opacity = k; el.style.color = cap[3];
+    el.style.transform = `translateY(${lerp(40, 0, k)}px)`;
+    el.style.textShadow = t < drop ? 'none' : 'none';
+  } else el.style.opacity = 0;
+
+  // „ELÉG.” nyolcadokban villog a drop előtt
+  if (t >= B(14) && t < drop) {
+    const on = Math.floor((t - B(14)) / (BEAT / 2)) % 2 === 0;
+    el.innerHTML = 'ELÉG.'; el.dataset.html = 'ELÉG.';
+    el.style.opacity = 1; el.style.transform = `scale(${on ? 1.12 : 1})`; el.style.transformOrigin = '0 50%';
+    el.style.color = on ? '#ff3b4a' : '#fff'; el.style.fontSize = '150px';
+  } else { el.style.fontSize = ''; el.style.transformOrigin = ''; }
+
+  // ── „5”-ös matricák a második rész elején (nyolcadokra) ──
+  document.querySelectorAll('.stamp').forEach((st, i) => {
+    const at = B(32) + BEAT / 2 * (i + 1), gone = B(36);
+    const k = back(seg(t, at, at + .18));
+    const vis = t >= at && t < gone + .2;
+    st.style.opacity = vis ? clamp(1 - seg(t, gone, gone + .2)) : 0;
+    st.style.transform = `scale(${k}) rotate(${st.dataset.r}deg)`;
+  });
+
+  // ── felhívás a végén ──
+  const ck = eo(seg(t, outro + .1, outro + .7));
+  $('cta').style.opacity = t >= outro ? ck : 0;
+  $('cta').style.transform = `translateY(${lerp(50, 0, ck)}px)`;
+
+  // ── villanás ──
+  let f = 0;
+  for (const c of CUTS) if (t >= c) f = Math.max(f, Math.exp(-(t - c) / (c === drop ? .16 : .06)));
+  if (t < drop) for (const h of PAIN_HITS.slice(4)) if (t >= h) f = Math.max(f, .35 * Math.exp(-(t - h) / .04));
+  $('flash').style.opacity = f;
+  $('flash').style.background = t < drop ? '#ff3b4a' : '#fff';
+}
+
+window.ready = Promise.all([document.fonts.ready, ...[...document.images].map((i) => i.decode().catch(() => {}))]);
+render(0);
+</script>
+</body>
+</html>
