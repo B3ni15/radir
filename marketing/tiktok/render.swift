@@ -32,6 +32,7 @@ final class Renderer: NSObject, WKNavigationDelegate {
                 _ = try await webView.callAsyncJavaScript("await window.ready; return 1", contentWorld: .page)
                 print("kész a betöltés")
                 if args.first == "stills" {
+                    try FileManager.default.createDirectory(at: dir.appending(path: "work"), withIntermediateDirectories: true)
                     for s in args.dropFirst() {
                         let data = try await frame(Double(s)!)
                         try data.write(to: dir.appending(path: "work/still-\(s).jpg"))
