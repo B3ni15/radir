@@ -115,11 +115,16 @@ struct SettingsView: View {
                                 titleVisibility: .visible, presenting: confirmLogout) { account in
                 Button("Kijelentkezés: \(account.student.name)", role: .destructive) {
                     confirmLogout = nil
-                    Task { await model.logout(account.id) }
+                    model.logout(account.id)
                 }
                 Button("Mégse", role: .cancel) { confirmLogout = nil }
             } message: { _ in
                 Text("A fiók adatai törlődnek erről a telefonról.")
+            }
+            // Ha az utolsó fiókot jelentkeztük ki, a gyökérnézet a bejelentkezésre vált:
+            // a lapot is be kell zárni, különben a régi képernyő marad felül.
+            .onChange(of: model.current?.id) { _, id in
+                if id == nil { dismiss() }
             }
         }
     }

@@ -31,10 +31,13 @@ public struct AuthClient: Sendable {
     }
 
     /// Kijelentkezéskor; a hibát a hívó elnyelheti, a helyi törlés úgyis megtörténik.
+    /// Rövid időkorlát: a token visszavonása a háttérben fut, nem tarthatja fel a kijelentkezést.
     public func revoke(_ refreshToken: String) async throws {
-        let (_, res) = try await transport.send(form("connect/revocation", [
+        var request = form("connect/revocation", [
             "token": refreshToken, "token_type_hint": "refresh_token", "client_id": Kreta.clientID,
-        ]))
+        ])
+        request.timeoutInterval = 10
+        let (_, res) = try await transport.send(request)
         guard (200..<300).contains(res.statusCode) else { throw KretaError.http(res.statusCode) }
     }
 

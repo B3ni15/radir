@@ -109,15 +109,21 @@ final class AppModel {
         sync()
     }
 
-    /// A refresh tokent visszavonja a KRÉTA-nál; ha ez nem sikerül, helyben akkor is töröl.
-    func logout(_ id: String) async {
-        if let tokens = try? store.tokens.tokens(for: id) {
-            try? await auth.revoke(tokens.refreshToken)
-        }
+    /// Először helyben töröl (fiók, token, gyorsítótár), hogy a felület azonnal visszalépjen a
+    /// bejelentkezéshez; a refresh tokent csak utána, a háttérben vonja vissza a KRÉTA-nál.
+    /// A hálózat nem tarthatja fel a kijelentkezést.
+    func logout(_ id: String) {
+        let refreshToken = (try? store.tokens.tokens(for: id))?.refreshToken
+
         try? store.remove(id: id)
         cache.removeAll(for: id)
         sessions[id] = nil
         sync()
+
+        if let refreshToken {
+            // Best effort: ha nem sikerül (nincs net, lejárt token), a token a KRÉTA-nál lejár magától.
+            Task { try? await auth.revoke(refreshToken) }
+        }
     }
 
     /// A KRÉTA-kérésekhez. Demó fióknál és hiányzó tokennél nil.

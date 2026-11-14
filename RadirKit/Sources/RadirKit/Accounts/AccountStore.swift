@@ -35,9 +35,14 @@ public final class AccountStore {
     }
 
     public func remove(id: String) throws {
-        try tokens.delete(id: id)
+        // A token törlése nem akadályozhatja a fiók eltávolítását: a helyi fiók mindenképp törlődjön.
+        do { try tokens.delete(id: id) } catch {}
         accounts.removeAll { $0.id == id }
-        if selectedID == id { selectedID = accounts.last?.id } else { try persist() }
+        if selectedID == id || selectedID == nil {
+            selectedID = accounts.last?.id // a didSet elmenti
+        } else {
+            try persist()
+        }
     }
 
     public func markNeedsRelogin(id: String) throws {

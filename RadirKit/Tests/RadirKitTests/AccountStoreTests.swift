@@ -44,6 +44,27 @@ import Testing
         #expect(s.selectedID == nil && s.accounts.isEmpty)
     }
 
+    /// Az utolsó fiók törlése is elmentődik: újraindítás után a bejelentkezés jön, nem a régi fiók.
+    @Test func lastAccountRemovalPersists() throws {
+        let s = AccountStore(fileURL: file, tokens: tokens)
+        try s.upsert(account("a"), tokens: tok("1"))
+        try s.remove(id: "klik1/a")
+        let reloaded = AccountStore(fileURL: file, tokens: tokens)
+        #expect(reloaded.accounts.isEmpty)
+        #expect(reloaded.selectedID == nil)
+    }
+
+    /// Ha a token törlése hibára fut (pl. Keychain), a fiók db-ban akkor is el kell tűnnie a telefonról.
+    @Test func removeIgnoresTokenDeleteFailure() throws {
+        let failing = DeleteFailingTokenStore()
+        let s = AccountStore(fileURL: file, tokens: failing)
+        try s.upsert(account("a"), tokens: tok("1"))
+        try s.remove(id: "klik1/a")
+        #expect(s.accounts.isEmpty)
+        #expect(s.selectedID == nil)
+        #expect(AccountStore(fileURL: file, tokens: failing).accounts.isEmpty)
+    }
+
     @Test func needsReloginSurvivesReload() throws {
         let s = AccountStore(fileURL: file, tokens: tokens)
         try s.upsert(account("a"), tokens: tok("1"))
@@ -62,4 +83,12 @@ import Testing
         try Data("nem json".utf8).write(to: file)
         #expect(AccountStore(fileURL: file, tokens: tokens).accounts.isEmpty)
     }
+}
+
+/// Csak a `delete` hibázik: a tokent a fiók törlésének nem szabad kockáztatnia.
+final class DeleteFailingTokenStore: TokenStore, @unchecked Sendable {
+    private let inner = InMemoryTokenStore()
+    func tokens(for id: String) throws -> TokenSet? { try inner.tokens(for: id) }
+    func save(_ tokens: TokenSet, for id: String) throws { try inner.save(tokens, for: id) }
+    func delete(id: String) throws { throw TokenStoreError.keychain(-34018) }
 }

@@ -60,7 +60,7 @@ struct ReloginView: View {
         .background { LoginBackground() }
         .confirmationDialog("Kijelentkezel?", isPresented: $confirmLogout, titleVisibility: .visible) {
             Button("Kijelentkezés: \(account.student.name)", role: .destructive) {
-                Task { await app.logout(account.id) }
+                app.logout(account.id)
             }
         } message: {
             Text("A fiók adatai törlődnek erről a telefonról.")
