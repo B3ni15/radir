@@ -15,6 +15,13 @@ struct LoginView: View {
     @State private var errorText: LocalizedStringKey?
     @State private var page = 0
     @State private var logoTaps = 0
+    @State private var lastLogoTap: Date?
+    @State private var hapticTick = 0
+
+    /// Ennyi koppintás a logóra nyitja meg a demót (rejtett, hogy senki ne keverje a saját jegyeivel).
+    private static let demoTaps = 10
+    /// Ennyi csend után nullázódik a számláló: a véletlen koppintások nem nyitják meg a demót.
+    private static let demoTapTimeout: TimeInterval = 2
 
     private static let slides: [(title: LocalizedStringKey, text: LocalizedStringKey, image: String)] = [
         ("Minden, ami ma számít", "A mostani és a következő órád, a házik, a dolgozatok és az új jegyeid egy helyen.", "Showcase1"),
@@ -25,26 +32,46 @@ struct LoginView: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 18) {
-            HStack(spacing: 8) {
-                Image("Logo")
-                    .resizable()
-                    .frame(width: 30, height: 30)
-                    .clipShape(.rect(cornerRadius: 8, style: .continuous))
-                    .accessibilityHidden(true)
-                Text("Radír").font(.custom("Montserrat-Bold", size: 18, relativeTo: .headline))
-            }
-            .padding(.vertical, 6)
-            .contentShape(.rect)
-            .onTapGesture {
-                logoTaps += 1
-                if logoTaps >= 10 {
-                    logoTaps = 0
-                    model.startDemo()
-                    onDone?()
+            HStack(spacing: 10) {
+                HStack(spacing: 8) {
+                    Image("Logo")
+                        .resizable()
+                        .frame(width: 30, height: 30)
+                        .clipShape(.rect(cornerRadius: 8, style: .continuous))
+                        .accessibilityHidden(true)
+                    Text("Radír").font(.custom("Montserrat-Bold", size: 18, relativeTo: .headline))
                 }
+                .contentShape(.rect)
+                .onTapGesture(perform: tapLogo)
+
+                // Visszajelzés a rejtett demó belépéshez: mennyi koppintás van meg a tízből.
+                if logoTaps > 0 {
+                    HStack(spacing: 3) {
+                        ForEach(0..<Self.demoTaps, id: \.self) { i in
+                            Circle()
+                                .fill(Color(i < logoTaps ? palette.accent : palette.separator))
+                                .frame(width: 4, height: 4)
+                        }
+                    }
+                    .accessibilityHidden(true)
+                    .transition(.opacity.combined(with: .scale(scale: 0.8)))
+                }
+
+                Spacer(minLength: 0)
             }
+            .animation(.easeOut(duration: 0.18), value: logoTaps)
+            .padding(.vertical, 6)
             .padding(.horizontal, 24)
             .padding(.top, 8)
+            .sensoryFeedback(.impact(weight: .light), trigger: hapticTick)
+            // két koppintás közti szünetnél újraindul a számlálás
+            .task(id: logoTaps) {
+                guard logoTaps > 0 else { return }
+                try? await Task.sleep(for: .seconds(Self.demoTapTimeout))
+                guard !Task.isCancelled, logoTaps > 0 else { return }
+                logoTaps = 0
+                lastLogoTap = nil
+            }
 
             TabView(selection: $page) {
                 ForEach(Self.slides.indices, id: \.self) { i in
@@ -141,6 +168,23 @@ struct LoginView: View {
                            startPoint: .top, endPoint: .bottom)
                 .ignoresSafeArea()
         }
+    }
+
+    /// A rejtett demó belépés: tíz koppintás a logóra. Minden koppintás enyhe haptikát ad, és
+    /// pöttyök mutatják a haladást; a tizedikre megnyílik a demó fiók.
+    private func tapLogo() {
+        let now = Date()
+        if let last = lastLogoTap, now.timeIntervalSince(last) > Self.demoTapTimeout {
+            logoTaps = 0
+        }
+        lastLogoTap = now
+        logoTaps += 1
+        hapticTick += 1
+        guard logoTaps >= Self.demoTaps else { return }
+        logoTaps = 0
+        lastLogoTap = nil
+        model.startDemo()
+        onDone?()
     }
 
     private func finish(code: String, request: LoginRequest) async {
