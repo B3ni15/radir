@@ -2,34 +2,43 @@ import RadirKit
 import SwiftUI
 import WebKit
 
-/// A KRÉTA saját belépő oldala. A redirectet elkapjuk, így a jelszó soha nem jár nálunk.
+/// Az e-KRÉTA saját belépő oldala. A redirectet elkapjuk, így a jelszó soha nem jár nálunk.
 struct KretaLoginSheet: View {
     let request: LoginRequest
     var prefill: LoginPrefill?
+    /// Ha nem tölt be a belépő oldal (pl. külföldről nem érhető el), innen is indulhat a demó.
+    var onDemo: (() -> Void)?
     let onCode: (String) -> Void
 
     @Environment(\.dismiss) private var dismiss
     @State private var isLoading = true
     @State private var loadedOnce = false
     @State private var timedOut = false
+    @State private var failed = false
     @State private var reloadToken = 0
 
     var body: some View {
         NavigationStack {
             ZStack {
-                KretaWebLogin(request: request, prefill: prefill, reloadToken: reloadToken, onCode: onCode) { loading in
+                KretaWebLogin(request: request, prefill: prefill, reloadToken: reloadToken, onCode: onCode, onLoading: { loading in
                     isLoading = loading
                     if !loading { loadedOnce = true }
-                }
-                if timedOut && !loadedOnce {
+                }, onFailed: { failed = true })
+                if failed || (timedOut && !loadedOnce) {
                     ContentUnavailableView {
-                        Label("Nem töltött be a KRÉTA", systemImage: "wifi.exclamationmark")
+                        Label("Nem töltött be a bejelentkező oldal", systemImage: "wifi.exclamationmark")
                     } description: {
-                        Text("Ellenőrizd az internetet, vagy próbáld később.")
+                        Text("Ellenőrizd az internetet. Az e-KRÉTA belépés külföldről nem mindig érhető el.")
                     } actions: {
                         Button("Újra") {
                             timedOut = false
+                            failed = false
+                            loadedOnce = false
                             reloadToken += 1
+                        }
+                        if let onDemo {
+                            Button("Kipróbálom demóval", action: onDemo)
+                                .buttonStyle(.borderedProminent)
                         }
                     }
                     .background(.background)
@@ -37,7 +46,7 @@ struct KretaLoginSheet: View {
                     ProgressView()
                 }
             }
-            .navigationTitle("KRÉTA belépés")
+            .navigationTitle("Bejelentkezés")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
@@ -82,6 +91,8 @@ struct KretaWebLogin: UIViewRepresentable {
     let reloadToken: Int
     let onCode: (String) -> Void
     let onLoading: (Bool) -> Void
+    /// Hálózati hiba, vagy hibaoldal (4xx/5xx) jött a belépő oldal helyett.
+    var onFailed: () -> Void = {}
 
     func makeCoordinator() -> Coordinator { Coordinator(self) }
 
@@ -123,6 +134,28 @@ struct KretaWebLogin: UIViewRepresentable {
                 parent.onCode(code)
             }
             return .cancel
+        }
+
+        func webView(_ webView: WKWebView, decidePolicyFor response: WKNavigationResponse) async -> WKNavigationResponsePolicy {
+            // külföldről a KRÉTA hibaoldalt adhat (pl. 403): azt ne mutassuk belépő oldalként
+            if response.isForMainFrame, let http = response.response as? HTTPURLResponse, http.statusCode >= 400 {
+                parent.onFailed()
+            }
+            return .allow
+        }
+
+        func webView(_ webView: WKWebView, didFailProvisionalNavigation navigation: WKNavigation!, withError error: Error) {
+            failed(error)
+        }
+
+        func webView(_ webView: WKWebView, didFail navigation: WKNavigation!, withError error: Error) { failed(error) }
+
+        private func failed(_ error: Error) {
+            let e = error as NSError
+            // a saját redirect-elkapásunk (cancel) és a félbeszakított betöltés nem hiba
+            if delivered || (e.domain == NSURLErrorDomain && e.code == NSURLErrorCancelled) || (e.domain == "WebKitErrorDomain" && e.code == 102) { return }
+            parent.onLoading(false)
+            parent.onFailed()
         }
 
         func webView(_ webView: WKWebView, didStartProvisionalNavigation navigation: WKNavigation!) { parent.onLoading(true) }

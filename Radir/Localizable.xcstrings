@@ -1,6 +1,86 @@
 {
   "sourceLanguage" : "hu",
   "strings" : {
+    "Belépés iskolai fiókkal" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mit dem Schulkonto anmelden"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sign in with your school account"
+          }
+        }
+      }
+    },
+    "Nem hivatalos alkalmazás. A belépés az e-KRÉTA saját oldalán történik, a jelszavadat nem látjuk." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Inoffizielle App. Die Anmeldung erfolgt auf der eigenen Seite von e-KRÉTA; dein Passwort sehen wir nie."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unofficial app. You sign in on e-KRÉTA's own page; we never see your password."
+          }
+        }
+      }
+    },
+    "Nem töltött be a bejelentkező oldal" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Die Anmeldeseite wurde nicht geladen"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The sign-in page didn't load"
+          }
+        }
+      }
+    },
+    "Ellenőrizd az internetet. Az e-KRÉTA belépés külföldről nem mindig érhető el." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Prüfe deine Internetverbindung. Die e-KRÉTA-Anmeldung ist außerhalb Ungarns nicht immer erreichbar."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Check your internet connection. e-KRÉTA sign-in isn't always available outside Hungary."
+          }
+        }
+      }
+    },
+    "Bejelentkezés" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Anmeldung"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sign in"
+          }
+        }
+      }
+    },
     "" : {
 
     },

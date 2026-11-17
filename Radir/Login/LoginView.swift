@@ -1,7 +1,7 @@
 import RadirKit
 import SwiftUI
 
-/// Belépés KRÉTA fiókkal, a Firka kezdőképernyője mintájára: lapozható bemutató, alatta a belépés.
+/// Belépés iskolai (e-KRÉTA) fiókkal, a Firka kezdőképernyője mintájára: lapozható bemutató, alatta a belépés.
 /// A demó rejtett (mint a Firkában): a logóra tízszer koppintva indul. Az App Review jegyzetben le van írva.
 /// Sheetben is használható új fiók hozzáadásához.
 struct LoginView: View {
@@ -89,7 +89,11 @@ struct LoginView: View {
             withAnimation(.smooth) { page = (page + 1) % Self.slides.count }
         }
         .sheet(item: $request) { req in
-            KretaLoginSheet(request: req) { code in
+            KretaLoginSheet(request: req, onDemo: {
+                request = nil
+                model.startDemo()
+                onDone?()
+            }) { code in
                 request = nil
                 Task { await finish(code: code, request: req) }
             }
@@ -145,7 +149,7 @@ struct LoginView: View {
                 request = .make()
             } label: {
                 Group {
-                    if isWorking { ProgressView().tint(.white) } else { Label("Belépés KRÉTA fiókkal", systemImage: "person.badge.key.fill") }
+                    if isWorking { ProgressView().tint(.white) } else { Label("Belépés iskolai fiókkal", systemImage: "person.badge.key.fill") }
                 }
                 .font(.m(.body, .semibold))
                 .frame(maxWidth: .infinity, minHeight: 34)
@@ -154,7 +158,7 @@ struct LoginView: View {
             .controlSize(.large)
             .disabled(isWorking)
 
-            Text("Ingyenes, reklám nélkül. A belépés a KRÉTA saját oldalán történik.")
+            Text("Nem hivatalos alkalmazás. A belépés az e-KRÉTA saját oldalán történik, a jelszavadat nem látjuk.")
                 .font(.m(.footnote))
                 .foregroundStyle(Color(palette.secondaryText))
                 .multilineTextAlignment(.center)
