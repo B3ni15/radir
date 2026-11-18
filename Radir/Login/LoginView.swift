@@ -2,7 +2,8 @@ import RadirKit
 import SwiftUI
 
 /// Belépés iskolai (e-KRÉTA) fiókkal, a Firka kezdőképernyője mintájára: lapozható bemutató, alatta a belépés.
-/// A demó rejtett (mint a Firkában): a logóra tízszer koppintva indul. Az App Review jegyzetben le van írva.
+/// A gyökér-belépőn a demó egy látható gombbal indul (az App Review és a fiók nélküli kipróbálás miatt),
+/// a logóra tízszer koppintva pedig rejtett útvonalként is elérhető.
 /// Sheetben is használható új fiók hozzáadásához.
 struct LoginView: View {
     var onDone: (() -> Void)?
@@ -89,11 +90,11 @@ struct LoginView: View {
             withAnimation(.smooth) { page = (page + 1) % Self.slides.count }
         }
         .sheet(item: $request) { req in
-            KretaLoginSheet(request: req, onDemo: {
+            // Fiók hozzáadásakor (Settings) nincs demó: az csak a gyökér-belépőn elérhető.
+            KretaLoginSheet(request: req, onDemo: onDone == nil ? {
                 request = nil
                 model.startDemo()
-                onDone?()
-            }) { code in
+            } : nil) { code in
                 request = nil
                 Task { await finish(code: code, request: req) }
             }
@@ -157,6 +158,22 @@ struct LoginView: View {
             .radirProminentButton()
             .controlSize(.large)
             .disabled(isWorking)
+
+            // A demó közvetlenül innen is elérhető: az App Review-nak nem kell fiók, és nem függ
+            // attól, hogy az iskolai belépő oldal betölt-e. Csak a gyökér-belépőn látszik, fiók
+            // hozzáadásakor nem.
+            if onDone == nil {
+                Button {
+                    model.startDemo()
+                } label: {
+                    Label("Kipróbálom demóval", systemImage: "sparkles")
+                        .font(.m(.body, .semibold))
+                        .frame(maxWidth: .infinity, minHeight: 34)
+                }
+                .radirSecondaryButton()
+                .controlSize(.large)
+                .disabled(isWorking)
+            }
 
             Text("Nem hivatalos alkalmazás. A belépés az e-KRÉTA saját oldalán történik, a jelszavadat nem látjuk.")
                 .font(.m(.footnote))

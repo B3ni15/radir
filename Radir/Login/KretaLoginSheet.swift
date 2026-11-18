@@ -43,7 +43,15 @@ struct KretaLoginSheet: View {
                     }
                     .background(.background)
                 } else if isLoading && !loadedOnce {
-                    ProgressView()
+                    VStack(spacing: 18) {
+                        ProgressView()
+                        // Ha lassú vagy nem elérhető az iskolai oldal, itt is azonnal ott a demó.
+                        if let onDemo {
+                            Button("Kipróbálom demóval", action: onDemo)
+                                .font(.m(.subheadline, .semibold))
+                                .radirSecondaryButton()
+                        }
+                    }
                 }
             }
             .navigationTitle("Bejelentkezés")
